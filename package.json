@@ -1,0 +1,28 @@
+{
+  "name": "darts",
+  "version": "0.0.0",
+  "description": "",
+  "main": "app.js",
+  "dependencies": {
+    "gaussian": "~1.0.0",
+    "benchmark": "~1.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "darts"
+  ],
+  "author": {
+    "name" : "Jeshua Maxey",
+    "email" : "me@jeshua.co",
+    "url" : "http://jeshua.co"
+  },
+  "contributors" : [{
+    "name" : "Jack Peacock",
+    "email" : "",
+    "url" : ""
+  }],
+  "license": "BSD-2-Clause"
+}
