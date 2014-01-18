@@ -57,7 +57,7 @@ app.processData = function(data) {
 
 app.generateLegend = function() {
 	app.lgCanvas = document.getElementById('legend');
-	app.lgCtx = app.hmCanvas.getContext('2d');
+	app.lgCtx = app.lgCanvas.getContext('2d');
 	app.lg = {
 		"width" : 400,
 		"height" : 700,
@@ -66,11 +66,18 @@ app.generateLegend = function() {
 	for(c=0;c<app.lg.height;c++) {
 		app.lgCtx.beginPath();
 		app.lgCtx.rect(0,c,app.lg.width,1);
-		console.log(c/app.lg.height);
 		app.lgCtx.fillStyle = app.color(c/app.lg.height);
 		app.lgCtx.fill();
 	}
 }
+
+// app.lgCtx.beginPath();
+// app.lgCtx.rect(0, 0, 20, 20);
+// app.lgCtx.fillStyle = 'yellow';
+// app.lgCtx.fill();
+// app.lgCtx.lineWidth = 7;
+// app.lgCtx.strokeStyle = 'black';
+// app.lgCtx.stroke();
 
 app.generateHeatmap = function() {
 	app.resizeCanvas(app.data.length);	//assuming app.data is a square for now
@@ -109,11 +116,11 @@ app.color = function(val) {
 	var c = Math.floor(4*255*val);
 	var r = 255, g = 0, b = 0;
 	while(c > 0) {
-		if(g<255) g++;
+		if(g<255 && r==255) g++;
 		if(g==255 && r!=0) r--;
-		if(g==255 && r==0) b++;
+		if(g==255 && r==0 && b!=255) b++;
 		if(b==255) g--;
-		c--
+		c--;
 	}
 	var color = 'rgba('+r+','+g+','+b+',1)';
 	//var color = 'rgba('+88+','+shade+','+shade+',1)';
