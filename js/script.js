@@ -1,24 +1,19 @@
 var app = app || {};
 
-app.pixelSize = 7;
+app.pixelSize = 2;
 
 app.main = function() {
 	app.initialiseHeapmap();
 	//app.drawDartBoard();
 	app.refreshHeatMap();
-	app.generateLegend();
-	$('#heatmap').mousemove(app.updateInfoPanel)
+	$('#heatmap').mousemove(app.updateHoverPixel);
+	$('#heatmap').click(app.updateFocusPixel)
 }
 
 
 app.initialiseHeapmap = function() {
 	app.hmCanvas = document.getElementById('heatmap');
 	app.hmCtx = app.hmCanvas.getContext('2d');
-	app.hm = {
-		"width" : 700,
-		"height" : 700,
-		"margin" : 40
-	}
 }
 
 app.drawDartBoard = function() {
@@ -52,15 +47,21 @@ app.processData = function(data) {
 		arr.forEach(function(el) {
 			el > app.data.max ? app.data.max = el : null;
 		})
-	})
+	});
+	app.hm = {
+		"width" : app.pixelSize*data.length,
+		"height" : app.pixelSize*data.length,
+		"margin" : 0
+	}
 	app.generateHeatmap();
+	app.generateLegend();
 }
 
 app.generateLegend = function() {
 	app.lgCanvas = document.getElementById('legend');
 	app.lgCtx = app.lgCanvas.getContext('2d');
 	app.lg = {
-		"width" : 700,
+		"width" : app.pixelSize*app.data.length,//700,
 		"height" : 40,
 		"margin" : 10
 	};
@@ -81,13 +82,22 @@ app.generateHeatmap = function() {
 	};
 }
 
-app.updateInfoPanel = function(e) {
+app.updateHoverPixel = function(e) {
 	//console.log(e)
 	var x = Math.floor(e.offsetX/app.pixelSize);
 	var y = Math.floor(e.offsetY/app.pixelSize);
 	var val = (app.data[x][y]);//.toFixed(3);
 	//console.log(val)
-	$('#pixelValue').html(val);
+	$('#hoverPixelValue').html(val);
+}
+
+app.updateFocusPixel = function(e) {
+	//console.log(e)
+	var x = Math.floor(e.offsetX/app.pixelSize);
+	var y = Math.floor(e.offsetY/app.pixelSize);
+	var val = (app.data[x][y]);//.toFixed(3);
+	//console.log(val)
+	$('#focusPixelValue').html(val);
 }
 
 app.resizeCanvas = function() {

@@ -2,7 +2,7 @@ var app = app || {};
 
 var fs = require('fs');
 
-app.N = 130; //mesh dimnesions
+app.N = 340; //mesh dimnesions
 
 app.mean = 0;
 app.variance = 1;
@@ -16,8 +16,8 @@ app.gaussian1D = function(x) {
 
 app.meanX = 0;
 app.meanY = 0;
-app.varianceX = 9;
-app.varianceY = 2;
+app.varianceX = 90;
+app.varianceY = 20;
 app.stdDevX = Math.sqrt(app.varianceX);
 app.stdDevY = Math.sqrt(app.varianceY);
 
@@ -78,7 +78,7 @@ app.randomInt = function(randMax) {
 app.mesh = app.make2DMesh(app.N);
 app.fillMesh();
 for(c=0;c<1000;c++) {
-	var x = 20;//app.randomInt(app.N);
+	var x = app.randomInt(app.N);
 	var y = app.randomInt(app.N);
 	app.addToMesh(x,y);
 }
