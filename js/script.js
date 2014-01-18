@@ -59,25 +59,17 @@ app.generateLegend = function() {
 	app.lgCanvas = document.getElementById('legend');
 	app.lgCtx = app.lgCanvas.getContext('2d');
 	app.lg = {
-		"width" : 400,
-		"height" : 700,
+		"width" : 700,
+		"height" : 40,
 		"margin" : 10
 	};
-	for(c=0;c<app.lg.height;c++) {
+	for(c=0;c<app.lg.width;c++) {
 		app.lgCtx.beginPath();
-		app.lgCtx.rect(0,c,app.lg.width,1);
-		app.lgCtx.fillStyle = app.color(c/app.lg.height);
+		app.lgCtx.rect(c,0,1,app.lg.height);
+		app.lgCtx.fillStyle = app.color(c/app.lg.width);
 		app.lgCtx.fill();
 	}
 }
-
-// app.lgCtx.beginPath();
-// app.lgCtx.rect(0, 0, 20, 20);
-// app.lgCtx.fillStyle = 'yellow';
-// app.lgCtx.fill();
-// app.lgCtx.lineWidth = 7;
-// app.lgCtx.strokeStyle = 'black';
-// app.lgCtx.stroke();
 
 app.generateHeatmap = function() {
 	app.resizeCanvas(app.data.length);	//assuming app.data is a square for now
@@ -114,12 +106,12 @@ app.drawCircle = function(x, y, rad) {
 app.color = function(val) {
 	//var shade = Math.floor(val); //use to fake it
 	var c = Math.floor(4*255*val);
-	var r = 255, g = 0, b = 0;
+	var r = 0, g = 0, b = 255;
 	while(c > 0) {
-		if(g<255 && r==255) g++;
-		if(g==255 && r!=0) r--;
-		if(g==255 && r==0 && b!=255) b++;
-		if(b==255) g--;
+		if(g<255 && b==255) g++;
+		if(g==255 && b!=0) b--;
+		if(g==255 && b==0 && r!=255) r++;
+		if(r==255) g--;
 		c--;
 	}
 	var color = 'rgba('+r+','+g+','+b+',1)';
