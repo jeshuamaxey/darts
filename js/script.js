@@ -7,6 +7,7 @@ app.main = function() {
 	//app.drawDartBoard();
 	app.refreshHeatMap();
 	app.generateLegend();
+	$('#heatmap').mousemove(app.updateInfoPanel)
 }
 
 
@@ -80,6 +81,15 @@ app.generateHeatmap = function() {
 	};
 }
 
+app.updateInfoPanel = function(e) {
+	//console.log(e)
+	var x = Math.floor(e.offsetX/app.pixelSize);
+	var y = Math.floor(e.offsetY/app.pixelSize);
+	var val = (app.data[x][y]);//.toFixed(3);
+	//console.log(val)
+	$('#pixelValue').html(val);
+}
+
 app.resizeCanvas = function() {
 	app.hmCanvas.style.width = "px";
 	app.hmCanvas.style.height = "px";
@@ -105,13 +115,14 @@ app.drawCircle = function(x, y, rad) {
 //takes a value in the range 0-1
 app.color = function(val) {
 	//var shade = Math.floor(val); //use to fake it
-	var c = Math.floor(4*255*val);
+	var c = Math.floor(5*255*val);
 	var r = 0, g = 0, b = 255;
 	while(c > 0) {
-		if(g<255 && b==255) g++;
-		if(g==255 && b!=0) b--;
-		if(g==255 && b==0 && r!=255) r++;
-		if(r==255) g--;
+		if(r==0 	&& g!=255 && b==255)	g++;	//rgb(0,0,255)		-> rgb(0,255,255)
+		if(r==0 	&& g==255 && b!=0) 		b--;	//rgb(0,255,0)		-> rgb(0,255,0)
+		if(r!=255 && g==255 && b==0) 		r++;	//rgb(0,255,0)		-> rgb(255,255,0)
+		if(r==255 && g!=0 	&& b==0) 		g--;	//rgb(255,255,0)	-> rgb(255,0,	0)
+		if(r==255 && g==0 	&& b!=255)	b++;	//rgb(255,0,0)		-> rgb(255,0,255)
 		c--;
 	}
 	var color = 'rgba('+r+','+g+','+b+',1)';

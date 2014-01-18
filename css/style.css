@@ -1,9 +1,26 @@
+html, body {
+	margin: 0;
+	padding: 0;
+
+	font-family: 'helvetica', sans-serif;
+}
+
 .heatmap {
-	margin: 10px auto;
-	display: block;
+	margin: 20px;
+	float: left;
+}
+
+.heatmap:hover {
+	cursor: crosshair;
+}
+
+.infoPanel {
+	width: auto;
+	margin: 20px;
+	float: right;
 }
 
 .legend {
-	margin: 10px auto;
+	margin: 20px;
 	display: block;
 }

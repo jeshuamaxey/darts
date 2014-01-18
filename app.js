@@ -77,7 +77,7 @@ app.randomInt = function(randMax) {
 
 app.mesh = app.make2DMesh(app.N);
 app.fillMesh();
-for(c=0;c<5000;c++) {
+for(c=0;c<1000;c++) {
 	var x = 20;//app.randomInt(app.N);
 	var y = app.randomInt(app.N);
 	app.addToMesh(x,y);
