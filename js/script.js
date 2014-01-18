@@ -1,19 +1,23 @@
 var app = app || {};
 
+app.pixelSize = 7;
+
 app.main = function() {
 	app.initialiseHeapmap();
 	//app.drawDartBoard();
 	app.refreshHeatMap();
+	app.generateLegend();
 }
 
 
 app.initialiseHeapmap = function() {
-	app.canvas = document.getElementById('heatmap');
-	app.ctx = app.canvas.getContext('2d');
-	app.hm = {};
-	app.hm.width = 700;
-	app.hm.height = app.hm.width;			//ensure square canvas
-	app.hm.margin = 40;
+	app.hmCanvas = document.getElementById('heatmap');
+	app.hmCtx = app.hmCanvas.getContext('2d');
+	app.hm = {
+		"width" : 700,
+		"height" : 700,
+		"margin" : 40
+	}
 }
 
 app.drawDartBoard = function() {
@@ -37,38 +41,82 @@ app.drawDartBoard = function() {
 }
 
 app.refreshHeatMap = function() {
-	$.ajax('data/darts.json').done(app.generateHeatmap)
+	$.ajax('data/darts.json').done(app.processData)
 }
 
-app.generateHeatmap = function(data) {
-	var squareSize = 10;
-	for (var x=0; x < data.length; x++) {
-		for (var y=0; y < data.length; y++) {
-			app.plotPixel(x*squareSize, y*squareSize, squareSize, data[x][y]);
+app.processData = function(data) {
+	app.data = data;
+	app.data.max = 0;
+	app.data.forEach(function(arr) {
+		arr.forEach(function(el) {
+			el > app.data.max ? app.data.max = el : null;
+		})
+	})
+	app.generateHeatmap();
+}
+
+app.generateLegend = function() {
+	app.lgCanvas = document.getElementById('legend');
+	app.lgCtx = app.hmCanvas.getContext('2d');
+	app.lg = {
+		"width" : 400,
+		"height" : 700,
+		"margin" : 10
+	};
+	for(c=0;c<app.lg.height;c++) {
+		app.lgCtx.beginPath();
+		app.lgCtx.rect(0,c,app.lg.width,1);
+		console.log(c/app.lg.height);
+		app.lgCtx.fillStyle = app.color(c/app.lg.height);
+		app.lgCtx.fill();
+	}
+}
+
+app.generateHeatmap = function() {
+	app.resizeCanvas(app.data.length);	//assuming app.data is a square for now
+	for (var x=0; x < app.data.length; x++) {
+		for (var y=0; y < app.data.length; y++) {
+			app.plotPixel(x*app.pixelSize, y*app.pixelSize, app.pixelSize, app.data[x][y]);
 		};
 	};
 }
 
+app.resizeCanvas = function() {
+	app.hmCanvas.style.width = "px";
+	app.hmCanvas.style.height = "px";
+}
+
 app.plotPixel = function(x, y, size, val) {
-	app.ctx.beginPath();
-	app.ctx.rect(x, y, size, size);
-  app.ctx.fillStyle = app.color(val); // 'rgba(255,255,255,1)';
-  app.ctx.fill();
-  app.ctx.lineWidth = 1;
-  app.ctx.strokeStyle = 'black';
-  app.ctx.stroke();
+	app.hmCtx.beginPath();
+	app.hmCtx.rect(x, y, size, size);
+  app.hmCtx.fillStyle = app.color(val/app.data.max); // 'rgba(255,255,255,1)';
+  app.hmCtx.fill();
+  // app.hmCtx.lineWidth = 0;
+  // app.hmCtx.strokeStyle = 'black';
+  // app.hmCtx.stroke();
 }
 
 app.drawCircle = function(x, y, rad) {
-	app.ctx.beginPath();
-	app.ctx.arc(x, y, rad, 0, Math.PI*2, true);
-	app.ctx.stroke();
-	app.ctx.closePath();
+	app.hmCtx.beginPath();
+	app.hmCtx.arc(x, y, rad, 0, Math.PI*2, true);
+	app.hmCtx.stroke();
+	app.hmCtx.closePath();
 }
 
+//takes a value in the range 0-1
 app.color = function(val) {
-	var color = 'rgba('+Math.floor(255*val/255)+','+Math.floor(255*val/255)+','+Math.floor(255*val/255)+',1)';
-	console.log(color);
+	//var shade = Math.floor(val); //use to fake it
+	var c = Math.floor(4*255*val);
+	var r = 255, g = 0, b = 0;
+	while(c > 0) {
+		if(g<255) g++;
+		if(g==255 && r!=0) r--;
+		if(g==255 && r==0) b++;
+		if(b==255) g--;
+		c--
+	}
+	var color = 'rgba('+r+','+g+','+b+',1)';
+	//var color = 'rgba('+88+','+shade+','+shade+',1)';
 	return color;
 }
 
