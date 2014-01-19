@@ -1,7 +1,11 @@
 var app = app || {}; 
 
+/* 3RD PARTY MODULES */
 var fs = require('fs');
-var db = require('./dartboardfunction.js');
+
+/* OUR MODULES */
+var stats = require('modules/stats.js');
+var db = require('modules/dartboard.js');
 
 app.N = 340; //mesh dimnesions
 
