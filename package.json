@@ -1,12 +1,13 @@
 {
   "name": "darts",
-  "version": "0.0.0",
-  "description": "",
+  "version": "0.0.1",
+  "description": "run `npm install` after pulling for the fisrt time",
   "main": "app.js",
   "dependencies": {
     "gaussian": "~1.0.0",
     "benchmark": "~1.0.0",
-    "express": "3.4.8"
+    "express": "3.4.8",
+    "nodemon": "1.0.12"
   },
   "devDependencies": {},
   "scripts": {
@@ -15,15 +16,17 @@
   "keywords": [
     "darts"
   ],
-  "author": {
-    "name" : "Jeshua Maxey",
-    "email" : "me@jeshua.co",
-    "url" : "http://jeshua.co"
+  "author": "Jeshua Maxey <me@jeshua.co> (http://jeshua.co)",
+  "contributors": [
+    "Jack Peacock"
+  ],
+  "license": "BSD-2-Clause",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jeshuamaxey/darts.git"
   },
-  "contributors" : [{
-    "name" : "Jack Peacock",
-    "email" : "",
-    "url" : ""
-  }],
-  "license": "BSD-2-Clause"
+  "bugs": {
+    "url": "https://github.com/jeshuamaxey/darts/issues"
+  },
+  "homepage": "https://github.com/jeshuamaxey/darts"
 }
