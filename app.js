@@ -57,7 +57,7 @@ app.addToMesh = function(meanX, meanY) {
 }
 
 app.writeToFile = function() {
-	var outFile = './data/darts.json';
+	var outFile = 'public/data/darts.json';
 
 	fs.writeFile(outFile, JSON.stringify(app.mesh, null, 2), function(err) {
 	    if(err) {
