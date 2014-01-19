@@ -7,7 +7,7 @@ var fs = require('fs');
 var stats = require('./modules/stats.js');
 var db = require('./modules/dartboard.js');
 
-app.N = 340; //mesh dimnesions
+app.N = 340; //mesh dimensions
 
 app.make2DMesh = function(size) {
 	var arr = new Array(size);
@@ -22,7 +22,6 @@ app.fillMesh = function() {
 	for (x = 0; x < app.N; x++) {
 		for (y = 0; y < app.N; y++) {
 			app.mesh[x][y] = db.dartboard(x,y);
-			//app.mesh[x][y] = stats.gaussian2D(x,y,mean,mean);
 		};
 	};
 }
