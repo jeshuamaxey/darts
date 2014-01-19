@@ -1,6 +1,7 @@
 var app = app || {}; 
 
 var fs = require('fs');
+var db = require('./dartboardfunction.js');
 
 app.N = 340; //mesh dimnesions
 
@@ -51,7 +52,7 @@ app.addToMesh = function(meanX, meanY) {
 	for (var x = app.mesh.length - 1; x >= 0; x--) {
 		for (var y = app.mesh.length - 1; y >= 0; y--) {
 			//app.mesh[x][y] = (x*y)%255; //use to fake it
-			app.mesh[x][y] += app.gaussian2D(x,y,meanX,meanY);
+			app.mesh[x][y] += app.gaussian2D(x,y,meanX,meanY)*db.dartboard(x,y);
 		};
 	};
 }
@@ -77,11 +78,11 @@ app.randomInt = function(randMax) {
 
 app.mesh = app.make2DMesh(app.N);
 app.fillMesh();
-for(c=0;c<1000;c++) {
-	var x = app.randomInt(app.N);
-	var y = app.randomInt(app.N);
-	app.addToMesh(x,y);
-}
+//for(c=0;c<1000;c++) {
+//	var x = app.randomInt(app.N);
+//	var y = app.randomInt(app.N);
+//	app.addToMesh(x,y);
+//}
 app.writeToFile();
 
 
