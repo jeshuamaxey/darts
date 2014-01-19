@@ -130,13 +130,13 @@ app.drawCircle = function(x, y, rad) {
 app.color = function(val) {
 	//var shade = Math.floor(val); //use to fake it
 	var c = Math.floor(5*255*val);
-	var r = 0, g = 0, b = 255;
+	var r = 255, g = 255, b = 255;
 	while(c > 0) {
-		if(r==0 	&& g!=255 && b==255)	g++;	//rgb(0,0,255)		-> rgb(0,255,255)
-		if(r==0 	&& g==255 && b!=0) 		b--;	//rgb(0,255,0)		-> rgb(0,255,0)
-		if(r!=255 && g==255 && b==0) 		r++;	//rgb(0,255,0)		-> rgb(255,255,0)
-		if(r==255 && g!=0 	&& b==0) 		g--;	//rgb(255,255,0)	-> rgb(255,0,	0)
-		if(r==255 && g==0 	&& b!=255)	b++;	//rgb(255,0,0)		-> rgb(255,0,255)
+		if(r!=0 && g==255 && b==255)		r--;	//rgb(255,255,255)		-> rgb(0,255,255)
+		if(r==0 	&& g==255 && b!=0) 		b--;	//rgb(0,255,0)				-> rgb(0,255,0)
+		if(r!=255 && g==255 && b==0) 		r++;	//rgb(0,255,0)				-> rgb(255,255,0)
+		if(r==255 && g!=0 	&& b==0) 		g--;	//rgb(255,255,0)			-> rgb(255,0,	0)
+		if(r==255 && g==0 	&& b!=255)	b++;	//rgb(255,0,0)				-> rgb(255,0,255)
 		c--;
 	}
 	var color = 'rgba('+r+','+g+','+b+',1)';
