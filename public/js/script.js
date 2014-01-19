@@ -37,7 +37,10 @@ app.drawDartBoard = function() {
 }
 
 app.refreshHeatMap = function() {
-	$.ajax('data/darts.json').done(app.processData)
+	$.ajax({
+			url: 'data/darts.json',
+			cache: false
+		}).done(app.processData)
 }
 
 app.processData = function(data) {
@@ -89,15 +92,16 @@ app.updateHoverPixel = function(e) {
 	var val = (app.data[x][y]);//.toFixed(3);
 	//console.log(val)
 	$('#hoverPixelValue').html(val);
+	$('#diffPixelValue').html(Math.abs(val - app.focuxPxVal))
 }
 
 app.updateFocusPixel = function(e) {
 	//console.log(e)
 	var x = Math.floor(e.offsetX/app.pixelSize);
 	var y = Math.floor(e.offsetY/app.pixelSize);
-	var val = (app.data[x][y]);//.toFixed(3);
+	app.focuxPxVal = (app.data[x][y]);//.toFixed(3);
 	//console.log(val)
-	$('#focusPixelValue').html(val);
+	$('#focusPixelValue').html(app.focuxPxVal);
 }
 
 app.resizeCanvas = function() {

@@ -33,16 +33,18 @@ app.make2DMesh = function(size) {
 	var arr = new Array(size);
 	for (var i = arr.length - 1; i >= 0; i--) {
 		arr[i] = new Array(size);
-	};
+	}
 	return arr;
 }
 
 app.fillMesh = function() {
 	var mean = app.mesh.length/2;
-	for (var x = app.mesh.length - 1; x >= 0; x--) {
-		for (var y = app.mesh.length - 1; y >= 0; y--) {
-			//app.mesh[x][y] = (x*y)%255; //use to fake it
-			app.mesh[x][y] = app.gaussian2D(x,y,mean,mean);
+	for (x = 0; x < app.N; x++) {
+		for (y = 0; y < app.N; y++) {
+			//app.mesh[x][y] = 0;
+			app.mesh[x][y] = db.dartboard(x,y);
+			//app.mesh[x][y] = app.gaussian2D(x,y,mean,mean);
+			//console.log(x,y);
 		};
 	};
 }
@@ -51,7 +53,6 @@ app.addToMesh = function(meanX, meanY) {
 	//var mean = app.mesh.length/2;
 	for (var x = app.mesh.length - 1; x >= 0; x--) {
 		for (var y = app.mesh.length - 1; y >= 0; y--) {
-			//app.mesh[x][y] = (x*y)%255; //use to fake it
 			app.mesh[x][y] += app.gaussian2D(x,y,meanX,meanY)*db.dartboard(x,y);
 		};
 	};
@@ -78,13 +79,14 @@ app.randomInt = function(randMax) {
 
 app.mesh = app.make2DMesh(app.N);
 app.fillMesh();
+app.writeToFile();
+
+//	//uncomment to fill with fake data
 //for(c=0;c<1000;c++) {
 //	var x = app.randomInt(app.N);
 //	var y = app.randomInt(app.N);
 //	app.addToMesh(x,y);
 //}
-app.writeToFile();
-
 
 //END SCRIPT BIT
 module.exports = app;
