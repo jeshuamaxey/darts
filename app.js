@@ -4,10 +4,10 @@ var app = app || {};
 var fs = require('fs');
 
 /* OUR MODULES */
-var stats = require('modules/stats.js');
-var db = require('modules/dartboard.js');
+var stats = require('./modules/stats.js');
+var db = require('./modules/dartboard.js');
 
-app.N = 340; //mesh dimnesions
+app.N = 340; //mesh dimensions
 
 app.mean = 0;
 app.variance = 1;
@@ -46,7 +46,8 @@ app.fillMesh = function() {
 	for (x = 0; x < app.N; x++) {
 		for (y = 0; y < app.N; y++) {
 			//app.mesh[x][y] = 0;
-			app.mesh[x][y] = db.dartboard(x,y);
+			app.mesh[x][y] = db.dartboard(-170+(x*340/app.N),+170-(y*340/app.N));
+			//This correction needs to be made because the origin of the dartboard is in the bull
 			//app.mesh[x][y] = app.gaussian2D(x,y,mean,mean);
 			//console.log(x,y);
 		};
