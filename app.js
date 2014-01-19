@@ -4,10 +4,11 @@ var app = app || {};
 var fs = require('fs');
 
 /* OUR MODULES */
+var config = require('./modules/config.js');
 var stats = require('./modules/stats.js');
 var db = require('./modules/dartboard.js');
 
-app.N = 340; //mesh dimensions
+app.N = config.meshSize;
 
 app.make2DMesh = function(size) {
 	var arr = new Array(size);

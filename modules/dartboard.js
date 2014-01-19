@@ -1,6 +1,7 @@
 var db = db || {}; 
 
 var fs = require('fs');
+var config = require('./config.js');
 
 db.findradius = function(xcoord, ycoord) {
     return Math.sqrt((xcoord*xcoord)+(ycoord*ycoord));
@@ -20,8 +21,8 @@ db.findtheta = function(xcoord, ycoord) {
 
 db.dartboard = function(xcoord, ycoord) {
 	//shift x,y array index to coord system centred on the bull
-	xcoord -= 340/2;
-	ycoord -= 340/2;
+	xcoord -= config.meshSize/2;
+	ycoord -= config.meshSize/2;
 	// Coordinate system has origin at the centre of the bullseye
     var dartboardnumbers = [6,13,4,18,1,20,5,12,9,14,11,8,16,7,19,3,17,2,15,10,6];
     // The list of dartboard numbers starting at 6 and moving anticlockwise
