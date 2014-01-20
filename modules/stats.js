@@ -20,7 +20,7 @@ stats.gaussian2D = function(x, y, meanX, meanY, varX, varY) {
 	//check the normalisation constant
   var e = Math.exp( - ( Math.pow(x - meanX, 2) / (2 * sdX) + Math.pow(y - meanY, 2) / (2 * sdY) ) );
   var m = sdX * sdY * Math.sqrt(2 * Math.PI);
-  return e / m;
+  return ( (e / m) < 0.00001 ? 0 : e/m );
 }
 
 module.exports = stats;
