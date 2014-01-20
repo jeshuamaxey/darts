@@ -2,6 +2,12 @@ var app = app || {};
 
 app.pixelSize = 2;
 
+app.hm = {
+	"width" : 680,
+	"height" : 680,
+	"margin" : 0
+}
+
 app.main = function() {
 	app.initialiseCanvases();
 	//app.drawDartBoard();
@@ -60,11 +66,7 @@ app.processData = function(data) {
 			el > app.data.max ? app.data.max = el : null;
 		})
 	});
-	app.hm = {
-		"width" : app.pixelSize*data.length,
-		"height" : app.pixelSize*data.length,
-		"margin" : 0
-	}
+	app.pixelSize = app.hm.width/app.data.length;
 	app.generateHeatmap();
 	app.generateLegend();
 }
@@ -73,7 +75,7 @@ app.generateLegend = function() {
 	app.lgCanvas = document.getElementById('legend');
 	app.lgCtx = app.lgCanvas.getContext('2d');
 	app.lg = {
-		"width" : app.pixelSize*app.data.length,//700,
+		"width" : app.hm.width,
 		"height" : 40,
 		"margin" : 10
 	};
