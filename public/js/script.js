@@ -14,7 +14,11 @@ app.main = function() {
 	app.refreshHeatMap();
 	$('#canvasWrapper').mousemove(app.updateHoverPixel);
 	$('#canvasWrapper').on("click", app.updateFocusPixel);
-	$('#reload').on("click", app.refreshHeatMap);
+	$('#reload').on("click", function(e) {
+		e.preventDefault();
+		app.refreshHeatMap();
+		return false;
+	});
 	$('#spin').on("click", app.toggleSpin);
 }
 
