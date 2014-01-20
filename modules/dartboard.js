@@ -40,22 +40,22 @@ db.dartboard = function(xcoord, ycoord) {
 		return 50;
 	}
 	
-	else if (radius > config.MeshSize/2) {
+	else if (radius > config.meshSize/2) {
 	// Missed Board
 		return 0;
 	}
 	
-	else if (radius <= config.MeshSize/21.3836477987) {
+	else if (radius <= config.meshSize/21.3836477987) {
 	// Single Bull
 		return 25;
 	}
 	
-	else if (radius > config.MeshSize/2.0987654321 && radius <= config.MeshSize/2) {
+	else if (radius > config.meshSize/2.0987654321 && radius <= config.meshSize/2) {
 	// Double
 		dubtripfactor = 2;
 	}
 	
-	else if (radius > config.MeshSize/3.43434343434 && radius <= config.MeshSize/3.17757009346) {
+	else if (radius > config.meshSize/3.43434343434 && radius <= config.meshSize/3.17757009346) {
 	// Triple
 		dubtripfactor = 3;
 	}
