@@ -138,11 +138,11 @@ app.color = function(val) {
 	var c = Math.floor(5*255*val);
 	var r = 255, g = 255, b = 255;
 	while(c > 0) {
-		if(r!=0 && g==255 && b==255)		r--;	//rgb(255,255,255)		-> rgb(0,255,255)
-		if(r==0 	&& g==255 && b!=0) 		b--;	//rgb(0,255,0)				-> rgb(0,255,0)
-		if(r!=255 && g==255 && b==0) 		r++;	//rgb(0,255,0)				-> rgb(255,255,0)
-		if(r==255 && g!=0 	&& b==0) 		g--;	//rgb(255,255,0)			-> rgb(255,0,	0)
-		if(r==255 && g==0 	&& b!=255)	b++;	//rgb(255,0,0)				-> rgb(255,0,255)
+		if(r!=0 	&& g==255 && b==255)		r--;	//rgb(255,255,255)		-> rgb(0,255,255)
+		if(r==0 	&& g==255 && b!=0) 		b--;		//rgb(0,255,0)				-> rgb(0,255,0)
+		if(r!=255 && g==255 && b==0) 		r++;		//rgb(0,255,0)				-> rgb(255,255,0)
+		if(r==255 && g!=0 	&& b==0) 		g--;		//rgb(255,255,0)			-> rgb(255,0,	0)
+		if(r==255 && g==0 	&& b!=255)	b++;		//rgb(255,0,0)				-> rgb(255,0,255)
 		c--;
 	}
 	var color = 'rgba('+r+','+g+','+b+',1)';
@@ -152,6 +152,8 @@ app.color = function(val) {
 
 //a handy function to clear the canvas (X-browser friendly)
 //http://stackoverflow.com/questions/2142535/how-to-clear-the-canvas-for-redrawing
+//can't get this to work although this jsfiddle does work???
+// http://jsfiddle.net/jeshuamaxey/YQP82/2/
 app.clearCanvas = function(context, canvas) {
 	//context.clearRect(0, 0, canvas.width, canvas.height);
   var w = canvas.width;
