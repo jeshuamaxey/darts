@@ -6,11 +6,25 @@ html, body {
 }
 
 .heatmap {
+	position: relative;
+	top: 0;
+	left: 0;
 	margin: 20px;
 	float: left;
 }
 
 .heatmap:hover {
+	cursor: crosshair;
+}
+
+.overlay {
+	position: absolute;
+	top: 0;
+	left: 0;
+	margin: 20px;
+}
+
+.overlay:hover {
 	cursor: crosshair;
 }
 

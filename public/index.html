@@ -6,10 +6,16 @@
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <canvas   id="heatmap" class="heatmap"
-            height="700px"
-            width = "700px">
-  </canvas>
+  <div id="canvasWrapper" class="canvasWrapper">
+    <canvas   id="heatmap" class="heatmap"
+              height="700px"
+              width = "700px">
+    </canvas>
+    <canvas   id="overlay" class="overlay"
+              height="700px"
+              width = "700px">
+    </canvas>
+  </div>
   <div id="infoPanel" class="infoPanel">
 		<h2>Pixel Value:</h2>
 		<p>
