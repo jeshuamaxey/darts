@@ -10,13 +10,13 @@ stats.gaussian1D = function(x, meanX, varX) {
   return e / m;
 }
 
-stats.gaussian2D = function(x, y, meanX, meanY, varX, varY) {
+stats.gaussian2D = function(x, y, meanX, meanY, sdX, sdY) {
 	var meanX = meanX || 0;
 	var meanY = meanY || 0;
-	var varX = varX || 1;
-	var varY = varY || 1;
-	var sdX = Math.sqrt(varX);
-	var sdY = Math.sqrt(varY);
+	var sdX = sdX || 1;
+	var sdY = sdY || 1;
+	var varX = sdX*sdX;
+	var varY = sdY*sdY;
 	//check the normalisation constant
   var e = Math.exp( - ( Math.pow(x - meanX, 2) / (2 * sdX) + Math.pow(y - meanY, 2) / (2 * sdY) ) );
   var m = sdX * sdY * Math.sqrt(2 * Math.PI);
