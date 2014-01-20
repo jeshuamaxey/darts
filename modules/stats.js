@@ -23,4 +23,8 @@ stats.gaussian2D = function(x, y, meanX, meanY, sdX, sdY) {
   return ( (e / m) < 0.00001 ? 0 : e/m );
 }
 
+stats.calcStandardDev = function(accuracy) {
+	return config.meshSize*config.meshRatio.bullseye/0.4;
+}
+
 module.exports = stats;

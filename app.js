@@ -27,19 +27,19 @@ app.fillMesh = function() {
 	}
 }
 
-app.generateHeatmap = function() {
+app.generateHeatmap = function(sdX, sdY) {
 	for (var x = 0; x < app.N; x++) {
+		console.log("calculating weight for "+x+")");
 		for (var y = 0; y < app.N; y++) {
-			app.weight(x,y);
+			app.weight(x,y, sdX, sdY);
 		}
 	}
 }
 
-app.weight = function(pixelX, pixelY) {
-	console.log("calculating weight for ("+pixelX+", "+pixelY+")");
+app.weight = function(pixelX, pixelY, sdX, sdY) {
 	for (var x = 0; x < app.N; x++) {
 		for (var y = 0; y < app.N; y++) {
-			app.mesh[pixelX][pixelY] += db.dartboard(x, y)* stats.gaussian2D(x, y, pixelX, pixelY);
+			app.mesh[pixelX][pixelY] += db.dartboard(x, y)* stats.gaussian2D(x, y, pixelX, pixelY, sdX, sdY);
 		}
 	}	
 }
@@ -53,7 +53,6 @@ app.zeroMesh = function() {
 }
 
 app.addToMesh = function(meanX, meanY) {
-	//var mean = app.mesh.length/2;
 	for (var x = app.mesh.length - 1; x >= 0; x--) {
 		for (var y = app.mesh.length - 1; y >= 0; y--) {
 			app.mesh[x][y] += stats.gaussian2D(x,y,meanX,meanY,400,400);//*db.dartboard(x,y);
@@ -90,13 +89,15 @@ app.fakeData = function(n) {
 
 app.mesh = app.make2DMesh(app.N);
 app.zeroMesh();
-//app.fillMesh();
-app.generateHeatmap();
 
-//uncomment to fill darts.json with fake data
-//app.fakeData(400);
+var acc = 0.31;
+var sdX = config.meshSize*config.meshRatio.bullseye/0.4;
+var sdY = config.meshSize*config.meshRatio.bullseye/0.4;
 
-app.writeToFile();
+app.generateHeatmap(sdX, sdY);
+
+var fileName = 'acc='+acc+'.json';
+app.writeToFile(fileName);
 
 //END SCRIPT BIT
 module.exports = app;
