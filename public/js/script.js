@@ -128,7 +128,6 @@ app.drawCircle = function(x, y, rad) {
 
 //takes a value in the range 0-1
 app.color = function(val) {
-	//var shade = Math.floor(val); //use to fake it
 	var c = Math.floor(5*255*val);
 	var r = 255, g = 255, b = 255;
 	while(c > 0) {
