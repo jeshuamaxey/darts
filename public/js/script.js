@@ -6,8 +6,8 @@ app.main = function() {
 	app.initialiseHeapmap();
 	//app.drawDartBoard();
 	app.refreshHeatMap();
-	$('#heatmap').mousemove(app.updateHoverPixel);
-	$('#heatmap').click(app.updateFocusPixel)
+	$('#canvasWrapper').mousemove(app.updateHoverPixel);
+	$('#canvasWrapper').click(app.updateFocusPixel)
 }
 
 
@@ -86,13 +86,13 @@ app.generateHeatmap = function() {
 }
 
 app.updateHoverPixel = function(e) {
-	//console.log(e)
 	var x = Math.floor(e.offsetX/app.pixelSize);
 	var y = Math.floor(e.offsetY/app.pixelSize);
-	var val = (app.data[x][y]);//.toFixed(3);
-	//console.log(val)
-	$('#hoverPixelValue').html(val);
-	$('#diffPixelValue').html(Math.abs(val - app.focuxPxVal))
+	if(x < app.data.length && y < app.data.length) {
+		var val = app.data[x][y];
+		$('#hoverPixelValue').html(val);
+		$('#diffPixelValue').html(Math.abs(val - app.focuxPxVal));
+	}
 }
 
 app.updateFocusPixel = function(e) {
