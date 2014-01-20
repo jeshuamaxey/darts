@@ -35,27 +35,27 @@ db.dartboard = function(xcoord, ycoord) {
     // Wire thickness not considered. If a dart lands on the exact position of the wire
     // the darts always comes onto the inside of the circle.
 	
-	if (radius <= 6.35) {
+	if (radius <= config.meshSize/53.5433070866) {
 	// Bullseye
 		return 50;
 	}
 	
-	else if (radius > 170) {
+	else if (radius > config.meshSize/2) {
 	// Missed Board
 		return 0;
 	}
 	
-	else if (radius <= 15.9) {
+	else if (radius <= config.meshSize/21.3836477987) {
 	// Single Bull
 		return 25;
 	}
 	
-	else if (radius > 162 && radius <= 170) {
+	else if (radius > config.meshSize/2.0987654321 && radius <= config.meshSize/2) {
 	// Double
 		dubtripfactor = 2;
 	}
 	
-	else if (radius > 99 && radius <= 107) {
+	else if (radius > config.meshSize/3.43434343434 && radius <= config.meshSize/3.17757009346) {
 	// Triple
 		dubtripfactor = 3;
 	}
