@@ -35,7 +35,7 @@ db.dartboard = function(xcoord, ycoord) {
     // Wire thickness not considered. If a dart lands on the exact position of the wire
     // the darts always comes onto the inside of the circle.
 	
-	if (radius <= 6.35) {
+	if (radius <= config.meshSize/53.5433070866) {
 	// Bullseye
 		return 50;
 	}
