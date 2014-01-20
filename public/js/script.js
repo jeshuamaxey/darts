@@ -3,7 +3,7 @@ var app = app || {};
 app.pixelSize = 2;
 
 app.main = function() {
-	app.initialiseHeapmap();
+	app.initialiseCanvases();
 	//app.drawDartBoard();
 	app.refreshHeatMap();
 	$('#canvasWrapper').mousemove(app.updateHoverPixel);
@@ -11,9 +11,11 @@ app.main = function() {
 }
 
 
-app.initialiseHeapmap = function() {
+app.initialiseCanvases = function() {
 	app.hmCanvas = document.getElementById('heatmap');
 	app.hmCtx = app.hmCanvas.getContext('2d');
+	app.ovCanvas = document.getElementById('overlay');
+	app.ovCtx = app.hmCanvas.getContext('2d');
 }
 
 app.drawDartBoard = function() {
@@ -96,12 +98,17 @@ app.updateHoverPixel = function(e) {
 }
 
 app.updateFocusPixel = function(e) {
-	//console.log(e)
+	app.clearCanvas(app.ovCtx, app.ovCanvas);
 	var x = Math.floor(e.offsetX/app.pixelSize);
 	var y = Math.floor(e.offsetY/app.pixelSize);
-	app.focuxPxVal = (app.data[x][y]);//.toFixed(3);
-	//console.log(val)
-	$('#focusPixelValue').html(app.focuxPxVal);
+	if(x < app.data.length && y < app.data.length) {
+		var val = app.data[x][y];
+		//update canvas
+		app.drawCircle(x*app.pixelSize,y*app.pixelSize,5);
+		//update info panel
+		app.focuxPxVal = val;
+		$('#focusPixelValue').html(app.focuxPxVal);
+	}
 }
 
 app.resizeCanvas = function() {
@@ -143,6 +150,18 @@ app.color = function(val) {
 	//var color = 'rgba('+88+','+shade+','+shade+',1)';
 	return color;
 }
+
+//a handy function to clear the canvas (X-browser friendly)
+//http://stackoverflow.com/questions/2142535/how-to-clear-the-canvas-for-redrawing
+app.clearCanvas = function(context, canvas) {
+	//context.clearRect(0, 0, canvas.width, canvas.height);
+	context.globalAlpha = 0.0;
+  context.fillRect(0, 0, canvas.width, canvas.height);
+  var w = canvas.width;
+  canvas.width = 1;
+  canvas.width = w;
+  context.globalAlpha = 1;
+};
 
 //must go last
 $(document).ready(app.main);
