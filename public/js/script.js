@@ -104,7 +104,7 @@ app.updateFocusPixel = function(e) {
 	if(x < app.data.length && y < app.data.length) {
 		var val = app.data[x][y];
 		//update canvas
-		app.drawCircle(x*app.pixelSize,y*app.pixelSize,5);
+		app.drawCircle(app.ovCtx, x*app.pixelSize, y*app.pixelSize, 5);
 		//update info panel
 		app.focuxPxVal = val;
 		$('#focusPixelValue').html(app.focuxPxVal);
@@ -126,11 +126,11 @@ app.plotPixel = function(x, y, size, val) {
   // app.hmCtx.stroke();
 }
 
-app.drawCircle = function(x, y, rad) {
-	app.hmCtx.beginPath();
-	app.hmCtx.arc(x, y, rad, 0, Math.PI*2, true);
-	app.hmCtx.stroke();
-	app.hmCtx.closePath();
+app.drawCircle = function(ctx, x, y, rad) {
+	ctx.beginPath();
+	ctx.arc(x, y, rad, 0, Math.PI*2, true);
+	ctx.stroke();
+	ctx.closePath();
 }
 
 //takes a value in the range 0-1
@@ -155,12 +155,11 @@ app.color = function(val) {
 //http://stackoverflow.com/questions/2142535/how-to-clear-the-canvas-for-redrawing
 app.clearCanvas = function(context, canvas) {
 	//context.clearRect(0, 0, canvas.width, canvas.height);
-	context.globalAlpha = 0.0;
-  context.fillRect(0, 0, canvas.width, canvas.height);
   var w = canvas.width;
   canvas.width = 1;
   canvas.width = w;
-  context.globalAlpha = 1;
+  // context.fillStyle = "rgba(0,0,0,0.0)";
+  // context.fillRect(0, 0, canvas.width, canvas.height);
 };
 
 //must go last
