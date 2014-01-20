@@ -9,6 +9,7 @@ app.main = function() {
 	$('#canvasWrapper').mousemove(app.updateHoverPixel);
 	$('#canvasWrapper').on("click", app.updateFocusPixel);
 	$('#reload').on("click", app.refreshHeatMap);
+	$('#spin').on("click", app.toggleSpin);
 }
 
 
@@ -45,6 +46,10 @@ app.refreshHeatMap = function() {
 			url: url,
 			cache: false
 		}).done(app.processData)
+}
+
+app.toggleSpin = function() {
+	$('#heatmap').toggleClass('spinning');
 }
 
 app.processData = function(data) {
