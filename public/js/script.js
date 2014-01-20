@@ -7,7 +7,8 @@ app.main = function() {
 	//app.drawDartBoard();
 	app.refreshHeatMap();
 	$('#canvasWrapper').mousemove(app.updateHoverPixel);
-	$('#canvasWrapper').click(app.updateFocusPixel)
+	$('#canvasWrapper').on("click", app.updateFocusPixel);
+	$('#reload').on("click", app.refreshHeatMap);
 }
 
 
@@ -39,8 +40,9 @@ app.drawDartBoard = function() {
 }
 
 app.refreshHeatMap = function() {
+	var url = 'data/' + ($('#fileName').val() || 'darts.json'); 
 	$.ajax({
-			url: 'data/darts.json',
+			url: url,
 			cache: false
 		}).done(app.processData)
 }

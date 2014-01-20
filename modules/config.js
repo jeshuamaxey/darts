@@ -1,5 +1,5 @@
 module.exports = {
-	"meshSize": 100,
+	"meshSize": 340,
 	"meshRatio": {
 		"bullseye": 6.35/170,
 		"bull" : 15.9/170,
