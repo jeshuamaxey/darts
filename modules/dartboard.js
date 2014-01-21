@@ -1,7 +1,28 @@
-var db = db || {}; 
-
 var fs = require('fs');
 var config = require('./config.js');
+/*
+* All private variables and functions are attached to the priv object
+* which is not exported
+*/
+
+var priv = priv || {};
+
+/*
+* a 2D array w/ the same size as the mesh stores
+*	previously calculated values of the dartboard function
+*/
+priv.db = new Array(config.meshSize);
+for (var i = priv.db.length - 1; i >= 0; i--) {
+	priv.db[i] = new Array(config.meshSize);
+}
+
+
+/*
+* All public variables and functions are attached to the db object
+* which is exported at the end of the module
+*/
+
+var db = db || {};
 
 db.findradius = function(xcoord, ycoord) {
     return Math.sqrt((xcoord*xcoord)+(ycoord*ycoord));
@@ -20,6 +41,13 @@ db.findtheta = function(xcoord, ycoord) {
 }
 
 db.dartboard = function(xcoord, ycoord) {
+	//first look at private array to see if we've
+	//calculated this value before
+	var mesh = {'x': xcoord, 'y': ycoord};
+	if(priv.db[mesh.x][mesh.y] != undefined) {
+		return priv.db[mesh.x][mesh.y];
+	}
+	//else calculate the value
 	//shift x,y array index to coord system centred on the bull
 	xcoord -= config.meshSize/2;
 	ycoord += ((config.meshSize/2) - 2*ycoord);
@@ -36,27 +64,33 @@ db.dartboard = function(xcoord, ycoord) {
     // the darts always comes onto the inside of the circle.
 	
 	if (radius <= config.meshSize/53.5433070866) {
-	// Bullseye
+		// Bullseye
+		//store in private array before returning
+		priv.db[mesh.x][mesh.y] = 50;
 		return 50;
 	}
 	
 	else if (radius > config.meshSize/2) {
-	// Missed Board
+		// Missed Board
+		//store in private array before returning
+		priv.db[mesh.x][mesh.y] = 0;
 		return 0;
 	}
 	
 	else if (radius <= config.meshSize/21.3836477987) {
-	// Single Bull
+		// Single Bull
+		//store in private array before returning
+		priv.db[mesh.x][mesh.y] = 25;
 		return 25;
 	}
 	
 	else if (radius > config.meshSize/2.0987654321 && radius <= config.meshSize/2) {
-	// Double
+		// Double
 		dubtripfactor = 2;
 	}
 	
 	else if (radius > config.meshSize/3.43434343434 && radius <= config.meshSize/3.17757009346) {
-	// Triple
+		// Triple
 		dubtripfactor = 3;
 	}
 	
@@ -69,6 +103,8 @@ db.dartboard = function(xcoord, ycoord) {
 	}
 	
 	number = dartboardnumbers[segmentcounter];
+	//store in private array
+	priv.db[mesh.x][mesh.y] = number*dubtripfactor;
 	return number*dubtripfactor;
 }
 
