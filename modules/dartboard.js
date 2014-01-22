@@ -66,22 +66,19 @@ db.dartboard = function(xcoord, ycoord) {
 	if (radius <= config.meshSize/53.5433070866) {
 		// Bullseye
 		//store in private array before returning
-		priv.db[mesh.x][mesh.y] = 50;
-		return 50;
+		return priv.db[mesh.x][mesh.y] = 50;
 	}
 	
 	else if (radius > config.meshSize/2) {
 		// Missed Board
 		//store in private array before returning
-		priv.db[mesh.x][mesh.y] = 0;
-		return 0;
+		return priv.db[mesh.x][mesh.y] = 0;
 	}
 	
 	else if (radius <= config.meshSize/21.3836477987) {
 		// Single Bull
 		//store in private array before returning
-		priv.db[mesh.x][mesh.y] = 25;
-		return 25;
+		return priv.db[mesh.x][mesh.y] = 25;
 	}
 	
 	else if (radius > config.meshSize/2.0987654321 && radius <= config.meshSize/2) {
@@ -104,8 +101,7 @@ db.dartboard = function(xcoord, ycoord) {
 	
 	number = dartboardnumbers[segmentcounter];
 	//store in private array
-	priv.db[mesh.x][mesh.y] = number*dubtripfactor;
-	return number*dubtripfactor;
+	return priv.db[mesh.x][mesh.y] = number*dubtripfactor;
 }
 
 module.exports = db;
