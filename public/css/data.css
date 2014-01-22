@@ -25,22 +25,27 @@ html, body {
 
 .overlay {
 	position: absolute;
+	/*
 	top: 0;
 	left: 0;
+	*/
+	/* 	added to sure up click event detection
+			as per: http://stackoverflow.com/questions/13833227/css3-rotate-on-animated-element-causing-click-event-not-to-invoke */
+	float: left;
 	/* ratio h:w must be 3:4 */
 	height: 480px;
 	width: 640px;
+
 	background-color: rgba(100,0,0,0.4);
+	transform-style: 'preserve-3d';
+	/*
 	-webkit-perspective: 600;
 	-webkit-backface-visibility: hidden;
+	*/
 }
 
 .overlay:hover {
 	cursor: crosshair;
-}
-
-.overlay.rotated {
-	-webkit-transform: rotateY(45deg);
 }
 
 .settingsPanel {
@@ -58,8 +63,16 @@ html, body {
 	float: left;
 }
 
+.rotationControls {
+	max-width: 50%;
+	float: left;
+}
 
-.calibControls {
+.xrotationSlider .xtranslationSlider {
+	min-width: 200px;
+}
+
+.translationControls {
 	max-width: 50%;
 	float: right;
 }

@@ -20,8 +20,14 @@ app.videoContraints = {
   }
 }
 
-app.overlayRy = 0;
+//these vars need initialising before any calibration to ensure
+//calibrating works immediately
 app.overlayRx = 0;
+app.overlayRy = 0;
+app.overlayRz = 0;
+app.overlayTx = 0;
+app.overlayTy = 0;
+app.overlayTz = 0;
 
 app.main = function() {
 	app.video = $('#vid')[0];
@@ -69,9 +75,10 @@ app.startCalib = function() {
 	app.redrawGrid(app.ovCanvas, app.ovCtx);
 	app.calibClicks = [];
 	$('#calibDialog').show();
-	$('#yRotation').on('change', app.updateRotation);
-	$('#xRotation').on('change', app.updateRotation);
-	$('#resetRotation').on('click', app.resetRotation)
+	$('.rotationSlider').on('change', app.updateRotation);
+	$('#resetRotation').on('click', app.resetRotation);
+	$('.translationSlider').on('change', app.updateTranslation);
+	$('#resetTranslation').on('click', app.resetTranslation);
 	app.overlay.on('click', app.recordClick);
 }
 
@@ -96,17 +103,69 @@ app.recordClick = function(e) {
 }
 
 app.updateRotation = function() {
-	app.overlayRx = $('#xRotation').val()
-	app.overlayRy = $('#yRotation').val()
+	app.overlayRx = $('#xRotation').val();
+	app.overlayRy = $('#yRotation').val();
+	app.overlayRz = $('#zRotation').val();
 	$('span#xRotationDisp').html(app.overlayRx);
 	$('span#yRotationDisp').html(app.overlayRy);
-	$('#overlay').css('-webkit-transform','rotateX('+app.overlayRx+'deg) rotateY('+app.overlayRy+'deg)')
+	$('span#zRotationDisp').html(app.overlayRz);
+	$('#overlay').css('-webkit-transform','translateX('+app.overlayTx+'px)'
+																			+ 'translateY('+app.overlayTy+'px)'
+																			+ 'translateZ('+app.overlayTz+'px)'
+																			+	'rotateX('+app.overlayRx+'deg)'
+																			+ 'rotateY('+app.overlayRy+'deg)'
+																			+ 'rotateZ('+app.overlayRz+'deg)');
+}
+
+app.updateTranslation = function() {
+	app.overlayTx = $('#xTranslation').val();
+	app.overlayTy = $('#yTranslation').val();
+	app.overlayTz = $('#zTranslation').val();
+	$('span#xTranslationDisp').html(app.overlayTx);
+	$('span#yTranslationDisp').html(app.overlayTy);
+	$('span#zTranslationDisp').html(app.overlayTz);
+	$('#overlay').css('-webkit-transform','translateX('+app.overlayTx+'px)'
+																			+ 'translateY('+app.overlayTy+'px)'
+																			+ 'translateZ('+app.overlayTz+'px)'
+																			+	'rotateX('+app.overlayRx+'deg)'
+																			+ 'rotateY('+app.overlayRy+'deg)'
+																			+ 'rotateZ('+app.overlayRz+'deg)');
 }
 
 app.resetRotation = function() {
-	$('span#yRotationDisp').html(0);
+	app.overlayRx = 0;
+	app.overlayRy = 0;
+	app.overlayRz = 0;
+	$('#Rotation').val(0)
+	$('#Rotation').val(0)
+	$('#Rotation').val(0)
 	$('span#xRotationDisp').html(0);
-	$('#overlay').css('-webkit-transform','rotateX('+0+'deg) rotateY('+0+'deg)')
+	$('span#yRotationDisp').html(0);
+	$('span#zRotationDisp').html(0);
+	$('#overlay').css('-webkit-transform','translateX('+app.overlayTx+'px)'
+																			+ 'translateY('+app.overlayTy+'px)'
+																			+ 'translateZ('+app.overlayTz+'px)'
+																			+	'rotateX('+app.overlayRx+'deg)'
+																			+ 'rotateY('+app.overlayRy+'deg)'
+																			+ 'rotateZ('+app.overlayRz+'deg)');
+}
+
+app.resetTranslation = function() {
+	app.overlayTx = 0;
+	app.overlayTy = 0;
+	app.overlayTz = 0;
+	$('#xTranslation').val(0)
+	$('#yTranslation').val(0)
+	$('#zTranslation').val(0)
+	$('span#xTranslationDisp').html(0);
+	$('span#yTranslationDisp').html(0);
+	$('span#zTranslationDisp').html(0);
+	$('#overlay').css('-webkit-transform','translateX('+app.overlayTx+'px)'
+																			+ 'translateY('+app.overlayTy+'px)'
+																			+ 'translateZ('+app.overlayTz+'px)'
+																			+	'rotateX('+app.overlayRx+'deg)'
+																			+ 'rotateY('+app.overlayRy+'deg)'
+																			+ 'rotateZ('+app.overlayRz+'deg)');
 }
 
 app.redrawGrid = function(canvas, ctx) {
@@ -116,9 +175,16 @@ app.redrawGrid = function(canvas, ctx) {
 	var x = w/2;
 	var y = h/2;
 
+	//draw radial grid
 	for (var rad = 0; rad < w/2; rad += 8) {
 		app.drawCircle(ctx, x, y, rad)
 	}
+
+	//add cross hair
+	ctx.moveTo(x, 0);
+	ctx.lineTo(x, h);
+	ctx.moveTo(0, y);
+	ctx.lineTo(w, y);
 
 	//add some text to keep track of fowards face
 	ctx.fillText("THIS FACE FORWARDS", 10, 10)
@@ -133,6 +199,7 @@ app.redrawGrid = function(canvas, ctx) {
 	//   ctx.moveTo(0, y);
 	//   ctx.lineTo(w, y);
 	// }
+
 	//draw it
 	ctx.lineWidth = 1;
 	ctx.strokeStyle = "#ddd";

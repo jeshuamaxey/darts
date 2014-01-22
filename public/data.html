@@ -14,20 +14,37 @@
 		<h2>Settings</h2>
 		<button id="startStream">Start</button>
 		<button id="stopStream">Stop</button>
-		<br>
 		<button id="startCalib">Calibrate</button>
 		<div id="calibDialog" class="calibDialog">
 			<div id="calibControls" class="calibControls">
-				<label for="yRotation">Y Rotation</label>: <span id="yRotationDisp"></span><br>
-				<input id="yRotation" type="range" min="-90" max="90" value="0">
-				<br>
-				<label for="xRotation">X Rotation</label>: <span id="xRotationDisp"></span><br>
-				<input id="xRotation" type="range" min="-90" max="90" value="0">
-				<br>
-				<button id="resetRotation">Reset Rotations</button>
+				<div class="rotationControls">
+					<label for="xRotation">X Rotation</label>: <span id="xRotationDisp"></span><br>
+					<input id="xRotation" class="rotationSlider "type="range" min="-90" max="90" value="0">
+					<br>
+					<label for="yRotation">Y Rotation</label>: <span id="yRotationDisp"></span><br>
+					<input id="yRotation" class="rotationSlider "type="range" min="-90" max="90" value="0">
+					<br>
+					<label for="zRotation">Z Rotation</label>: <span id="zRotationDisp"></span><br>
+					<input id="zRotation" class="rotationSlider "type="range" min="-90" max="90" value="0">
+					<br>
+					<button id="resetRotation">Reset Rotations</button>
+				</div>
+				<div class="translationControls">
+					<label for="xTranslation">X Translation</label>: <span id="xTranslationDisp"></span><br>
+					<input id="xTranslation" class="translationSlider "type="range" min="-400" max="400" value="0">
+					<br>
+					<label for="yTranslation">Y Translation</label>: <span id="yTranslationDisp"></span><br>
+					<input id="yTranslation" class="translationSlider "type="range" min="-400" max="400" value="0">
+					<br>
+					<label for="zTranslation">Z Translation</label>: <span id="zTranslationDisp"></span><br>
+					<input id="zTranslation" class="translationSlider "type="range" min="-400" max="400" value="0">
+					<br>
+					<button id="resetTranslation">Reset Translations</button>
+				</div>
 				<hr>
 				<button id="calibDone">Done</button>
 			</div>
+			<!--
 			<div id="calibInstructions" class="calibInstructions">
 				Click on the dartboard 5 times at the specified points:
 				<ol id="calibPoints">
@@ -38,6 +55,7 @@
 					<li>West</li>
 				</ol>
 			</div>
+			-->
 		</div>
 	</div>
 <body>
