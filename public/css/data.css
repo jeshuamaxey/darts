@@ -5,11 +5,20 @@ html, body {
 	font-family: 'helvetica', sans-serif;
 }
 
-.vid {
+.wrapper {
 	position: relative;
+	margin: 40px;
+	min-height: 480px;
+}
+
+.vid {
+	position: absolute;
 	top: 0;
 	left: 0;
-	margin: 20px;
+	/* ratio h:w must be 3:4 */
+	height: 480px;
+	width: 640px;
+	border: solid 1px;
 	float: left;
 }
 
@@ -17,7 +26,9 @@ html, body {
 	position: absolute;
 	top: 0;
 	left: 0;
-	margin: 20px;
+	/* ratio h:w must be 3:4 */
+	height: 480px;
+	width: 640px;
 }
 
 .overlay:hover {
@@ -25,11 +36,19 @@ html, body {
 }
 
 .settingsPanel {
+	display: block;
 	width: auto;
-	margin: 20px;
-	float: left;
+	margin: 40px;
 }
 
-.calibIntructions {
+.calibDialog {
 	display: none;
+}
+
+.clicked {
+	background-color: green;
+}
+
+.clickHere {
+	background-color: yellow;
 }

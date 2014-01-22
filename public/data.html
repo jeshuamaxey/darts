@@ -6,15 +6,9 @@
   <link rel="stylesheet" href="css/data.css">
 </head>
 <body>
-  <div id="canvasWrapper" class="canvasWrapper">
-    <video   id="vid" class="vid" autoplay
-              height="700px"
-              width = "700px">
-    </video>
-    <canvas   id="overlay" class="overlay"
-              height="700px"
-              width = "700px">
-    </canvas>
+  <div id="wrapper" class="wrapper">
+    <video id="vid" class="vid" autoplay></video>
+    <canvas id="overlay" class="overlay"></canvas>
   </div>
   <div id="settingsPanel" class="settingsPanel">
 		<h2>Settings</h2>
@@ -22,8 +16,16 @@
 		<button id="stopStream">Stop</button>
 		<br>
 		<button id="startCalib">Calibrate</button>
-		<div id="calibInstructions" class="calibIntructions">
-			lorem
+		<div id="calibDialog" class="calibDialog">
+			Click on the dartboard 5 times at the specified points:
+			<ol id="calibPoints">
+				<li class="clickHere">Bullseye</li>
+				<li>North</li>
+				<li>East</li>
+				<li>South</li>
+				<li>West</li>
+			</ol>
+			<button id="calibDone">Done</button>
 		</div>
 	</div>
 <body>
