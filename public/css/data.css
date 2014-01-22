@@ -9,6 +9,7 @@ html, body {
 	position: relative;
 	margin: 40px;
 	min-height: 480px;
+	overflow: visible;
 }
 
 .vid {
@@ -29,10 +30,17 @@ html, body {
 	/* ratio h:w must be 3:4 */
 	height: 480px;
 	width: 640px;
+	background-color: rgba(100,0,0,0.4);
+	-webkit-perspective: 600;
+	-webkit-backface-visibility: hidden;
 }
 
 .overlay:hover {
 	cursor: crosshair;
+}
+
+.overlay.rotated {
+	-webkit-transform: rotateY(45deg);
 }
 
 .settingsPanel {
@@ -43,6 +51,21 @@ html, body {
 
 .calibDialog {
 	display: none;
+}
+
+.calibControls {
+	max-width: 50%;
+	float: left;
+}
+
+
+.calibControls {
+	max-width: 50%;
+	float: right;
+}
+
+ol {
+	max-width: 200px;
 }
 
 .clicked {
