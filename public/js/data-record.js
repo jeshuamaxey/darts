@@ -169,6 +169,7 @@ app.resetTranslation = function() {
 }
 
 app.redrawGrid = function(canvas, ctx) {
+	console.log(canvas, ctx)
 	var w = canvas.width;
 	var h = canvas.height;
 
@@ -187,7 +188,8 @@ app.redrawGrid = function(canvas, ctx) {
 	ctx.lineTo(w, y);
 
 	//add some text to keep track of fowards face
-	ctx.fillText("THIS FACE FORWARDS", 10, 10)
+	ctx.font = '40pt Helvetica';
+	ctx.fillText("THIS FACE FORWARDS", 200, 100)
 
 	//	cartesian grid lines
 	// for (var x = 0; x < w; x += 10) {
@@ -205,6 +207,19 @@ app.redrawGrid = function(canvas, ctx) {
 	ctx.strokeStyle = "#ddd";
 	ctx.stroke();
 }
+
+//a handy function to clear the canvas (X-browser friendly)
+//http://stackoverflow.com/questions/2142535/how-to-clear-the-canvas-for-redrawing
+//can't get this to work although this jsfiddle does work???
+// http://jsfiddle.net/jeshuamaxey/YQP82/2/
+app.clearCanvas = function(context, canvas) {
+	context.clearRect(0, 0, canvas.width, canvas.height);
+  var w = canvas.width;
+  canvas.width = 1;
+  canvas.width = w;
+  // context.fillStyle = "rgba(0,0,0,0.0)";
+  // context.fillRect(0, 0, canvas.width, canvas.height);
+};
 
 app.drawCircle = function(ctx, x, y, rad) {
 	ctx.beginPath();

@@ -8,38 +8,36 @@ html, body {
 .wrapper {
 	position: relative;
 	margin: 40px;
-	min-height: 480px;
 	overflow: visible;
+	/* ratio h:w must be 3:4
+	*	vid and canvas inherit
+	*	these dimensions
+	*/
+	height: 720px;
+	width: 960px;
+	float: left;
 }
 
 .vid {
 	position: absolute;
 	top: 0;
 	left: 0;
-	/* ratio h:w must be 3:4 */
-	height: 480px;
-	width: 640px;
+	height: 100%;
+	width: 100%;
 	border: solid 1px;
 	float: left;
 }
 
 .overlay {
 	position: absolute;
-	/*
-	top: 0;
-	left: 0;
-	*/
+	/* height and width set to h & w of vid by js on load*/
 	/* 	added to sure up click event detection
 			as per: http://stackoverflow.com/questions/13833227/css3-rotate-on-animated-element-causing-click-event-not-to-invoke */
 	float: left;
-	/* ratio h:w must be 3:4 */
-	height: 480px;
-	width: 640px;
-
-	background-color: rgba(100,0,0,0.4);
-	transform-style: 'preserve-3d';
+	/*background-color: rgba(0,150,150,0.4);*/
 	/*
-	-webkit-perspective: 600;
+	transform-style: 'preserve-3d';
+	perspective: 600;
 	-webkit-backface-visibility: hidden;
 	*/
 }
@@ -49,7 +47,8 @@ html, body {
 }
 
 .settingsPanel {
-	display: block;
+	display: inline-block;
+	float: right;
 	width: auto;
 	margin: 40px;
 }
@@ -59,7 +58,6 @@ html, body {
 }
 
 .calibControls {
-	max-width: 50%;
 	float: left;
 }
 
@@ -68,7 +66,7 @@ html, body {
 	float: left;
 }
 
-.xrotationSlider .xtranslationSlider {
+.rotationSlider .translationSlider {
 	min-width: 200px;
 }
 
