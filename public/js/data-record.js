@@ -40,9 +40,10 @@ app.main = function() {
 
 	$('#startStream').on('click', app.startVideo);
 	$('#stopStream').on('click', app.stopVideo);
-	$('#calibrate').on('click', app.calibrate);
+	$('#calibrate').on('click', app.initialiseCalib);
 	$('#exportData').on('click', app.exportData);
 	$('#clearCoords').on('click', app.clearCoords);
+	$('#overlayOpacity').on('change', app.updateOverlayOpacity);
 }
 
 /*
@@ -78,7 +79,10 @@ app.initialiseCalib = function() {
 		return 0;
 	}
 	app.redrawGrid(app.ovCanvas, app.ovCtx);
+	//
 	app.calibClicks = [];
+	app.dataClicks = app.dataClicks || [];
+	
 	$('#controls').show();
 
 	$('.rotationSlider').on('change', app.updateRotation);
@@ -86,24 +90,59 @@ app.initialiseCalib = function() {
 	$('.translationSlider').on('change', app.updateTranslation);
 	$('#resetTranslation').on('click', app.resetTranslation);
 	
-	app.overlay.on('click', app.recordClick);
+	$('#calibClickDialog').show();
+	app.overlay.unbind('click');
+	app.overlay.on('click', app.calibClick);
+}
+
+app.calibClick = function(e) {
+	$($('.calibClick')[app.calibClicks.length]).removeClass('clickHere').addClass('strikethrough');
+	$($('.calibClick')[app.calibClicks.length+1]).addClass('clickHere')
+	app.calibClicks.push(e);
+	if(app.calibClicks.length == 3) {
+		app.calculateCalibration()
+	}
 }
 
 app.calculateCalibration = function() {
-	console.log(app.calibClicks)
-	// //convert to cartisian coords centred on the bull
-	// click = {'x' : e.offsetX, 'y' : e.offsetY}
+	//calculate pixel to mm ratio
+	var dx = Math.abs(app.calibClicks[0].offsetX - app.calibClicks[1].offsetX);
+	var dy = Math.abs(app.calibClicks[0].offsetY - app.calibClicks[1].offsetY);
+	var pxDiameter = Math.sqrt(dx*dx + dy*dy);
+	var mmDiameter = 451; //in mm
+	app.px2mm = mmDiameter / pxDiameter;
+	//store origin offsets
+	app.originOffset = {
+		'x': app.calibClicks[2].offsetX,
+		'y': app.calibClicks[2].offsetY
+	}
+	//end calibration
+	$('#calibClickDialog').hide();
+	$('#recordClickDialog').show();
+	app.overlay.unbind('click');
+	app.overlay.on('click', app.recordClick);
 }
+
+/*
+*
+*/
 
 app.recordClick = function(e) {
-	console.log(e.offsetX, e.offsetY);
-	//record calibration point data
-	app.calibClicks.push(e);
-	$('#clickCoords').append("<li>"+e.offsetX + ", " + e.offsetY+"</li>");
-}
-
-app.calibrate = function() {
-
+	//find x,y in our coordinate system
+	var x = e.offsetX - app.originOffset.x;
+	var y = e.offsetY - app.originOffset.y;
+	//create object to hold all the data for post analysis
+	var attempt = {
+		'pxX': x,
+		'pxY': y,
+		'pxR': Math.sqrt(x*x + y*y),
+		'mmX': x*app.px2mm,
+		'mmY': y*app.px2mm,
+		'mmR': Math.sqrt(x*x + y*y)*app.px2mm
+	};
+	app.dataClicks.push(attempt);
+	console.log(attempt)
+	$('#clickCoords').append("<li>("+x+ ", "+y+") - "+(attempt.mmR).toFixed(2)+"mm from bull.</li>");
 }
 
 app.exportData = function() {
@@ -181,15 +220,25 @@ app.resetTranslation = function() {
 																			+ 'rotateZ('+app.overlayRz+'deg)');
 }
 
+app.updateOverlayOpacity = function() {
+	var op = parseFloat($(this).val());
+	$('#overlayOpacityDisp').html(op)
+	$('#overlay').css('opacity', op);
+}
+
 app.redrawGrid = function(canvas, ctx) {
+	app.clearCanvas(ctx, canvas);
+
 	var w = canvas.width;
 	var h = canvas.height;
 
 	var x = w/2;
 	var y = h/2;
 
+	var radInc = 15;//sumthin || 8;
+
 	//draw radial grid
-	for (var rad = 0; rad < w/2; rad += 8) {
+	for (var rad = 0; rad < w/2; rad += radInc) {
 		app.drawCircle(ctx, x, y, rad)
 	}
 

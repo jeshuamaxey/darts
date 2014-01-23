@@ -37,12 +37,23 @@
 					<br>
 					<label for="yTranslation">Y Translation</label>: <span id="yTranslationDisp"></span><br>
 					<input id="yTranslation" class="translationSlider "type="range" min="-400" max="400" value="0">
+					<label for="overlayOpacity">Overlay Opacity</label>: <span id="overlayOpacityDisp"></span><br>
+					<input id="overlayOpacity" class="translationSlider "type="range" min="0" max="1" value="0.1" step="0.01">
 					<hr>
 					<button id="resetTranslation">Reset Translations</button>
 				</div>
 			</div><!-- #calibControls -->
 		</div> <!-- #controls -->
-		<div>
+		<div id="calibClickDiaglog">
+			<h2>Calibration</h2>
+			<p>To calibrate the software, adjust the overlay to align with the dartboard and click on the indicated points of the board.</p>
+			<ul>
+				<li class="calibClick clickHere">Furthest left point (outer double wire)</li>
+				<li class="calibClick ">Furthest right point (outer double wire)</li>
+				<li class="calibClick ">Middle of the bull</li>
+			</ul>
+		</div>
+		<div id="recordClickDialog" class="recordClickDialog">
 			<h2>Click Coordinates</h2>
 			<p>
 				Coordinates are displayed in cartsian form with the origin centred on the bull.
