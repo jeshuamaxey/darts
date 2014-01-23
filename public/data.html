@@ -14,10 +14,11 @@
 		<h2>Settings</h2>
 		<button id="startStream">Start</button>
 		<button id="stopStream">Stop</button>
-		<button id="calibDone">Done</button>
+		<button id="calibrate">Calibrate</button>
+		<button id="exportData">Export Data</button>
 		<hr>
-		<div id="calibDialog" class="calibDialog">
-			<div id="calibControls" class="calibControls">
+		<div id="controls" class="controls">
+			<div class="calibControls sliderWrapper">
 				<div class="rotationControls">
 					<label for="xRotation">X Rotation</label>: <span id="xRotationDisp"></span><br>
 					<input id="xRotation" class="rotationSlider "type="range" min="-90" max="90" value="0">
@@ -30,36 +31,24 @@
 					<hr>
 					<button id="resetRotation">Reset Rotations</button>
 				</div>
-				<div class="translationControls">
+				<div class="translationControls sliderWrapper">
 					<label for="xTranslation">X Translation</label>: <span id="xTranslationDisp"></span><br>
 					<input id="xTranslation" class="translationSlider "type="range" min="-400" max="400" value="0">
 					<br>
 					<label for="yTranslation">Y Translation</label>: <span id="yTranslationDisp"></span><br>
 					<input id="yTranslation" class="translationSlider "type="range" min="-400" max="400" value="0">
-					<br>
-					<label for="zTranslation" class="strikethrough">Z Translation</label>: <span id="zTranslationDisp"></span><br>
-					<input id="zTranslation" class="translationSlider "type="range" min="-400" max="400" value="0">
 					<hr>
 					<button id="resetTranslation">Reset Translations</button>
 				</div>
-				<hr>
-			</div>
-			<div>
-				<h2>Click Coordinates</h2>
-				<ol id="clickCoords"></ol>
-			</div>
-			<!--
-			<div id="calibInstructions" class="calibInstructions">
-				Click on the dartboard 5 times at the specified points:
-				<ol id="calibPoints">
-					<li class="clickHere">Bullseye</li>
-					<li>North</li>
-					<li>East</li>
-					<li>South</li>
-					<li>West</li>
-				</ol>
-			</div>
-			-->
+			</div><!-- #calibControls -->
+		</div> <!-- #controls -->
+		<div>
+			<h2>Click Coordinates</h2>
+			<p>
+				Coordinates are displayed in cartsian form with the origin centred on the bull.
+				<button id="clearCoords">Clear Coords</button>
+			</p>
+			<ol id="clickCoords" class="clickCoords"></ol>
 		</div>
 	</div>
 <body>

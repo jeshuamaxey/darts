@@ -40,6 +40,9 @@ app.main = function() {
 
 	$('#startStream').on('click', app.startVideo);
 	$('#stopStream').on('click', app.stopVideo);
+	$('#calibrate').on('click', app.calibrate);
+	$('#exportData').on('click', app.exportData);
+	$('#clearCoords').on('click', app.clearCoords);
 }
 
 /*
@@ -51,7 +54,7 @@ app.startVideo = function() {
 			app.videoShowing = true;
 			app.stream = stream;
 		  app.video.src = window.URL.createObjectURL(app.stream);
-		  app.startCalib();
+		  app.initialiseCalib();
 		}, app.errorCallback);
 	}
 }
@@ -69,18 +72,20 @@ app.errorCallback = function(err) {
 /*
 * CALIBRATION FUNCTIONS
 */
-app.startCalib = function() {
+app.initialiseCalib = function() {
 	if(!app.videoShowing) {
 		alert('You need to start the video before you can record any data');
 		return 0;
 	}
 	app.redrawGrid(app.ovCanvas, app.ovCtx);
 	app.calibClicks = [];
-	$('#calibDialog').show();
+	$('#controls').show();
+
 	$('.rotationSlider').on('change', app.updateRotation);
 	$('#resetRotation').on('click', app.resetRotation);
 	$('.translationSlider').on('change', app.updateTranslation);
 	$('#resetTranslation').on('click', app.resetTranslation);
+	
 	app.overlay.on('click', app.recordClick);
 }
 
@@ -95,15 +100,24 @@ app.recordClick = function(e) {
 	//record calibration point data
 	app.calibClicks.push(e);
 	$('#clickCoords').append("<li>"+e.offsetX + ", " + e.offsetY+"</li>");
-	// //update calibration dialog
-	// $('#calibPoints li.clickHere').removeClass('clickHere').addClass('clicked');
-	// $($('#calibPoints li')[app.calibClicks.length]).addClass('clickHere');
-	// //if we have all the calibration points, unbind the event handler and calculate
-	// if(app.calibClicks.length==5) {
-	// 	app.calculateCalibration();
-	// 	app.overlay.unbind('click');
-	// }
 }
+
+app.calibrate = function() {
+
+}
+
+app.exportData = function() {
+
+}
+
+app.clearCoords = function() {
+	$('#clickCoords').html('');
+}
+
+
+/*
+*	ROTATION AND TRANSLATION FUNCTIONS
+*/
 
 app.updateRotation = function() {
 	app.overlayRx = $('#xRotation').val();
