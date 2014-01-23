@@ -136,9 +136,9 @@ app.resetRotation = function() {
 	app.overlayRx = 0;
 	app.overlayRy = 0;
 	app.overlayRz = 0;
-	$('#Rotation').val(0)
-	$('#Rotation').val(0)
-	$('#Rotation').val(0)
+	$('#xRotation').val(0)
+	$('#yRotation').val(0)
+	$('#zRotation').val(0)
 	$('span#xRotationDisp').html(0);
 	$('span#yRotationDisp').html(0);
 	$('span#zRotationDisp').html(0);

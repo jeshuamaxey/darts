@@ -33,7 +33,7 @@ html, body {
 	/* height and width set to h & w of vid by js on load*/
 	/* 	added to sure up click event detection
 			as per: http://stackoverflow.com/questions/13833227/css3-rotate-on-animated-element-causing-click-event-not-to-invoke */
-	float: left;
+	/*float: left;*/
 	/*background-color: rgba(0,150,150,0.4);*/
 	/*
 	transform-style: 'preserve-3d';
@@ -85,4 +85,8 @@ ol {
 
 .clickHere {
 	background-color: yellow;
+}
+
+.strikethrough {
+	text-decoration: line-through;
 }
