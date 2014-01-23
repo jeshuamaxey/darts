@@ -33,13 +33,15 @@ html, body {
 	/* height and width set to h & w of vid by js on load*/
 	/* 	added to sure up click event detection
 			as per: http://stackoverflow.com/questions/13833227/css3-rotate-on-animated-element-causing-click-event-not-to-invoke */
-	/*float: left;*/
-	/*background-color: rgba(0,150,150,0.4);*/
+	float: left;
+	background-color: rgba(0,150,150,0.1);
 	/*
 	transform-style: 'preserve-3d';
 	perspective: 600;
 	-webkit-backface-visibility: hidden;
 	*/
+	-webkit-transform-style: preserve-3d;
+  -webkit-perspective: 1000;
 }
 
 .overlay:hover {
@@ -53,9 +55,7 @@ html, body {
 	margin: 40px;
 }
 
-.calibDialog {
-	display: none;
-}
+.calibDialog {}
 
 .calibControls {
 	float: left;

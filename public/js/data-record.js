@@ -27,7 +27,9 @@ app.overlayRy = 0;
 app.overlayRz = 0;
 app.overlayTx = 0;
 app.overlayTy = 0;
-app.overlayTz = 0;
+//required to keep overlay in front of body
+//this way all click events can be detected
+app.overlayTz = 2000;
 
 app.main = function() {
 	app.video = $('#vid')[0];
@@ -38,7 +40,6 @@ app.main = function() {
 
 	$('#startStream').on('click', app.startVideo);
 	$('#stopStream').on('click', app.stopVideo);
-	$('#startCalib').on('click', app.startCalib);
 }
 
 /*
@@ -50,6 +51,7 @@ app.startVideo = function() {
 			app.videoShowing = true;
 			app.stream = stream;
 		  app.video.src = window.URL.createObjectURL(app.stream);
+		  app.startCalib();
 		}, app.errorCallback);
 	}
 }
@@ -69,7 +71,7 @@ app.errorCallback = function(err) {
 */
 app.startCalib = function() {
 	if(!app.videoShowing) {
-		alert('You need to start the video before you can calibrate');
+		alert('You need to start the video before you can record any data');
 		return 0;
 	}
 	app.redrawGrid(app.ovCanvas, app.ovCtx);
@@ -89,17 +91,18 @@ app.calculateCalibration = function() {
 }
 
 app.recordClick = function(e) {
-	console.log(e.offsetX, e.offsetY)
+	console.log(e.offsetX, e.offsetY);
 	//record calibration point data
 	app.calibClicks.push(e);
-	//update calibration dialog
-	$('#calibPoints li.clickHere').removeClass('clickHere').addClass('clicked');
-	$($('#calibPoints li')[app.calibClicks.length]).addClass('clickHere');
-	//if we have all the calibration points, unbind the event handler and calculate
-	if(app.calibClicks.length==5) {
-		app.calculateCalibration();
-		app.overlay.unbind('click');
-	}
+	$('#clickCoords').append("<li>"+e.offsetX + ", " + e.offsetY+"</li>");
+	// //update calibration dialog
+	// $('#calibPoints li.clickHere').removeClass('clickHere').addClass('clicked');
+	// $($('#calibPoints li')[app.calibClicks.length]).addClass('clickHere');
+	// //if we have all the calibration points, unbind the event handler and calculate
+	// if(app.calibClicks.length==5) {
+	// 	app.calculateCalibration();
+	// 	app.overlay.unbind('click');
+	// }
 }
 
 app.updateRotation = function() {
@@ -120,10 +123,8 @@ app.updateRotation = function() {
 app.updateTranslation = function() {
 	app.overlayTx = $('#xTranslation').val();
 	app.overlayTy = $('#yTranslation').val();
-	app.overlayTz = $('#zTranslation').val();
 	$('span#xTranslationDisp').html(app.overlayTx);
 	$('span#yTranslationDisp').html(app.overlayTy);
-	$('span#zTranslationDisp').html(app.overlayTz);
 	$('#overlay').css('-webkit-transform','translateX('+app.overlayTx+'px)'
 																			+ 'translateY('+app.overlayTy+'px)'
 																			+ 'translateZ('+app.overlayTz+'px)'
@@ -153,13 +154,11 @@ app.resetRotation = function() {
 app.resetTranslation = function() {
 	app.overlayTx = 0;
 	app.overlayTy = 0;
-	app.overlayTz = 0;
 	$('#xTranslation').val(0)
 	$('#yTranslation').val(0)
 	$('#zTranslation').val(0)
 	$('span#xTranslationDisp').html(0);
 	$('span#yTranslationDisp').html(0);
-	$('span#zTranslationDisp').html(0);
 	$('#overlay').css('-webkit-transform','translateX('+app.overlayTx+'px)'
 																			+ 'translateY('+app.overlayTy+'px)'
 																			+ 'translateZ('+app.overlayTz+'px)'
@@ -169,7 +168,6 @@ app.resetTranslation = function() {
 }
 
 app.redrawGrid = function(canvas, ctx) {
-	console.log(canvas, ctx)
 	var w = canvas.width;
 	var h = canvas.height;
 
