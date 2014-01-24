@@ -55,7 +55,6 @@ app.startVideo = function() {
 			app.videoShowing = true;
 			app.stream = stream;
 		  app.video.src = window.URL.createObjectURL(app.stream);
-		  app.initialiseCalib();
 		}, app.errorCallback);
 	}
 }
@@ -83,6 +82,8 @@ app.initialiseCalib = function() {
 	app.calibClicks = [];
 	app.dataClicks = app.dataClicks || [];
 	
+	$('#uncalibratedMessage').show()
+	$('#uncalibratedMessage').html('CALIBRATING')
 	$('#controls').show();
 
 	$('.rotationSlider').on('change', app.updateRotation);
@@ -117,6 +118,7 @@ app.calculateCalibration = function() {
 		'y': app.calibClicks[2].offsetY
 	}
 	//end calibration
+	$('#uncalibratedMessage').hide();
 	$('#calibClickDialog').hide();
 	$('#recordClickDialog').show();
 	app.overlay.unbind('click');
