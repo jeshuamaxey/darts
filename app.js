@@ -95,10 +95,10 @@ app.mesh = app.make2DMesh(app.N);
 app.fillMesh();
 var fileName = "darts.json";
 app.writeToFile(fileName);
-*///End of Test Part
+End of Test Part*/
 
 
-*app.zeroMesh();
+app.zeroMesh();
 
 var acc = 0.31;
 var sdX = config.meshSize*config.meshRatio.bullseye/0.4;
@@ -110,6 +110,7 @@ var fileName = 'acc-'+acc+'.json';
 app.writeToFile(fileName);
 
 var acc, sdX, sdY, fileName;
+
 
 
 // for(var c=0; c<1000; c++) {

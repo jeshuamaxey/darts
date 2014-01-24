@@ -70,7 +70,7 @@ db.dartboard = function(xcoord, ycoord) {
 		return 50;
 	}
 	
-	else if (radius > config.meshSize/2) {
+	else if (radius > (config.meshSize/2)*config.meshRatio.outerDouble) {
 		// Missed Board
 		//store in private array before returning
 		priv.db[mesh.x][mesh.y] = 0;
