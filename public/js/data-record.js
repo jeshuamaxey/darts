@@ -85,6 +85,9 @@ app.initialiseCalib = function() {
 		alert('You need to start the video before you can record any data');
 		return 0;
 	}
+	//show the calibration UI
+	$('#calibControls').show();
+	//
 	app.redrawGrid(app.ovCanvas, app.ovCtx);
 	//
 	app.calibClicks = [];
@@ -134,8 +137,7 @@ app.calculateCalibration = function() {
 		'y': app.calibClicks[2].offsetY
 	}
 	//end calibration
-	$('#uncalibratedMessage').hide();
-	$('#calibClickDialog').hide();
+	$('#uncalibratedMessage, #calibClickDialog, #calibControls').hide();
 	$('#recordClickDialog').show();
 	app.overlay.unbind('click');
 	app.overlay.on('click', app.recordClick);
@@ -179,6 +181,7 @@ app.submitExport = function(e) {
 	var data = {
 		'name': $('#exportForm #name').val(),
 		'fileName': $('#exportForm #fileName').val(),
+		'notes': $('#exportForm #notes').val(),
 		'throws' : app.dataClicks,
 		'px2mm': app.px2mm
 	};

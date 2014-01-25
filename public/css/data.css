@@ -53,6 +53,8 @@ html, body {
 
 .uncalibratedMessage {
 	position: relative;
+	/* account for 1px border */
+	left: 1px;
 
 	font-size: 4.0em;
 	text-align: center;
@@ -66,7 +68,9 @@ html, body {
 	width: 350px;
 	height: 100%;
 	padding: 10px;
+
 	background-color: rgba(0,150,150,0.3);
+	border-left: solid 1px;
 }
 
 .sliderWrapper {
@@ -74,8 +78,8 @@ html, body {
 	min-width: 150px;
 }
 
-.calibControls {
-/*	float: left;*/
+.calibControls, .calibClickDialog {
+	display: none;
 }
 
 .rotationControls {

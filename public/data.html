@@ -20,7 +20,7 @@
 		<button id="clearData">Clear Data</button>
 		<hr>
 		<div id="controls" class="controls">
-			<div class="calibControls sliderWrapper">
+			<div id="calibControls" class="calibControls sliderWrapper">
 				<div class="rotationControls">
 					<label for="xRotation">X Rotation</label>: <span id="xRotationDisp"></span><br>
 					<input id="xRotation" class="rotationSlider "type="range" min="-90" max="90" value="0">
@@ -46,7 +46,7 @@
 				</div>
 			</div><!-- #calibControls -->
 		</div> <!-- #controls -->
-		<div id="calibClickDialog">
+		<div id="calibClickDialog" class="calibClickDialog">
 			<h2>Calibration</h2>
 			<p>To calibrate the software, adjust the overlay to align with the dartboard and click on the indicated points of the board.</p>
 			<ul>
@@ -54,21 +54,24 @@
 				<li class="calibClick ">Furthest right point (outer double wire)</li>
 				<li class="calibClick ">Middle of the bull</li>
 			</ul>
-		</div>
+		</div><!-- #calibClickDialog -->
 		<div id="recordClickDialog" class="recordClickDialog">
 			<h2>Click Coordinates</h2>
 			<p>
 				Coordinates are displayed in cartsian form with the origin centred on the bull.
 			</p>
 			<ol id="clickCoords" class="clickCoords"></ol>
-		</div>
-		<hr>
+			<hr>
+		</div><!-- #recordClickDialog -->
 		<div id="exportDataDialog" class="exportDataDialog">
 			<h2>Export Settings</h2>
 			<form id="exportForm" action="/">
 				<label for="name">Name: </label><input id="name" type="text">
 				<br>
 				<label for="fileName" disabled>File Name: </label><input id="fileName" type="text">
+				<br>
+				<label for="notes">Notes:</label><br>
+				<textarea name="" id="notes" cols="30" rows="10"></textarea>
 				<br>
 				<input id="submitExport" type="submit">
 			</form>
