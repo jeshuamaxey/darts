@@ -63,30 +63,30 @@ db.dartboard = function(xcoord, ycoord) {
     // Wire thickness not considered. If a dart lands on the exact position of the wire
     // the darts always comes onto the inside of the circle.
 	
-	if (radius <= config.meshSize/53.5433070866) {
+	if (radius <= (config.meshSize/2)*config.meshRatio.bullseye) {
 		// Bullseye
 		//store in private array before returning
 		return priv.db[mesh.x][mesh.y] = 50;
 	}
 	
-	else if (radius > config.meshSize/2) {
+	else if (radius > (config.meshSize/2)*config.meshRatio.outerDouble) {
 		// Missed Board
 		//store in private array before returning
 		return priv.db[mesh.x][mesh.y] = 0;
 	}
 	
-	else if (radius <= config.meshSize/21.3836477987) {
+	else if (radius <= (config.meshSize/2)*config.meshRatio.bull) {
 		// Single Bull
 		//store in private array before returning
 		return priv.db[mesh.x][mesh.y] = 25;
 	}
 	
-	else if (radius > config.meshSize/2.0987654321 && radius <= config.meshSize/2) {
+	else if (radius > (config.meshSize/2)*config.meshRatio.innerDouble && radius <= (config.meshSize/2)*config.meshRatio.outerDouble) {
 		// Double
 		dubtripfactor = 2;
 	}
 	
-	else if (radius > config.meshSize/3.43434343434 && radius <= config.meshSize/3.17757009346) {
+	else if (radius > (config.meshSize/2)*config.meshRatio.innerTreble && radius <= (config.meshSize/2)*config.meshRatio.outerTreble) {
 		// Triple
 		dubtripfactor = 3;
 	}

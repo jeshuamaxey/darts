@@ -1,11 +1,11 @@
 module.exports = {
 	"meshSize": 340,
 	"meshRatio": {
-		"bullseye": 6.35/170,
-		"bull" : 15.9/170,
-		"innerTreble": 49.5/170,
-		"outerTreble": 35.5/170,
-		"innerDouble": 162/170,
-		"outerDouble": 170/170
+		"bullseye": 6.35/200,
+		"bull" : 15.9/200,
+		"innerTreble": 99/200,
+		"outerTreble": 107/200,
+		"innerDouble": 162/200,
+		"outerDouble": 170/200
 	}
 };
