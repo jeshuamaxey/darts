@@ -105,6 +105,10 @@ html, body {
 	border-radius: 2px;
 }
 
+.exportDataDialog {
+	display: none;
+}
+
 ol {
 	max-width: 200px;
 }

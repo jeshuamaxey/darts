@@ -153,12 +153,6 @@ app.showExportDialog = function() {
 	$('#exportDataDialog').show();
 }
 
-app.clearData = function() {
-	//ARE YOU SURE?
-	// app.dataClicks = [];
-	// $('#clickCoords').html('');
-}
-
 app.submitExport = function(e) {
 	e.preventDefault();
 
@@ -181,7 +175,15 @@ app.submitExport = function(e) {
 }
 
 app.confirmExport = function() {
-	alert("Export Succesful. You go gurl");
+	$('#exportDataDialog').hide();
+	app.clearData();
+	window.alert("Export Succesful. You go gurl");
+}
+
+app.clearData = function() {
+	//ARE YOU SURE?
+	app.dataClicks = [];
+	$('#clickCoords').html('');
 }
 
 /*
