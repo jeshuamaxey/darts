@@ -7,8 +7,9 @@ navigator.getUserMedia = ( navigator.getUserMedia ||
 //global namespace object
 var app = app || {};
 
+//keeps track of whether the video stream is active
 app.videoShowing = false;
-
+//defines the settings for the video stream
 app.videoContraints = {
 	'audio': false,
 	//'video': true,
@@ -31,6 +32,9 @@ app.overlayTy = 0;
 //this way all click events can be detected
 app.overlayTz = 2000;
 
+/*
+*	Called on page load
+*/
 app.main = function() {
 	app.video = $('#vid')[0];
 	app.overlay = $('#overlay');
@@ -50,7 +54,7 @@ app.main = function() {
 }
 
 /*
-* VIDEO FUNCTIONS
+* Starts the viedo stream
 */
 app.startVideo = function() {
 	if(!app.videoShowing) {
@@ -58,22 +62,23 @@ app.startVideo = function() {
 			app.videoShowing = true;
 			app.stream = stream;
 		  app.video.src = window.URL.createObjectURL(app.stream);
-		}, app.errorCallback);
+		}, function(err) {
+			alert("ERROR: " + err);
+		});
 	}
 }
 
+/*
+* Stops the viedo stream
+*/
 app.stopVideo = function() {
 	app.videoShowing = false;
 	app.stream.stop();
 	app.video.src = '';
 }
 
-app.errorCallback = function(err) {
-	alert(err)
-}
-
 /*
-* CALIBRATION FUNCTIONS
+* Initialises the calibration routine
 */
 app.initialiseCalib = function() {
 	if(!app.videoShowing) {
@@ -99,6 +104,10 @@ app.initialiseCalib = function() {
 	app.overlay.on('click', app.calibClick);
 }
 
+/*
+*	Records a single calibration click in and array and
+* updates the calibration UI (there are 3 calibration clicks)
+*/
 app.calibClick = function(e) {
 	$($('.calibClick')[app.calibClicks.length]).removeClass('clickHere').addClass('strikethrough');
 	$($('.calibClick')[app.calibClicks.length+1]).addClass('clickHere')
@@ -108,6 +117,10 @@ app.calibClick = function(e) {
 	}
 }
 
+/*
+*	Calculate the pixel to mm ratio and origin offset
+* and hide the calibration UI
+*/
 app.calculateCalibration = function() {
 	//calculate pixel to mm ratio
 	var dx = Math.abs(app.calibClicks[0].offsetX - app.calibClicks[1].offsetX);
@@ -129,9 +142,9 @@ app.calculateCalibration = function() {
 }
 
 /*
-*
+*	Record a click on the overlay as a throw and store
+* for later export
 */
-
 app.recordClick = function(e) {
 	//find x,y in our coordinate system
 	var x = e.offsetX - app.originOffset.x;
@@ -149,37 +162,48 @@ app.recordClick = function(e) {
 	$('#clickCoords').append("<li>("+x+ ", "+y+") - "+(attempt.mmR).toFixed(2)+"mm from bull.</li>");
 }
 
+/*
+* Bring up the export options
+*/
 app.showExportDialog = function() {
 	$('#exportDataDialog').show();
 }
 
+/*
+* Process the export
+*/
 app.submitExport = function(e) {
+	//stop the form trying to submit (initially)
 	e.preventDefault();
-
+	//collect all the data to export
 	var data = {
 		'name': $('#exportForm #name').val(),
 		'fileName': $('#exportForm #fileName').val(),
 		'throws' : app.dataClicks,
 		'px2mm': app.px2mm
 	};
-
-	console.log("Exported data: " + data);
-	
+	//configure the AJAX call
 	var settings = {
 		'url': 'api/store',
 		'type': 'post',
 		'data': data
 	}
-
+	//make the call!
 	$.ajax(settings).done(app.confirmExport);
 }
 
+/*
+* Confirm the export and report success/failure
+*/
 app.confirmExport = function() {
 	$('#exportDataDialog').hide();
 	app.clearData();
 	window.alert("Export Succesful. You go gurl");
 }
 
+/*
+*	Clear the array of click data
+*/
 app.clearData = function() {
 	//ARE YOU SURE?
 	app.dataClicks = [];
@@ -187,7 +211,7 @@ app.clearData = function() {
 }
 
 /*
-*	ROTATION AND TRANSLATION FUNCTIONS
+*	Rotation and translation functions
 */
 
 app.updateRotation = function() {
@@ -258,6 +282,9 @@ app.updateOverlayOpacity = function() {
 	$('#overlay').css('opacity', op);
 }
 
+/*
+*	Draws a radial grid on the overlay
+*/
 app.redrawGrid = function(canvas, ctx) {
 	app.clearCanvas(ctx, canvas);
 
@@ -284,27 +311,30 @@ app.redrawGrid = function(canvas, ctx) {
 	ctx.font = '40pt Helvetica';
 	ctx.fillText("THIS FACE FORWARDS", 200, 100)
 
-	//	cartesian grid lines
-	// for (var x = 0; x < w; x += 10) {
-	//   ctx.moveTo(x, 0);
-	//   ctx.lineTo(x, h);
-	// }
-
-	// for (var y = 0.5; y < h; y += 10) {
-	//   ctx.moveTo(0, y);
-	//   ctx.lineTo(w, y);
-	// }
-
 	//draw it
 	ctx.lineWidth = 1;
 	ctx.strokeStyle = "#ddd";
 	ctx.stroke();
 }
 
-//a handy function to clear the canvas (X-browser friendly)
-//http://stackoverflow.com/questions/2142535/how-to-clear-the-canvas-for-redrawing
-//can't get this to work although this jsfiddle does work???
-// http://jsfiddle.net/jeshuamaxey/YQP82/2/
+/*
+*	Simple abstartion of the canvas arc function
+* for drawing circles
+*/
+app.drawCircle = function(ctx, x, y, rad) {
+	ctx.beginPath();
+	ctx.lineWidth = 1;
+	ctx.arc(x, y, rad, 0, Math.PI*2, true);
+	ctx.stroke();
+	ctx.closePath();
+}
+
+/*
+* A handy function to clear the canvas (X-browser friendly)
+* http://stackoverflow.com/questions/2142535/how-to-clear-the-canvas-for-redrawing
+* can't get this to work although this jsfiddle does work???
+* http://jsfiddle.net/jeshuamaxey/YQP82/2/
+*/
 app.clearCanvas = function(context, canvas) {
 	context.clearRect(0, 0, canvas.width, canvas.height);
   var w = canvas.width;
@@ -313,14 +343,6 @@ app.clearCanvas = function(context, canvas) {
   // context.fillStyle = "rgba(0,0,0,0.0)";
   // context.fillRect(0, 0, canvas.width, canvas.height);
 };
-
-app.drawCircle = function(ctx, x, y, rad) {
-	ctx.beginPath();
-	ctx.lineWidth = 1;
-	ctx.arc(x, y, rad, 0, Math.PI*2, true);
-	ctx.stroke();
-	ctx.closePath();
-}
 
 //must go last
 $(document).ready(app.main);
