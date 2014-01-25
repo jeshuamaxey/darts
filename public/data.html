@@ -16,7 +16,8 @@
 		<button id="startStream">Start</button>
 		<button id="stopStream">Stop</button>
 		<button id="calibrate">Calibrate</button>
-		<button id="exportData">Export Data</button>
+		<button id="showExportDialog">Prepare Export</button>
+		<button id="clearData">Clear Data</button>
 		<hr>
 		<div id="controls" class="controls">
 			<div class="calibControls sliderWrapper">
@@ -58,11 +59,21 @@
 			<h2>Click Coordinates</h2>
 			<p>
 				Coordinates are displayed in cartsian form with the origin centred on the bull.
-				<button id="clearCoords">Clear Coords</button>
 			</p>
 			<ol id="clickCoords" class="clickCoords"></ol>
 		</div>
-	</div>
+		<hr>
+		<div id="exportDataDialog" class="#exportDataDialog">
+			<h2>Export Settings</h2>
+			<form id="exportForm" action="/">
+				<label for="name">Name: </label><input id="name" type="text">
+				<br>
+				<label for="fileName">File Name: </label><input id="fileName" type="text">
+				<br>
+				<input id="submitExport" type="submit">
+			</form>
+		</div>
+	</div><!-- #settingsPanel -->
 <body>
 
 <script src="components/jquery/jquery.js"></script>

@@ -41,8 +41,11 @@ app.main = function() {
 	$('#startStream').on('click', app.startVideo);
 	$('#stopStream').on('click', app.stopVideo);
 	$('#calibrate').on('click', app.initialiseCalib);
-	$('#exportData').on('click', app.exportData);
-	$('#clearCoords').on('click', app.clearCoords);
+	$('#showExportDialog').on('click', app.showExportDialog);
+	$('#clearData').on('click', app.clearData);
+
+	$('#submitExport').on('click', app.submitExport);
+
 	$('#overlayOpacity').on('change', app.updateOverlayOpacity);
 }
 
@@ -143,18 +146,43 @@ app.recordClick = function(e) {
 		'mmR': Math.sqrt(x*x + y*y)*app.px2mm
 	};
 	app.dataClicks.push(attempt);
-	console.log(attempt)
 	$('#clickCoords').append("<li>("+x+ ", "+y+") - "+(attempt.mmR).toFixed(2)+"mm from bull.</li>");
 }
 
-app.exportData = function() {
-
+app.showExportDialog = function() {
+	$('#exportDataDialog').show();
 }
 
-app.clearCoords = function() {
-	$('#clickCoords').html('');
+app.clearData = function() {
+	//ARE YOU SURE?
+	// app.dataClicks = [];
+	// $('#clickCoords').html('');
 }
 
+app.submitExport = function(e) {
+	e.preventDefault();
+
+	var data = {
+		'name': $('#exportForm #name').val(),
+		'fileName': $('#exportForm #fileName').val(),
+		'throws' : app.dataClicks,
+		'px2mm': app.px2mm
+	};
+
+	console.log("Exported data: " + data);
+	
+	var settings = {
+		'url': 'api/store',
+		'type': 'post',
+		'data': data
+	}
+
+	$.ajax(settings).done(app.confirmExport);
+}
+
+app.confirmExport = function() {
+	alert("Export Succesful. You go gurl");
+}
 
 /*
 *	ROTATION AND TRANSLATION FUNCTIONS
