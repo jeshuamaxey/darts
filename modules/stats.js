@@ -64,7 +64,8 @@ stats.erf = function(x) {
 		sum += el;
 		k++;
 	} while(Math.abs(el) > 0.000000001)
-	return ((2*sum/Math.sqrt(Math.PI))).toFixed(9);
+	var ans = ((2*sum/Math.sqrt(Math.PI))).toFixed(9);
+	return (ans == 'NaN' ? 1 : ans);
 }
 
 /*
