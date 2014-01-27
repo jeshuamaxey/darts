@@ -12,6 +12,14 @@ var db = require('./modules/dartboard.js');
 // Read in the mesh size
 app.N = config.meshSize;
 
+//creates nice progress bar in terminal
+app.bar = new progressBar('LET\S PLAY DARTS [:bar] :percent :etas', {
+    complete: '='
+  , incomplete: ' '
+  , width: 60
+  , total: app.N
+});
+
 app.make2DMesh = function(size) {
 	var arr = new Array(size);
 	for (var i = arr.length - 1; i >= 0; i--) {
@@ -103,16 +111,8 @@ End of Test Part*/
 app.zeroMesh();
 
 var acc = 0.31;
-var sdX = config.meshSize*config.meshRatio.bullseye/0.4;
-var sdY = config.meshSize*config.meshRatio.bullseye/0.4;
-
-//creates nice progress bar in terminal
-app.bar = new progressBar('LET\S PLAY DARTS [:bar] :percent :etas', {
-      complete: '='
-    , incomplete: ' '
-    , width: 60
-    , total: app.N
-  });
+var sdX = config.meshSize*config.meshRatio.bullseye/10;
+var sdY = config.meshSize*config.meshRatio.bullseye/10;
 
 app.generateHeatmap(sdX, sdY);
 
