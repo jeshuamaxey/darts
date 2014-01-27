@@ -2,6 +2,7 @@ var app = app || {};
 
 /* 3RD PARTY MODULES */
 var fs = require('fs');
+var progressBar = require('progress');
 
 /* OUR MODULES */
 var config = require('./modules/config.js');
@@ -30,10 +31,11 @@ app.fillMesh = function() {
 
 app.generateHeatmap = function(sdX, sdY) {
 	for (var x = 0; x < app.N; x++) {
-		console.log("calculating weight for "+x+"th row");
 		for (var y = 0; y < app.N; y++) {
 			app.weight(x,y, sdX, sdY);
 		}
+		//update progress bar
+		app.bar.tick();
 	}
 }
 
@@ -103,6 +105,14 @@ app.zeroMesh();
 var acc = 0.31;
 var sdX = config.meshSize*config.meshRatio.bullseye/0.4;
 var sdY = config.meshSize*config.meshRatio.bullseye/0.4;
+
+//creates nice progress bar in terminal
+app.bar = new progressBar('LET\S PLAY DARTS [:bar] :percent :etas', {
+      complete: '='
+    , incomplete: ' '
+    , width: 60
+    , total: app.N
+  });
 
 app.generateHeatmap(sdX, sdY);
 
