@@ -60,11 +60,11 @@ stats.calcStandardDev = function(accuracy) {
 stats.erf = function(x) {
 	var k=0, el=0, sum=0;
 	do {
-		el = ( Math.pow(-1,k) / ( (2*k +1)*stats.factorial(k) ) ) * Math.pow(x, 2*k);
+		el = ( Math.pow(-1,k) / ( (2*k +1)*stats.factorial(k) ) ) * Math.pow(x, (2*k)+1);
 		sum += el;
 		k++;
-	} while(el > 0.000000001)
-	return ((2*x/Math.sqrt(Math.PI))*sum).toFixed(9);
+	} while(Math.abs(el) > 0.000000001)
+	return ((2*sum/Math.sqrt(Math.PI))).toFixed(9);
 }
 
 /*
@@ -76,5 +76,8 @@ stats.factorial = function(n) {
     return priv.f[n];
   return priv.f[n] = stats.factorial(n-1) * n;
 }
+
+var test = stats.erf(Math.pow(2, -0.5))
+console.log(test);
 
 module.exports = stats;
