@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Darts</title>
+  <link rel="stylesheet" href="css/data.css">
+</head>
+<body>
+  <div id="wrapper" class="wrapper">
+    <video id="vid" class="vid" autoplay ></video>
+    <canvas id="overlay" class="overlay" height="720" width="960"></canvas>
+    <h2 id="uncalibratedMessage" class="uncalibratedMessage">UNCALIBRATED</h2>
+  </div>
+  <div id="settingsPanel" class="settingsPanel">
+		<h2>Settings</h2>
+		<button id="startStream">Start</button>
+		<button id="stopStream">Stop</button>
+		<button id="calibrate">Calibrate</button>
+		<button id="showExportDialog">Prepare Export</button>
+		<button id="clearData">Clear Data</button>
+		<hr>
+		<div id="controls" class="controls">
+			<div id="calibControls" class="calibControls sliderWrapper">
+				<div class="rotationControls">
+					<label for="xRotation">X Rotation</label>: <span id="xRotationDisp"></span><br>
+					<input id="xRotation" class="rotationSlider "type="range" min="-90" max="90" value="0">
+					<br>
+					<label for="yRotation">Y Rotation</label>: <span id="yRotationDisp"></span><br>
+					<input id="yRotation" class="rotationSlider "type="range" min="-90" max="90" value="0">
+					<br>
+					<label for="zRotation">Z Rotation</label>: <span id="zRotationDisp"></span><br>
+					<input id="zRotation" class="rotationSlider "type="range" min="-90" max="90" value="0">
+					<hr>
+					<button id="resetRotation">Reset Rotations</button>
+				</div>
+				<div class="translationControls sliderWrapper">
+					<label for="xTranslation">X Translation</label>: <span id="xTranslationDisp"></span><br>
+					<input id="xTranslation" class="translationSlider "type="range" min="-400" max="400" value="0">
+					<br>
+					<label for="yTranslation">Y Translation</label>: <span id="yTranslationDisp"></span><br>
+					<input id="yTranslation" class="translationSlider "type="range" min="-400" max="400" value="0">
+					<label for="overlayOpacity">Overlay Opacity</label>: <span id="overlayOpacityDisp"></span><br>
+					<input id="overlayOpacity" class="translationSlider "type="range" min="0" max="1" value="0.1" step="0.01">
+					<hr>
+					<button id="resetTranslation">Reset Translations</button>
+				</div>
+			</div><!-- #calibControls -->
+		</div> <!-- #controls -->
+		<div id="calibClickDialog" class="calibClickDialog">
+			<h2>Calibration</h2>
+			<p>To calibrate the software, adjust the overlay to align with the dartboard and click on the indicated points of the board.</p>
+			<ul>
+				<li class="calibClick clickHere">Furthest left point (outer double wire)</li>
+				<li class="calibClick ">Furthest right point (outer double wire)</li>
+				<li class="calibClick ">Middle of the bull</li>
+			</ul>
+		</div><!-- #calibClickDialog -->
+		<div id="recordClickDialog" class="recordClickDialog">
+			<h2>Click Coordinates</h2>
+			<p>
+				Coordinates are displayed in cartsian form with the origin centred on the bull.
+			</p>
+			<ol id="clickCoords" class="clickCoords"></ol>
+			<hr>
+		</div><!-- #recordClickDialog -->
+		<div id="exportDataDialog" class="exportDataDialog">
+			<h2>Export Settings</h2>
+			<form id="exportForm" action="/">
+				<label for="name">Name: </label><input id="name" type="text">
+				<br>
+				<label for="fileName" disabled>File Name: </label><input id="fileName" type="text">
+				<br>
+				<label for="notes">Notes:</label><br>
+				<textarea name="" id="notes" cols="30" rows="10"></textarea>
+				<br>
+				<input id="submitExport" type="submit">
+			</form>
+		</div>
+	</div><!-- #settingsPanel -->
+<body>
+
+<script src="components/jquery/jquery.js"></script>
+<script src="js/data-record.js"></script>  
+</body>
+</html>

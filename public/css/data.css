@@ -1,0 +1,130 @@
+html, body {
+	margin: 0;
+	padding: 0;
+
+	font-family: 'helvetica', sans-serif;
+
+	overflow: hidden;
+}
+
+.wrapper {
+	position: relative;
+	margin: 40px;
+	overflow: visible;
+	/* ratio h:w must be 3:4
+	*	vid and canvas inherit
+	*	these dimensions
+	*/
+	height: 720px;
+	width: 960px;
+	float: left;
+}
+
+.vid {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+	border: solid 1px;
+	float: left;
+}
+
+.overlay {
+	position: absolute;
+	/* height and width set to h & w of vid by js on load*/
+	/* 	added to sure up click event detection
+			as per: http://stackoverflow.com/questions/13833227/css3-rotate-on-animated-element-causing-click-event-not-to-invoke */
+	float: left;
+	background-color: rgb(0,150,150);
+	opacity: 0.1;
+	/*
+	transform-style: 'preserve-3d';
+	perspective: 600;
+	-webkit-backface-visibility: hidden;
+	*/
+	-webkit-transform-style: preserve-3d;
+  -webkit-perspective: 1000;
+}
+
+.overlay:hover {
+	cursor: crosshair;
+}
+
+.uncalibratedMessage {
+	position: relative;
+	/* account for 1px border */
+	left: 1px;
+
+	font-size: 4.0em;
+	text-align: center;
+	background-color: rgba(255,255,255,0.8);
+	color: rgba(200,40,0, 1);
+}
+
+.settingsPanel {
+	position: absolute;
+	right: 0;
+	width: 350px;
+	height: 100%;
+	padding: 10px;
+
+	background-color: rgba(0,150,150,0.3);
+	border-left: solid 1px;
+}
+
+.sliderWrapper {
+	min-height: 150px;
+	min-width: 150px;
+}
+
+.calibControls, .calibClickDialog {
+	display: none;
+}
+
+.rotationControls {
+	max-width: 50%;
+	float: left;
+}
+
+.translationControls {
+	max-width: 50%;
+	float: right;
+}
+
+.rotationSlider .translationSlider {
+	min-width: 200px;
+}
+
+.recordClickDialog {
+	display: none;
+}
+
+.clickCoords {
+	height: 240px;
+	width: 100%;
+	overflow: scroll;
+	padding: 5px;
+	border: solid 1px;
+	border-radius: 2px;
+}
+
+.exportDataDialog {
+	display: none;
+}
+
+ol {
+	max-width: 200px;
+}
+
+ol li {
+	border-radius: 3px;
+}
+
+.clickHere {
+	background-color: rgba(0,100,0, 0.6);
+}
+
+.strikethrough {
+	text-decoration: line-through;
+}
