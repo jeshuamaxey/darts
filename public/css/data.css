@@ -102,23 +102,24 @@ html, body {
 
 .clickCoords {
 	height: 200px;
-	width: 100%;
+	width: 95%;
 	overflow: scroll;
 	padding: 5px;
 	border: solid 1px;
 	border-radius: 2px;
 }
 
+.clickCoords li {
+	border-radius: 3px;
+}
+
 .exportDataDialog {
 	display: none;
+	overflow: scroll;
 }
 
-ol {
-	max-width: 200px;
-}
-
-ol li {
-	border-radius: 3px;
+textarea {
+	height: 100px;
 }
 
 .clickHere {

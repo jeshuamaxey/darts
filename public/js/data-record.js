@@ -162,7 +162,7 @@ app.recordClick = function(e) {
 		'mmR': Math.sqrt(x*x + y*y)*app.px2mm
 	};
 	app.dataClicks.push(attempt);
-	$('#clickCoords').append("<li>("+x+ ", "+y+") - "+(attempt.mmR).toFixed(2)+"mm from bull.</li>");
+	$('#clickCoords').prepend("<li>("+x+ ", "+y+") - "+(attempt.mmR).toFixed(2)+"mm from bull.</li>");
 }
 
 /*
@@ -183,8 +183,10 @@ app.submitExport = function(e) {
 		'name': $('#exportForm #name').val(),
 		'fileName': $('#exportForm #fileName').val(),
 		'notes': $('#exportForm #notes').val(),
-		'throws' : app.dataClicks,
-		'px2mm': app.px2mm
+		'px2mm': app.px2mm,
+		'units': $('#numUnits').val() || 0,
+		'stints': $('#threeDartStints').is(':checked'),
+		'throws' : app.dataClicks
 	};
 	//configure the AJAX call
 	var settings = {
@@ -209,7 +211,7 @@ app.confirmExport = function() {
 * Record a missed dart
 */
 app.missedDart = function() {
-	$('#clickCoords').append("<li>MISS</li>");
+	$('#clickCoords').prepend("<li>MISS</li>");
 	app.dataClicks.push("NaN");
 }
 
