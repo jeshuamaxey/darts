@@ -55,6 +55,22 @@ stats.calcStandardDev = function(accuracy) {
 }
 
 /*
+stats.generateStdDevArr =  [];
+var trisigma = 0.01
+var retsigma = 0
+for (var accuracy = 0; accuracy <= 1; accuracy += 0.005) {
+	do {
+		retsigma = stats.erf(trisigma*Math.pow(2, -0.5)
+		trisigma += 0.01
+	}
+	while (retsigma < 1)
+	}
+*/
+		
+	
+	
+
+/*
 * Returns th value of the error function, accurate to 9 decimal places
 */
 stats.erf = function(x) {
@@ -78,7 +94,7 @@ stats.factorial = function(n) {
   return priv.f[n] = stats.factorial(n-1) * n;
 }
 
-var test = stats.erf(Math.pow(2, -0.5))
+var test = stats.erf(150);
 console.log(test);
 
 module.exports = stats;
