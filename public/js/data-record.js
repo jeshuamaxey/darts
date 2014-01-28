@@ -47,6 +47,7 @@ app.main = function() {
 	$('#calibrate').on('click', app.initialiseCalib);
 	$('#showExportDialog').on('click', app.showExportDialog);
 	$('#clearData').on('click', app.clearData);
+	$('#missedDart').on('click', app.missedDart);
 
 	$('#submitExport').on('click', app.submitExport);
 
@@ -202,6 +203,14 @@ app.confirmExport = function() {
 	$('#exportDataDialog').hide();
 	app.clearData();
 	window.alert("Export Succesful. You go gurl");
+}
+
+/*
+* Record a missed dart
+*/
+app.missedDart = function() {
+	$('#clickCoords').append("<li>MISS</li>");
+	app.dataClicks.push("NaN");
 }
 
 /*

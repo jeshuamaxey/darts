@@ -101,7 +101,7 @@ html, body {
 }
 
 .clickCoords {
-	height: 240px;
+	height: 200px;
 	width: 100%;
 	overflow: scroll;
 	padding: 5px;
