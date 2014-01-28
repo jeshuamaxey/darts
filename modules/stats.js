@@ -46,29 +46,10 @@ stats.gaussian2D = function(x, y, meanX, meanY, sdX, sdY) {
   return ( (e / m) < 0.00001 ? 0 : e/m );
 }
 
-/*
-*
-*
-*/
+// Currently going to have accuracy as a fraction rather than a percentage
 stats.calcStandardDev = function(accuracy) {
 	return config.meshSize*config.meshRatio.bullseye/0.4;
 }
-
-/*
-stats.generateStdDevArr =  [];
-var trisigma = 0.01
-var retsigma = 0
-for (var accuracy = 0; accuracy <= 1; accuracy += 0.005) {
-	do {
-		retsigma = stats.erf(trisigma*Math.pow(2, -0.5)
-		trisigma += 0.01
-	}
-	while (retsigma < 1)
-	}
-*/
-		
-	
-	
 
 /*
 * Returns th value of the error function, accurate to 9 decimal places
@@ -84,8 +65,6 @@ stats.erf = function(x) {
 	return (ans == 'NaN' ? 1 : ans);
 }
 
-/*
-*/
 stats.factorial = function(n) {
   if (n == 1 || n == 0)
     return 1;
@@ -94,7 +73,20 @@ stats.factorial = function(n) {
   return priv.f[n] = stats.factorial(n-1) * n;
 }
 
-var test = stats.erf(150);
-console.log(test);
+stats.StdDevArr = [];
+stats.StdDevArr[0] = 0.005 // Setting some sort of Standard Deviation for 0% darts in the bull
+
+stats.trisigma = 0.001;
+
+for (var accuracy = 0.005; accuracy <= 1; accuracy += 0.005) {
+	var resultaccuracy = 0;
+	do {
+		resultaccuracy = stats.erf(stats.trisigma*Math.pow(2, -0.5));
+		stats.trisigma += 0.001;
+		console.log(resultaccuracy+", "+stats.trisigma);
+	}
+	while (resultaccuracy < (accuracy - 0.0005) || resultaccuracy > (accuracy +0.0005))
+	stats.StdDevArr[accuracy*200] = stats.trisigma-0.001;
+}
 
 module.exports = stats;
