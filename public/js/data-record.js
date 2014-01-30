@@ -186,6 +186,7 @@ app.submitExport = function(e) {
 		'px2mm': app.px2mm,
 		'units': $('#numUnits').val() || 0,
 		'stints': $('#threeDartStints').is(':checked'),
+		'time': new Date(),
 		'throws' : app.dataClicks
 	};
 	//configure the AJAX call
