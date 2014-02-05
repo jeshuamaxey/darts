@@ -174,21 +174,35 @@ app.showExportDialog = function() {
 
 /*
 * Process the export
+* note: this uses stats functions found in stats.js
 */
 app.submitExport = function(e) {
 	//stop the form trying to submit (initially)
 	e.preventDefault();
-	//collect all the data to export
-	var data = {
+
+	//meta data about the collection process
+	var meta = {
+		'time': new Date(),
 		'name': $('#exportForm #name').val(),
 		'fileName': $('#exportForm #fileName').val(),
 		'notes': $('#exportForm #notes').val(),
-		'px2mm': app.px2mm,
-		'units': $('#numUnits').val() || 0,
 		'stints': $('#threeDartStints').is(':checked'),
-		'time': new Date(),
+		'units': $('#exportForm #numUnits').val() || 0
+	}
+	//the processed data
+	var preprocessed = app.generateProcessedData();
+	//the raw throw data and conversion ratio
+	var raw = {
+		'px2mm': app.px2mm,
 		'throws' : app.dataClicks
+	}
+	//collect all the data to export
+	var data = {
+		'meta': meta,
+		'preprocessed': preprocessed,
+		'raw': raw,
 	};
+	
 	//configure the AJAX call
 	var settings = {
 		'url': 'api/store',
@@ -223,6 +237,28 @@ app.clearData = function() {
 	//ARE YOU SURE?
 	app.dataClicks = [];
 	$('#clickCoords').html('');
+}
+
+/*
+*
+*/
+app.generateProcessedData = function() {
+	var processedData = {};
+	var val = ['mmR','mmX','mmY','pxR','pxX','pxY'];
+	var arr = [];
+
+	for (var i = val.length - 1; i >= 0; i--) {
+		arr = [];
+		processedData[val[i]] = {};
+		//create an array of just the values we're interested in
+		for (var j = app.dataClicks.length - 1; j >= 0; j--) {
+			arr.push(app.dataClicks[j][val[i]])
+		};
+		processedData[val[i]].mean = stats.mean(arr)
+		processedData[val[i]].stdDev = stats.stdDev(arr)
+	};
+
+	return processedData;
 }
 
 /*

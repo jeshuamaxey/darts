@@ -73,6 +73,30 @@ stats.factorial = function(n) {
   return priv.f[n] = stats.factorial(n-1) * n;
 }
 
+/*
+* returns the mean value of an array
+*/
+stats.mean = function(arr) {
+	var total = 0;
+	for (var i = arr.length - 1; i >= 0; i--) {
+		total += arr[i];
+	};
+	return total/arr.length;
+}
+
+/*
+* returns the standard deviation of an array
+*/
+stats.stdDev = function(arr, mean) {
+	//if mean is not provided as an arg, calculate it
+	var mean = mean || stats.mean(arr);
+	var variance = 0;
+	for (var i = arr.length - 1; i >= 0; i--) {
+		variance += Math.pow((arr[i] - mean), 2);
+	};
+	return Math.sqrt(variance/arr.length);
+}
+
 stats.StdDevArr = [];
 stats.StdDevArr[0] = 0.001 // Setting some sort of Standard Deviation for 0% darts in the bull
 
@@ -98,4 +122,11 @@ for (var i = 1; i < 201; i++) {
 
 //console.log(stats.StdDevArr);
 
-module.exports = stats;
+if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
+	//export for node
+	module.exports = stats;
+}
+else {
+	//export for browser
+  window.stats = stats;
+}
