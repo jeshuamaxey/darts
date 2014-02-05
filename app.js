@@ -110,9 +110,9 @@ End of Test Part*/
 
 app.zeroMesh();
 
-var acc = 0.31;
-var sdX = config.meshSize*config.meshRatio.bullseye/10;
-var sdY = config.meshSize*config.meshRatio.bullseye/10;
+var acc = 0.01;
+var sdX = stats.StdDevArr[acc]; //config.meshSize*config.meshRatio.bullseye/1;
+var sdY = stats.StdDevArr[acc]; //config.meshSize*config.meshRatio.bullseye/1;
 
 app.generateHeatmap(sdX, sdY);
 
@@ -128,6 +128,7 @@ var acc, sdX, sdY, fileName;
 // 	app.zeroMesh();
 // 	//update model variables
 // 	acc = (c*0.01).toFixed(2);
+//	//these two lines need considering
 // 	sdX = stats.erf(acc);
 // 	sdY = stats.erf(acc);
 // 	//crunch da numberz

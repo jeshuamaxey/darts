@@ -96,6 +96,6 @@ for (var i = 1; i < 201; i++) {
 	stats.StdDevArr[i] = (stats.nsigfact/1000)-0.001;
 }
 
-console.log(stats.StdDevArr);
+//console.log(stats.StdDevArr);
 
 module.exports = stats;
