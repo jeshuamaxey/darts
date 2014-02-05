@@ -42,7 +42,10 @@ priv.writeToFile = function(req, res, interval) {
 priv.generateFilename = function() {
 	//find the number of output files already saved
 	fs.readdir(priv.outFileDir, function(err, list) {
-			priv.fileName = list.length + '.json';
+			var num = list.length;
+			if(list.length < 100) num = '0' + num;
+			if(list.length < 10) num = '0' + num;
+			priv.fileName = num + '.json';
 		});
 };
 
