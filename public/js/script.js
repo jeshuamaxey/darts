@@ -55,7 +55,9 @@ app.refreshHeatMap = function() {
 	$.ajax({
 			url: url,
 			cache: false
-		}).done(app.processData)
+		})
+		.done(app.processData)
+		.fail(app.failedAJAX)
 }
 
 app.toggleSpin = function() {
@@ -63,6 +65,7 @@ app.toggleSpin = function() {
 }
 
 app.processData = function(data) {
+	console.log(data)
 	app.data = data;
 	app.data.max = 0;
 	app.data.forEach(function(arr) {
@@ -73,6 +76,14 @@ app.processData = function(data) {
 	app.pixelSize = app.hm.width/app.data.length;
 	app.generateHeatmap();
 	app.generateLegend();
+}
+
+app.failedAJAX = function() {
+	$('.modalWrapper').fadeIn();
+	$('#failedAJAX').show()
+	$('#failedAJAX span.close').on('click', function() {
+		$('.modalWrapper').fadeOut();
+	})
 }
 
 app.generateLegend = function() {
