@@ -74,19 +74,28 @@ stats.factorial = function(n) {
 }
 
 stats.StdDevArr = [];
-stats.StdDevArr[0] = 0.005 // Setting some sort of Standard Deviation for 0% darts in the bull
+stats.StdDevArr[0] = 0.001 // Setting some sort of Standard Deviation for 0% darts in the bull
 
-stats.trisigma = 0.001;
+stats.nsigfact = 1;
 
-for (var accuracy = 0.005; accuracy <= 1; accuracy += 0.005) {
+// erf(n divided by root 2) = fraction of darts thrown contained within the n sigma
+// interval.
+// For a given accuracy, n values are trialled in the error function until one falls
+// within an error bound of the accuracy we want.
+
+// i / 200 = fraction of darts within the bull
+
+for (var i = 1; i < 201; i++) {
 	var resultaccuracy = 0;
 	do {
-		resultaccuracy = stats.erf(stats.trisigma*Math.pow(2, -0.5));
-		stats.trisigma += 0.001;
-		console.log(resultaccuracy+", "+stats.trisigma);
+		resultaccuracy = stats.erf((stats.nsigfact/1000)*Math.pow(2, -0.5));
+		//console.log((stats.nsigfact/1000) + " " + resultaccuracy)
+		stats.nsigfact += 1;
 	}
-	while (resultaccuracy < (accuracy - 0.0005) || resultaccuracy > (accuracy +0.0005))
-	stats.StdDevArr[accuracy*200] = stats.trisigma-0.001;
+	while (resultaccuracy < ((i/200) - 0.0005) || resultaccuracy > ((i/200) +0.0005))
+	stats.StdDevArr[i] = (stats.nsigfact/1000)-0.001;
 }
+
+console.log(stats.StdDevArr);
 
 module.exports = stats;
