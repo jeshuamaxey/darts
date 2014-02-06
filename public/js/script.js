@@ -8,6 +8,8 @@ app.hm = {
 	"margin" : 0
 }
 
+app.meshs = {};
+
 app.main = function() {
 	app.URLparams = app.getURLparams();
 	app.initialiseCanvases();
@@ -70,15 +72,21 @@ app.refreshHeatMap = function() {
 	}
 	//display standard deviation
 	$('.stdDevDisp').html(app.sd)
+	//check if this mesh is already saved
+	if(app.meshs[app.sd.toString]) {
+		app.processData(app.meshs[app.sd.toString])
+	}
 	//make the call
-	$.ajax({
-		url: url,
-		cache: false
-	})
-	.done(app.processData)
-	.fail(function() {
-		app.failedAJAX(url)
-	})
+	else {
+		$.ajax({
+			url: url,
+			cache: false
+		})
+		.done(app.processData)
+		.fail(function() {
+			app.failedAJAX(url)
+		})
+	}
 }
 
 app.processData = function(data) {
@@ -163,7 +171,6 @@ app.updateHoverPixel = function(e) {
 
 app.updateFocusPixel = function(e) {
 	app.clearCanvas(app.ovCtx, app.ovCanvas);
-	console.log(e.offsetX, e.offsetY)
 	var x = Math.floor(e.offsetX/app.pixelSize);
 	var y = Math.floor(e.offsetY/app.pixelSize);
 	if(x < app.data.length && y < app.data.length) {
