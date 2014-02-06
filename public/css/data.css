@@ -62,7 +62,7 @@ html, body {
 	color: rgba(200,40,0, 1);
 }
 
-.settingsPanel {
+.rightPanel {
 	position: absolute;
 	right: 0;
 	width: 350px;
