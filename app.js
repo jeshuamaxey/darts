@@ -110,9 +110,9 @@ End of Test Part*/
 
 app.zeroMesh();
 
-var acc = 0.01;
-var sdX = stats.StdDevArr[acc]; //config.meshSize*config.meshRatio.bullseye/1;
-var sdY = stats.StdDevArr[acc]; //config.meshSize*config.meshRatio.bullseye/1;
+var acc = 10;
+var sdX = stats.returnStdDev(acc); //config.meshSize*config.meshRatio.bullseye/1;
+var sdY = stats.returnStdDev(acc); //config.meshSize*config.meshRatio.bullseye/1;
 
 app.generateHeatmap(sdX, sdY);
 
