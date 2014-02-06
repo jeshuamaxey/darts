@@ -16,6 +16,7 @@ app.main = function() {
 	app.refreshHeatMap();
 	$('#canvasWrapper').mousemove(app.updateHoverPixel);
 	$('#canvasWrapper').on("click", app.updateFocusPixel);
+	$('#colorScheme').on('change', app.refreshHeatMap)
 	$('#reload').on("click", function(e) {
 		e.preventDefault();
 		app.refreshHeatMap();
@@ -52,6 +53,7 @@ app.drawDartBoard = function() {
 }
 
 app.refreshHeatMap = function() {
+	app.colorScheme = ( $('#colorScheme').is(':checked') ? 'color' : 'bw')
 	var url = 'data/' + ($('#fileName').val() || 'darts.json'); 
 	$.ajax({
 			url: url,
