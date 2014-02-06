@@ -10,6 +10,7 @@ priv.f = [];
 
 //stores previously calculated values of returnStdDev
 priv.rSD = [1000];
+// priv.rSD[0] = 1000 and represents the standard deviation for 0% of darts in bull.
 
 /*
 * All public variables and functions are attached to the stats object
@@ -120,9 +121,6 @@ stats.returnStdDev = function(percentage) {
 	}
 	return priv.rSD[percentage*2] = 1/((trialn/1000)-0.001);
 }
-
-var test = stats.returnStdDev(100);
-console.log(test);
 
 if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 	//export for node
