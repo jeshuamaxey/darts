@@ -29,7 +29,6 @@ app.make2DMesh = function(size) {
 }
 
 app.fillMesh = function() {
-	var mean = app.mesh.length/2;
 	for (x = 0; x < app.N; x++) {
 		for (y = 0; y < app.N; y++) {
 			app.mesh[x][y] = db.dartboard(x,y);
@@ -110,7 +109,7 @@ End of Test Part*/
 
 app.zeroMesh();
 
-var acc = 10;
+var acc = 80;
 var sdX = stats.returnStdDev(acc); //config.meshSize*config.meshRatio.bullseye/1;
 var sdY = stats.returnStdDev(acc); //config.meshSize*config.meshRatio.bullseye/1;
 
