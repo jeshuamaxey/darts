@@ -74,11 +74,7 @@ app.processData = function(data) {
 }
 
 app.failedAJAX = function() {
-	$('.modalWrapper').fadeIn();
-	$('#failedAJAX').show()
-	$('#failedAJAX span.close').on('click', function() {
-		$('.modalWrapper').fadeOut();
-	})
+	$('#failedAJAX').modal('show');
 }
 
 app.generateLegend = function() {

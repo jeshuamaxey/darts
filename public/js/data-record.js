@@ -45,7 +45,6 @@ app.main = function() {
 	$('#startStream').on('click', app.startVideo);
 	$('#stopStream').on('click', app.stopVideo);
 	$('#calibrate').on('click', app.initialiseCalib);
-	//$('#showExportDialog').on('click', app.showExportDialog);
 	$('#clearData').on('click', app.clearData);
 	$('#missedDart').on('click', app.missedDart);
 
