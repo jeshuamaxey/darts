@@ -15,6 +15,7 @@ priv.db = new Array(config.meshSize);
 for (var i = priv.db.length - 1; i >= 0; i--) {
 	priv.db[i] = new Array(config.meshSize);
 }
+console.log(priv.db[6]);
 
 
 /*
