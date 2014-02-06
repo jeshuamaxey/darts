@@ -122,9 +122,6 @@ for (var i = 1; i <= percentage*2; i++) {
 return 1/stats.StdDevArr[percentage*2]
 }
 
-var test = stats.returnStdDev(50);
-console.log(test);
-
 if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 	//export for node
 	module.exports = stats;
