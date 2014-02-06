@@ -65,7 +65,7 @@
         <h3>Settings</h3>
         <div class="form-group">
           <label for="color">In Colour</label>
-          <input id="colorScheme" type="checkbox">
+          <input id="colorScheme" type="checkbox" checked>
         </div>
         <h3>Load New Heatmap</h3>
         <form target="/">
@@ -79,14 +79,15 @@
           </div>
           <input id="reload" class="btn btn-primary" type="submit" value="Reload">
         </form>
+        <h3>Legend</h3>
+        <canvas   id="legend" class="legend"
+              height="40px"
+              width= "250px">
+        </canvas>
       </div> <!-- #infoPanel -->
     </div> <!-- .row -->
     <div class="row">
       <div class="col-md-8">
-        <canvas   id="legend" class="legend"
-            height="40px"
-            width = "700px">
-        </canvas>
       </div>
     </div>
   </div>

@@ -104,40 +104,9 @@ app.mesh = app.make2DMesh(config.meshSize);
 
 app.zeroMesh();
 
-// var sdX = 0.5;
-// var sdY = 0.5;
-
-// app.generateHeatmap(sdX, sdY);
-
-// var fileName = 'sdX-'+sdX-+'sdY'+sdY'+.json';
-// app.writeToFile(fileName);
-
-/*
-* generating maps for the range 0.5 < sd < 20 in steps of 0.5
-*/
-// var sdMax = 20.0, sdMin = 2.0, sdStep = 0.5, sd = 0;
-
-// var loopLimit = ( (sdMax - sdMin) / sdStep);
-
-// for(var c=0; c < loopLimit; c++) {
-// 	//reset mesh
-// 	app.zeroMesh();
-// 	//update model variables
-// 	sd = sdMin + c*sdStep;
-// 	//crunch da numberz
-// 	app.generateHeatmap(sd, sd);
-// 	//output data
-// 	var fileName = 'sd-';
-// 	if(sd<10) fileName += '0';
-// 	fileName += '.json';
-// 	app.writeToFile(fileName, 'public/data/symmetric/');
-// }
-/*
-* end big fat loop
-*/
 
 //update model variables
-sd = 20.0;
+sd = 25.0;
 //crunch da numberz
 app.generateHeatmap(sd, sd);
 //output data
@@ -146,6 +115,11 @@ if(sd<10) fileName += '0';
 fileName += sd.toFixed(1);
 fileName += '.json';
 app.writeToFile(fileName, 'public/data/symmetric/');
+
+/*
+* end big fat loop
+*/
+
 
 //END SCRIPT BIT
 module.exports = app;

@@ -9,6 +9,8 @@ app.hm = {
 }
 
 app.meshs = {};
+app.firstDraw = true;
+
 
 app.main = function() {
 	app.URLparams = app.getURLparams();
@@ -57,18 +59,19 @@ app.refreshHeatMap = function() {
 	app.colorScheme = ( $('#colorScheme').is(':checked') ? 'color' : 'bw')
 	//set app.sd
 	app.sd = false;
-	if(app.URLparams.sd) {
+	if(app.firstDraw && app.URLparams.sd) {
 		//app.sd = app.acc2sd(app.URLparams.acc);
 		app.sd = app.URLparams.sd;
+		app.firstDraw = !app.firstDraw;
 	} else {
 		app.sd = parseFloat($('#stdDev').val()).toFixed(1);
 	}
 	//make url
-	if(app.sd) {
+ if($('#filePath').val().length) {
+		url = $('#filePath').val();
+	} else {
 		if(app.sd<10) app.sd = '0' + app.sd;
 		var url = 'data/symmetric/' + 'sd-' + app.sd + '.json';
-	} else {
-		url = $('#filePath').val();
 	}
 	//display standard deviation
 	$('.stdDevDisp').html(app.sd)
@@ -138,7 +141,7 @@ app.generateLegend = function() {
 	app.lgCanvas = document.getElementById('legend');
 	app.lgCtx = app.lgCanvas.getContext('2d');
 	app.lg = {
-		"width" : app.hm.width,
+		"width" : 250,
 		"height" : 40,
 		"margin" : 10
 	};
@@ -239,6 +242,7 @@ app.greyScale = function(val) {
 // http://jsfiddle.net/jeshuamaxey/YQP82/2/
 app.clearCanvas = function(context, canvas) {
 	//context.clearRect(0, 0, canvas.width, canvas.height);
+	console.log(context.fillStyle)
   var w = canvas.width;
   canvas.width = 1;
   canvas.width = w;
