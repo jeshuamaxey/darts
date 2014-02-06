@@ -1,12 +1,12 @@
 var app = app || {};
 
-app.colorScheme = 'color';
+app.colorScheme = 'bw';
 
 app.pixelSize = 2;
 
 app.hm = {
-	"width" : 680,
-	"height" : 680,
+	"width" : 800,
+	"height" : 800,
 	"margin" : 0
 }
 
@@ -173,8 +173,9 @@ app.fullColor = function(val) {
 
 //
 app.greyScale = function(val) {
-	var shade = 255*val;
-	return 'rgb('+shade+','+shade+','+shade+')';
+	if(val>1){console.log('val: '+val)}
+	var shade = (255*(1-val)).toFixed(0);
+	return 'rgba('+shade+','+shade+','+shade+',1)';
 }
 
 //a handy function to clear the canvas (X-browser friendly)
