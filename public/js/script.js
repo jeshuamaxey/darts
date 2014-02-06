@@ -52,18 +52,19 @@ app.drawDartBoard = function() {
 
 app.refreshHeatMap = function() {
 	app.colorScheme = ( $('#colorScheme').is(':checked') ? 'color' : 'bw')
-	var url = 'data/';
+	var url = 'data/symmetric/';
 	if(app.URLparams.acc) {
 		url += 'acc-' + app.URLparams.acc + '.json';
 	} else {
-		url += ($('#fileName').val() || 'acc=0.31.json'); 
+		url += ( $('#fileName').val() || '<sd-0 class="5"></sd-0>.json' ); 
 	}
+	console.log(url)
 	$.ajax({
-			url: url,
-			cache: false
-		})
-		.done(app.processData)
-		.fail(app.failedAJAX)
+		url: url,
+		cache: false
+	})
+	.done(app.processData)
+	.fail(app.failedAJAX)
 }
 
 app.processData = function(data) {
