@@ -8,6 +8,9 @@ var priv = priv || {};
 //stores previously calculated values of the factorial function
 priv.f = [];
 
+//stores previously calculated values of returnStdDev
+priv.rSD = [1000];
+
 /*
 * All public variables and functions are attached to the stats object
 * which is exported at the end of the module
@@ -101,10 +104,12 @@ stats.stdDev = function(arr, mean) {
 // interval.
 // For a given percentage of darts within the bull, n values are trialled in the error
 // function until one falls within an error bound of the percentage we want.
-
 stats.returnStdDev = function(percentage) {
 	trialn = 1; // erf(0) is not defined.
 	percentage = Math.round(percentage*2)/2;
+	if (priv.rSD[percentage*2] > 0) {
+		return priv.rSD[percentage*2];
+	}
 	for (var i = 1; i <= percentage*2; i++) {
 		var resultaccuracy = 0;
 		do {
@@ -113,10 +118,10 @@ stats.returnStdDev = function(percentage) {
 		}
 		while (resultaccuracy < ((i/200) - 0.0005) || resultaccuracy > ((i/200) +0.0005))
 	}
-	return 1/((trialn/1000)-0.001);
+	return priv.rSD[percentage*2] = 1/((trialn/1000)-0.001);
 }
 
-var test = stats.returnStdDev(50.11);
+var test = stats.returnStdDev(100);
 console.log(test);
 
 if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
