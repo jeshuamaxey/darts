@@ -113,7 +113,6 @@ for (var i = 1; i < 201; i++) {
 	var resultaccuracy = 0;
 	do {
 		resultaccuracy = stats.erf((stats.nsigfact/1000)*Math.pow(2, -0.5));
-		//console.log((stats.nsigfact/1000) + " " + resultaccuracy)
 		stats.nsigfact += 1;
 	}
 	while (resultaccuracy < ((i/200) - 0.0005) || resultaccuracy > ((i/200) +0.0005))
