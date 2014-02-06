@@ -104,6 +104,41 @@ db.dartboard = function(xcoord, ycoord) {
 	return priv.db[mesh.x][mesh.y] = number*dubtripfactor;
 }
 
+/*
+db.wt = 0.75; // Half of wire thickness of 1.5mm
+
+db.wireboard = function(x, y) {
+	var radius = db.findradius(x, y);
+	var theta = db.findtheta(x, y);
+	
+	if (radius > (config.meshSize/2)*config.meshRatio.bullseye - db.wt &&
+		radius < (config.meshSize/2)*config.meshRatio.bullseye + db.wt) {
+		return 1;
+		}
+	if (radius > (config.meshSize/2)*config.meshRatio.outerDouble - db.wt &&
+		radius < (config.meshSize/2)*config.meshRatio.outerDouble + db.wt) {
+		return 1;
+		}
+	if (radius > (config.meshSize/2)*config.meshRatio.innerDouble - db.wt &&
+		radius < (config.meshSize/2)*config.meshRatio.innerDouble + db.wt) {
+		return 1;
+		}
+	if (radius > (config.meshSize/2)*config.meshRatio.innerTreble - db.wt &&
+		radius < (config.meshSize/2)*config.meshRatio.innerTreble + db.wt) {
+		return 1;
+		}
+	if (radius > (config.meshSize/2)*config.meshRatio.outerTreble - db.wt &&
+		radius < (config.meshSize/2)*config.meshRatio.outerTreble + db.wt) {
+		return 1;
+		}
+	if (radius > (config.meshSize/2)*config.meshRatio.bull - db.wt &&
+		radius < (config.meshSize/2)*config.meshRatio.bull + db.wt) {
+		return 1;
+		}
+}
+*/
+	
+
 module.exports = db;
 
 		
