@@ -118,10 +118,13 @@ stats.returnStdDev = function(percentage) {
 			stats.nsigfact += 1;
 		}
 		while (resultaccuracy < ((i/200) - 0.0005) || resultaccuracy > ((i/200) +0.0005))
-		stats.StdDevArr[i] = (stats.nsigfact/1000)-0.001;
+		//stats.StdDevArr[i] = (stats.nsigfact/1000)-0.001;
 	}
-	return 1/stats.StdDevArr[percentage*2]
+	return 1/((stats.nsigfact/1000)-0.001);
 }
+
+var test = stats.returnStdDev(50);
+console.log(test);
 
 if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 	//export for node
