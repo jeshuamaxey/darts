@@ -243,8 +243,10 @@ app.generateDataReview = function() {
 		for (var i = dim.length - 1; i >= 0; i--) {
 			$('#stdDev'+ dim[i] ).html(data['mm'+ dim[i] ].stdDev);
 			$('#mean'+ dim[i] ).html(data['mm'+ dim[i] ].mean);
-			$('#goToHeatmap').attr('href', '/?acc=').removeClass('disabled');
 		}
+		//$('#goToHeatmap').attr('href', '/?acc=').removeClass('disabled');
+		var sd = Math.round(data.mmR.stdDev*2)/2
+		$('#goToHeatmap').attr('href', '/?sd='+sd).removeClass('disabled');
 	} else {
 		$('#goToHeatmap').addClass('disabled');
 	}

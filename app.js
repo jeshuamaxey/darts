@@ -10,7 +10,7 @@ var stats = require('./modules/stats.js');
 var db = require('./modules/dartboard.js');
 
 // Read in the mesh size
-app.N = config.meshSize;
+//config.meshSize = config.meshSize;
 
 app.make2DMesh = function(size) {
 	var arr = new Array(size);
@@ -22,8 +22,8 @@ app.make2DMesh = function(size) {
 
 app.fillMesh = function() {
 	var mean = app.mesh.length/2;
-	for (x = 0; x < app.N; x++) {
-		for (y = 0; y < app.N; y++) {
+	for (x = 0; x < config.meshSize; x++) {
+		for (y = 0; y < config.meshSize; y++) {
 			app.mesh[x][y] = db.dartboard(x,y);
 		}
 	}
@@ -35,11 +35,11 @@ app.generateHeatmap = function(sdX, sdY) {
 	    complete: '='
 	  , incomplete: ' '
 	  , width: 80
-	  , total: app.N
+	  , total: config.meshSize
 	});
 	//start big loop
-	for (var x = 0; x < app.N; x++) {
-		for (var y = 0; y < app.N; y++) {
+	for (var x = 0; x < config.meshSize; x++) {
+		for (var y = 0; y < config.meshSize; y++) {
 			app.weight(x,y, sdX, sdY);
 		}
 		//update progress bar
@@ -50,16 +50,16 @@ app.generateHeatmap = function(sdX, sdY) {
 }
 
 app.weight = function(pixelX, pixelY, sdX, sdY) {
-	for (var x = 0; x < app.N; x++) {
-		for (var y = 0; y < app.N; y++) {
+	for (var x = 0; x < config.meshSize; x++) {
+		for (var y = 0; y < config.meshSize; y++) {
 			app.mesh[pixelX][pixelY] += db.dartboard(x, y)* stats.gaussian2D(x, y, pixelX, pixelY, sdX, sdY);
 		}
 	}	
 }
 
 app.zeroMesh = function() {
-	for (x = 0; x < app.N; x++) {
-		for (y = 0; y < app.N; y++) {
+	for (x = 0; x < config.meshSize; x++) {
+		for (y = 0; y < config.meshSize; y++) {
 			app.mesh[x][y] = 0;
 		};
 	};
@@ -92,15 +92,15 @@ app.randomInt = function(randMax) {
 
 app.fakeData = function(n) {
 	for(c=0;c<n;c++) {
-		var x = app.randomInt(app.N);
-		var y = app.randomInt(app.N);
+		var x = app.randomInt(config.meshSize);
+		var y = app.randomInt(config.meshSize);
 		app.addToMesh(x,y);
 	}
 }
 
 //SCRIPT BIT
 
-app.mesh = app.make2DMesh(app.N);
+app.mesh = app.make2DMesh(config.meshSize);
 
 app.zeroMesh();
 
@@ -115,24 +115,37 @@ app.zeroMesh();
 /*
 * generating maps for the range 0.5 < sd < 20 in steps of 0.5
 */
-var sdMax = 4, sdMin = 0.5, sdStep = 0.5, sd = 0;
+// var sdMax = 20.0, sdMin = 2.0, sdStep = 0.5, sd = 0;
 
-var loopLimit = ( (sdMax - sdMin) / sdStep);
+// var loopLimit = ( (sdMax - sdMin) / sdStep);
 
-for(var c=0; c < loopLimit; c++) {
-	//reset mesh
-	app.zeroMesh();
-	//update model variables
-	sd = sdMin + c*sdStep;
-	//crunch da numberz
-	app.generateHeatmap(sd, sd);
-	//output data
-	var fileName = 'sd-'+sd+'.json';
-	app.writeToFile(fileName, 'public/data/symmetric/');
-}
+// for(var c=0; c < loopLimit; c++) {
+// 	//reset mesh
+// 	app.zeroMesh();
+// 	//update model variables
+// 	sd = sdMin + c*sdStep;
+// 	//crunch da numberz
+// 	app.generateHeatmap(sd, sd);
+// 	//output data
+// 	var fileName = 'sd-';
+// 	if(sd<10) fileName += '0';
+// 	fileName += '.json';
+// 	app.writeToFile(fileName, 'public/data/symmetric/');
+// }
 /*
 * end big fat loop
 */
+
+//update model variables
+sd = 20.0;
+//crunch da numberz
+app.generateHeatmap(sd, sd);
+//output data
+var fileName = 'sd-';
+if(sd<10) fileName += '0';
+fileName += sd.toFixed(1);
+fileName += '.json';
+app.writeToFile(fileName, 'public/data/symmetric/');
 
 //END SCRIPT BIT
 module.exports = app;

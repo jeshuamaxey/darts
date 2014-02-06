@@ -15,6 +15,7 @@ app.main = function() {
 	$('#canvasWrapper').mousemove(app.updateHoverPixel);
 	$('#canvasWrapper').on("click", app.updateFocusPixel);
 	$('#colorScheme').on('change', app.refreshHeatMap)
+	$('#stdDev').on('change', app.refreshHeatMap)
 	$('#reload').on("click", function(e) {
 		e.preventDefault();
 		app.refreshHeatMap();
@@ -52,19 +53,32 @@ app.drawDartBoard = function() {
 
 app.refreshHeatMap = function() {
 	app.colorScheme = ( $('#colorScheme').is(':checked') ? 'color' : 'bw')
-	var url = 'data/symmetric/';
-	if(app.URLparams.acc) {
-		url += 'acc-' + app.URLparams.acc + '.json';
+	//set app.sd
+	app.sd = false;
+	if(app.URLparams.sd) {
+		//app.sd = app.acc2sd(app.URLparams.acc);
+		app.sd = app.URLparams.sd;
 	} else {
-		url += ( $('#fileName').val() || '<sd-0 class="5"></sd-0>.json' ); 
+		app.sd = parseFloat($('#stdDev').val()).toFixed(1);
 	}
-	console.log(url)
+	//make url
+	if(app.sd) {
+		if(app.sd<10) app.sd = '0' + app.sd;
+		var url = 'data/symmetric/' + 'sd-' + app.sd + '.json';
+	} else {
+		url = $('#filePath').val();
+	}
+	//display standard deviation
+	$('.stdDevDisp').html(app.sd)
+	//make the call
 	$.ajax({
 		url: url,
 		cache: false
 	})
 	.done(app.processData)
-	.fail(app.failedAJAX)
+	.fail(function() {
+		app.failedAJAX(url)
+	})
 }
 
 app.processData = function(data) {
@@ -80,7 +94,8 @@ app.processData = function(data) {
 	app.generateLegend();
 }
 
-app.failedAJAX = function() {
+app.failedAJAX = function(url) {
+	$('#failedAJAX #badURL').html(url)
 	$('#failedAJAX').modal('show');
 }
 

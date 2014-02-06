@@ -45,7 +45,8 @@
         </canvas>
       </div>
       <div id="infoPanel" class="col-md-3 ">
-        <h2>Pixel Values</h2>
+        <h3>Numbers</h3>
+        <p>&sigma;<sub>R</sub> = <span class="stdDevDisp"></span></p>
         <table class="table">
           <th>Pixel</th>
           <th>Value</th>
@@ -62,7 +63,6 @@
             <td id="diffPixelValue"></td>
           </tr>
         </table>
-        <br>
         <h3>Settings</h3>
         <div class="form-group">
           <label for="color">In Colour</label>
@@ -71,14 +71,14 @@
         <h3>Load New Heatmap</h3>
         <form target="/">
           <div class="form-group">
-            <label for="acc">Accuracy: </label>
-            <input id="acc" class="form-control" type="number" min=0 max=2 step=0.01>
+            <label for="stdDev">&sigma;<sub>R</sub>: <span class="stdDevDisp">3.0</span></label>
+            <input id="stdDev" class="" type="range" min=0.5 max=20 step=0.5 value=3.0>
           </div>
           <div class="form-group">
-            <label for="filname">Filename: </label>
-            <input id="fileName" class="form-control" type="text">
+            <label for="filePath">File Path: </label>
+            <input id="filePath" class="form-control" type="text">
           </div>
-          <input id="reload" class="btn btn-primary" type="submit">
+          <input id="reload" class="btn btn-primary" type="submit" value="Reload">
         </form>
       </div> <!-- #infoPanel -->
     </div> <!-- .row -->
@@ -101,6 +101,7 @@
         </div>
         <div class="modal-body">
           <p>Either you have mistyped the filename or this file does not exist. Double check your spelling and try again</p>
+          <p>File URL: <code id="badURL"></code></p>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
