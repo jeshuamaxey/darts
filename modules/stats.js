@@ -110,16 +110,17 @@ stats.nsigfact = 1;
 // i / 200 = fraction of darts within the bull
 
 stats.returnStdDev = function(percentage) {
-for (var i = 1; i <= percentage*2; i++) {
-	var resultaccuracy = 0;
-	do {
-		resultaccuracy = stats.erf((stats.nsigfact/1000)*Math.pow(2, -0.5));
-		stats.nsigfact += 1;
+	percentage = Math.round(percentage*2)/2;
+	for (var i = 1; i <= percentage*2; i++) {
+		var resultaccuracy = 0;
+		do {
+			resultaccuracy = stats.erf((stats.nsigfact/1000)*Math.pow(2, -0.5));
+			stats.nsigfact += 1;
+		}
+		while (resultaccuracy < ((i/200) - 0.0005) || resultaccuracy > ((i/200) +0.0005))
+		stats.StdDevArr[i] = (stats.nsigfact/1000)-0.001;
 	}
-	while (resultaccuracy < ((i/200) - 0.0005) || resultaccuracy > ((i/200) +0.0005))
-	stats.StdDevArr[i] = (stats.nsigfact/1000)-0.001;
-}
-return 1/stats.StdDevArr[percentage*2]
+	return 1/stats.StdDevArr[percentage*2]
 }
 
 if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
