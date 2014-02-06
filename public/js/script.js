@@ -1,7 +1,5 @@
 var app = app || {};
 
-app.colorScheme = 'bw';
-
 app.pixelSize = 2;
 
 app.hm = {
@@ -11,8 +9,8 @@ app.hm = {
 }
 
 app.main = function() {
+	app.URLparams = app.getURLparams();
 	app.initialiseCanvases();
-	//app.drawDartBoard();
 	app.refreshHeatMap();
 	$('#canvasWrapper').mousemove(app.updateHoverPixel);
 	$('#canvasWrapper').on("click", app.updateFocusPixel);
@@ -54,7 +52,12 @@ app.drawDartBoard = function() {
 
 app.refreshHeatMap = function() {
 	app.colorScheme = ( $('#colorScheme').is(':checked') ? 'color' : 'bw')
-	var url = 'data/' + ($('#fileName').val() || 'darts.json'); 
+	var url = 'data/';
+	if(app.URLparams.acc) {
+		url += 'acc-' + app.URLparams.acc + '.json';
+	} else {
+		url += ($('#fileName').val() || 'acc=0.31.json'); 
+	}
 	$.ajax({
 			url: url,
 			cache: false
@@ -79,6 +82,33 @@ app.processData = function(data) {
 app.failedAJAX = function() {
 	$('#failedAJAX').modal('show');
 }
+
+app.getURLparams = function () {
+  // This function is anonymous, is executed immediately and 
+  // the return value is assigned to QueryString!
+  var query_string = {};
+  var query = window.location.search.substring(1);
+  var vars = query.split("&");
+  for (var i=0;i<vars.length;i++) {
+    var pair = vars[i].split("=");
+    	// If first entry with this name
+    if (typeof query_string[pair[0]] === "undefined") {
+      query_string[pair[0]] = pair[1];
+    	// If second entry with this name
+    } else if (typeof query_string[pair[0]] === "string") {
+      var arr = [ query_string[pair[0]], pair[1] ];
+      query_string[pair[0]] = arr;
+    	// If third or later entry with this name
+    } else {
+      query_string[pair[0]].push(pair[1]);
+    }
+  } 
+  return query_string;
+}
+
+/*
+* All drawing related functions
+*/
 
 app.generateLegend = function() {
 	app.lgCanvas = document.getElementById('legend');
