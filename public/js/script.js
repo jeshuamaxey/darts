@@ -1,5 +1,7 @@
 var app = app || {};
 
+app.colorScheme = 'color';
+
 app.pixelSize = 2;
 
 app.hm = {
@@ -60,7 +62,6 @@ app.refreshHeatMap = function() {
 }
 
 app.processData = function(data) {
-	console.log(data)
 	app.data = data;
 	app.data.max = 0;
 	app.data.forEach(function(arr) {
@@ -114,12 +115,13 @@ app.updateHoverPixel = function(e) {
 
 app.updateFocusPixel = function(e) {
 	app.clearCanvas(app.ovCtx, app.ovCanvas);
+	console.log(e.offsetX, e.offsetY)
 	var x = Math.floor(e.offsetX/app.pixelSize);
 	var y = Math.floor(e.offsetY/app.pixelSize);
 	if(x < app.data.length && y < app.data.length) {
 		var val = app.data[x][y];
 		//update canvas
-		app.drawCircle(app.ovCtx, x*app.pixelSize, y*app.pixelSize, 5);
+		app.drawCircle(app.ovCtx, (x*app.pixelSize) + app.pixelSize/2, (y*app.pixelSize) + app.pixelSize/2, 5);
 		//update info panel
 		app.focuxPxVal = val;
 		$('#focusPixelValue').html(app.focuxPxVal.toFixed(4));
@@ -134,7 +136,7 @@ app.resizeCanvas = function() {
 app.plotPixel = function(x, y, size, val) {
 	app.hmCtx.beginPath();
 	app.hmCtx.rect(x, y, size, size);
-  app.hmCtx.fillStyle = app.color(val/app.data.max); // 'rgba(255,255,255,1)';
+  app.hmCtx.fillStyle = app.color(val/app.data.max);
   app.hmCtx.fill();
   // app.hmCtx.lineWidth = 0;
   // app.hmCtx.strokeStyle = 'black';
@@ -148,8 +150,12 @@ app.drawCircle = function(ctx, x, y, rad) {
 	ctx.closePath();
 }
 
-//takes a value in the range 0-1
 app.color = function(val) {
+	return (app.colorScheme == 'bw') ? app.greyScale(val) : app.fullColor(val);
+}
+
+//takes a value in the range 0-1
+app.fullColor = function(val) {
 	var c = Math.floor(5*255*val);
 	var r = 255, g = 255, b = 255;
 	while(c > 0) {
@@ -163,6 +169,12 @@ app.color = function(val) {
 	var color = 'rgba('+r+','+g+','+b+',1)';
 	//var color = 'rgba('+88+','+shade+','+shade+',1)';
 	return color;
+}
+
+//
+app.greyScale = function(val) {
+	var shade = 255*val;
+	return 'rgb('+shade+','+shade+','+shade+')';
 }
 
 //a handy function to clear the canvas (X-browser friendly)
