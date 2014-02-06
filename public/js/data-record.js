@@ -47,6 +47,7 @@ app.main = function() {
 	$('#calibrate').on('click', app.initialiseCalib);
 	$('#clearData').on('click', app.clearData);
 	$('#missedDart').on('click', app.missedDart);
+	$('#reviewData').on('click', app.generateDataReview);
 
 	$('#submitExport').on('click', app.submitExport);
 
@@ -234,23 +235,43 @@ app.clearData = function() {
 /*
 *
 */
+app.generateDataReview = function() {
+	var data = app.generateProcessedData();
+	var dim = ['X','Y','R'];
+	//only fill table if there's data
+	if(data) {
+		for (var i = dim.length - 1; i >= 0; i--) {
+			$('#stdDev'+ dim[i] ).html(data['mm'+ dim[i] ].stdDev)
+			$('#mean'+ dim[i] ).html(data['mm'+ dim[i] ].mean)
+		}
+	}
+}
+
+/*
+*
+*/
 app.generateProcessedData = function() {
-	var processedData = {};
-	var val = ['mmR','mmX','mmY','pxR','pxX','pxY'];
-	var arr = [];
+	if(app.dataClicks == undefined || app.dataClicks.length == 0) {
+		alert('no fackin datumz')
+		return false;
+	} else {
+		var processedData = {};
+		var val = ['mmR','mmX','mmY','pxR','pxX','pxY'];
+		var arr = [];
 
-	for (var i = val.length - 1; i >= 0; i--) {
-		arr = [];
-		processedData[val[i]] = {};
-		//create an array of just the values we're interested in
-		for (var j = app.dataClicks.length - 1; j >= 0; j--) {
-			arr.push(app.dataClicks[j][val[i]])
+		for (var i = val.length - 1; i >= 0; i--) {
+			arr = [];
+			processedData[val[i]] = {};
+			//create an array of just the values we're interested in
+			for (var j = app.dataClicks.length - 1; j >= 0; j--) {
+				arr.push(app.dataClicks[j][val[i]])
+			};
+			processedData[val[i]].mean = stats.mean(arr)
+			processedData[val[i]].stdDev = stats.stdDev(arr)
 		};
-		processedData[val[i]].mean = stats.mean(arr)
-		processedData[val[i]].stdDev = stats.stdDev(arr)
-	};
 
-	return processedData;
+		return processedData;
+	}
 }
 
 /*

@@ -26,6 +26,9 @@
           <li><a href="/">Heatmaps</a></li>
           <li class="active"><a href="/data.html">Data Recorder</a></li>
         </ul>
+        <ul class="nav navbar-nav navbar-right">
+	        <li><a href="http://github.com/jeshuamaxey/darts">GitHub</a></li>
+	      </ul>
       </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
   </nav>
@@ -42,7 +45,7 @@
 			<button id="startStream" class="btn btn-default">Start</button>
 			<button id="stopStream" class="btn btn-default">Stop</button>
 			<button id="calibrate" class="btn btn-default">Calibrate</button>
-			<button id="showExportDialog" class="btn btn-default" data-toggle="modal" data-target="#dataReview">Prepare Export</button>
+			<button id="reviewData" class="btn btn-default" data-toggle="modal" data-target="#dataReview">Review Data</button>
 			<button id="clearData" class="btn btn-danger">Clear Data</button>
 			<hr>
 			<div id="controls" class="controls">
@@ -118,16 +121,37 @@
 					<!-- Tab panes -->
 					<div class="tab-content">
 					  <div class="tab-pane active" id="reviewPane">
-					  	<p>All teh datumz...</p>
+					  	<h2>Data</h2>
+					  	<table class="table">
+					  		<th></th>
+			          <th>&sigma;</th>
+			          <th>&mu;</th>
+			          <tr>
+			            <td>x</td>
+			            <td id="stdDevX"></td>
+			            <td id="meanX"></td>
+			          </tr>
+			          <tr>
+			            <td>y</td>
+			            <td id="stdDevY"></td>
+			            <td id="meanY"></td>
+			          </tr>
+			          <tr>
+			            <td>R</td>
+			            <td id="stdDevR"></td>
+			            <td id="meanR"></td>
+			          </tr>
+			        </table>
 					  </div>
 					  <div class="tab-pane" id="exportPane">
+					  	<h2>Export</h2>
 					  	<form id="exportForm" class="form" action="/">
 						<div class="form-group">
-							<label for="name">Name: </label>
+							<label for="name">Player Name: </label>
 							<input id="name" class="form-control" type="text">
 						</div>
 						<div class="form-group">
-							<label for="fileName" disabled>File Name: </label>
+							<label for="fileName" disabled>File Name (optional): </label>
 							<input id="fileName" class="form-control" type="text">
 						</div>
 						<div class="form-group">
@@ -142,7 +166,7 @@
 							<label for="notes">Notes:</label><br>
 							<textarea name="" id="notes" cols="30" rows="10"></textarea>
 						</div>
-						<input id="submitExport" type="submit" class="btn btn-primary" value="Save to disk and Clear">
+						<input id="submitExport" type="submit" class="btn btn-primary" value="Save to disk and clear data">
 					</form>
 					  </div>
 					</div>
