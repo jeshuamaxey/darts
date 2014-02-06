@@ -97,33 +97,26 @@ stats.stdDev = function(arr, mean) {
 	return Math.sqrt(variance/arr.length);
 }
 
-stats.StdDevArr = [];
-stats.StdDevArr[0] = 0.001 // Setting some sort of Standard Deviation for 0% darts in the bull
-
-stats.nsigfact = 1;
-
 // erf(n divided by root 2) = fraction of darts thrown contained within the n sigma
 // interval.
-// For a given accuracy, n values are trialled in the error function until one falls
-// within an error bound of the accuracy we want.
-
-// i / 200 = fraction of darts within the bull
+// For a given percentage of darts within the bull, n values are trialled in the error
+// function until one falls within an error bound of the percentage we want.
 
 stats.returnStdDev = function(percentage) {
+	trialn = 1; // erf(0) is not defined.
 	percentage = Math.round(percentage*2)/2;
 	for (var i = 1; i <= percentage*2; i++) {
 		var resultaccuracy = 0;
 		do {
-			resultaccuracy = stats.erf((stats.nsigfact/1000)*Math.pow(2, -0.5));
-			stats.nsigfact += 1;
+			resultaccuracy = stats.erf((trialn/1000)*Math.pow(2, -0.5));
+			trialn += 1;
 		}
 		while (resultaccuracy < ((i/200) - 0.0005) || resultaccuracy > ((i/200) +0.0005))
-		//stats.StdDevArr[i] = (stats.nsigfact/1000)-0.001;
 	}
-	return 1/((stats.nsigfact/1000)-0.001);
+	return 1/((trialn/1000)-0.001);
 }
 
-var test = stats.returnStdDev(50);
+var test = stats.returnStdDev(50.11);
 console.log(test);
 
 if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
