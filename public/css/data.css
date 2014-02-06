@@ -3,13 +3,10 @@ html, body {
 	padding: 0;
 
 	font-family: 'helvetica', sans-serif;
-
-	overflow: hidden;
 }
 
 .wrapper {
 	position: relative;
-	margin: 40px;
 	overflow: visible;
 	/* ratio h:w must be 3:4
 	*	vid and canvas inherit
@@ -62,42 +59,12 @@ html, body {
 	color: rgba(200,40,0, 1);
 }
 
-.settingsPanel {
-	position: absolute;
-	right: 0;
-	width: 350px;
-	height: 100%;
-	padding: 10px;
-
-	background-color: rgba(0,150,150,0.3);
-	border-left: solid 1px;
-}
-
-.sliderWrapper {
-	min-height: 150px;
-	min-width: 150px;
-}
-
-.calibControls, .calibClickDialog {
+.calibControls, .calibClickDialog, .recordClickDialog {
 	display: none;
 }
 
-.rotationControls {
-	max-width: 50%;
-	float: left;
-}
-
-.translationControls {
-	max-width: 50%;
-	float: right;
-}
-
-.rotationSlider .translationSlider {
-	min-width: 200px;
-}
-
-.recordClickDialog {
-	display: none;
+input[type="range"] {
+	max-width: 90%;
 }
 
 .clickCoords {

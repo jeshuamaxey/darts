@@ -4,41 +4,98 @@
   <meta charset="UTF-8">
   <title>Darts</title>
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="components/bootstrap/dist/css/bootstrap.css">
 </head>
 <body>
-  <div id="canvasWrapper" class="canvasWrapper">
-    <canvas   id="heatmap" class="heatmap"
+  <nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">Darts</a>
+      </div>
+
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+          <li class="active"><a href="#">Heatmaps</a></li>
+          <li><a href="/data.html">Data Recorder</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="#">Link</a></li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><a href="#">Action</a></li>
+              <li><a href="#">Another action</a></li>
+              <li><a href="#">Something else here</a></li>
+              <li class="divider"></li>
+              <li><a href="#">Separated link</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+  </nav>
+  <div id="canvasWrapper" class="container">
+    <div class="row">
+      <div class="col-md-8">
+        <canvas   id="heatmap" class="heatmap"
               height="700px"
               width = "700px">
-    </canvas>
-    <canvas   id="overlay" class="overlay"
-              height="700px"
-              width = "700px">
-    </canvas>
-  </div>
-  <div id="infoPanel" class="infoPanel">
-		<h2>Pixel Value:</h2>
-		<p>
-			<label>Hover: </label><span id="hoverPixelValue"></span>
-		</p>
-		<p>
-			<label>Fixed: </label><span id="focusPixelValue"></span>
-		</p>
-    <p>
-      <label>Diff: </label><span id="diffPixelValue"></span>
-    </p>
-    <form target="/">
-      <label for="">Filename</label><input id="fileName" type="text">
-      <input id="reload" type="submit">
-    </form>
-    <p>
-      <button id="spin">DO NOT PRESS!</button>
-    </p>
-	</div>
-  <canvas 	id="legend" class="legend"
-  					height="40px"
+        </canvas>
+        <canvas   id="overlay" class="overlay"
+                  height="700px"
+                  width = "700px">
+        </canvas>
+      </div>
+      <div id="infoPanel" class="col-md-4 ">
+        <table class="table">
+          <h2>Pixel Values</h2>
+          <th>Pixel</th>
+          <th>Value</th>
+          <tr>
+            <td>Hover</td>
+            <td id="hoverPixelValue"></td>
+          </tr>
+          <tr>
+            <td>Fixed</td>
+            <td id="focusPixelValue"></td>
+          </tr>
+          <tr>
+            <td>Diff</td>
+            <td id="diffPixelValue"></td>
+          </tr>
+        </table>
+        <hr>
+        <h3>Load New Heatmap</h3>
+        <form target="/">
+          <div class="form-group">
+            <label for="acc">Accuracy: </label>
+            <input id="acc" class="form-control" type="number" min=0 max=2 step=0.01>
+          </div>
+          <div class="form-group">
+            <label for="filname">Filename: </label>
+            <input id="fileName" class="form-control" type="text">
+          </div>
+          <input id="reload" class="btn btn-default" type="submit">
+        </form>
+      </div> <!-- #infoPanel -->
+    </div> <!-- .row -->
+    <div class="row">
+      <div class="col-md-8">
+        <canvas   id="legend" class="legend"
+            height="40px"
             width = "700px">
-	</canvas>
+        </canvas>
+      </div>
+    </div>
+  </div>
   <div class="modalWrapper">
     <div id="failedAJAX" class="modal">
       <span class="close">&times;</span>

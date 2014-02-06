@@ -45,7 +45,7 @@ app.main = function() {
 	$('#startStream').on('click', app.startVideo);
 	$('#stopStream').on('click', app.stopVideo);
 	$('#calibrate').on('click', app.initialiseCalib);
-	$('#showExportDialog').on('click', app.showExportDialog);
+	//$('#showExportDialog').on('click', app.showExportDialog);
 	$('#clearData').on('click', app.clearData);
 	$('#missedDart').on('click', app.missedDart);
 
@@ -163,13 +163,6 @@ app.recordClick = function(e) {
 	};
 	app.dataClicks.push(attempt);
 	$('#clickCoords').prepend("<li>("+x+ ", "+y+") - "+(attempt.mmR).toFixed(2)+"mm from bull.</li>");
-}
-
-/*
-* Bring up the export options
-*/
-app.showExportDialog = function() {
-	$('#exportDataDialog').show();
 }
 
 /*

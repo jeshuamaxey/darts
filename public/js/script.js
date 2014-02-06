@@ -19,7 +19,6 @@ app.main = function() {
 		app.refreshHeatMap();
 		return false;
 	});
-	$('#spin').on("click", app.toggleSpin);
 }
 
 
@@ -58,10 +57,6 @@ app.refreshHeatMap = function() {
 		})
 		.done(app.processData)
 		.fail(app.failedAJAX)
-}
-
-app.toggleSpin = function() {
-	$('#heatmap').toggleClass('spinning');
 }
 
 app.processData = function(data) {
@@ -116,8 +111,8 @@ app.updateHoverPixel = function(e) {
 	var y = Math.floor(e.offsetY/app.pixelSize);
 	if(x < app.data.length && y < app.data.length) {
 		var val = app.data[x][y];
-		$('#hoverPixelValue').html(val);
-		$('#diffPixelValue').html(Math.abs(val - app.focuxPxVal));
+		$('#hoverPixelValue').html(val.toFixed(4));
+		$('#diffPixelValue').html(Math.abs(val - app.focuxPxVal).toFixed(4));
 	}
 }
 
@@ -131,7 +126,7 @@ app.updateFocusPixel = function(e) {
 		app.drawCircle(app.ovCtx, x*app.pixelSize, y*app.pixelSize, 5);
 		//update info panel
 		app.focuxPxVal = val;
-		$('#focusPixelValue').html(app.focuxPxVal);
+		$('#focusPixelValue').html(app.focuxPxVal.toFixed(4));
 	}
 }
 
