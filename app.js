@@ -21,7 +21,6 @@ app.make2DMesh = function(size) {
 }
 
 app.fillMesh = function() {
-	var mean = app.mesh.length/2;
 	for (x = 0; x < config.meshSize; x++) {
 		for (y = 0; y < config.meshSize; y++) {
 			app.mesh[x][y] = db.dartboard(x,y);
@@ -103,7 +102,6 @@ app.fakeData = function(n) {
 app.mesh = app.make2DMesh(config.meshSize);
 
 app.zeroMesh();
-
 
 //update model variables
 sd = 25.0;
