@@ -241,8 +241,8 @@ app.generateDataReview = function() {
 	//only fill table if there's data
 	if(data) {
 		for (var i = dim.length - 1; i >= 0; i--) {
-			$('#stdDev'+ dim[i] ).html(data['mm'+ dim[i] ].stdDev);
-			$('#mean'+ dim[i] ).html(data['mm'+ dim[i] ].mean);
+			$('#stdDev'+ dim[i] ).html((data['mm'+ dim[i] ].stdDev).toFixed(4) + ' mm');
+			$('#mean'+ dim[i] ).html((data['mm'+ dim[i] ].mean).toFixed(4) + ' mm');
 		}
 		//$('#goToHeatmap').attr('href', '/?acc=').removeClass('disabled');
 		var sd = Math.round(data.mmR.stdDev*2)/2

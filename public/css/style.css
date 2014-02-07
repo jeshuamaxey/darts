@@ -1,3 +1,8 @@
+/* overwrite bootstrap styles*/
+.navbar {
+	margin-bottom: 0;
+}
+
 /* heatmap canvas styles */
 
 .heatmap {
