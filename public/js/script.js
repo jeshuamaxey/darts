@@ -38,21 +38,29 @@ app.initialiseCanvases = function() {
 app.drawDartBoard = function() {
 	//set metrics
 	app.db = {};
-	app.db.x		= ( app.hm.width - (2*app.hm.margin) ) / 2 + app.hm.margin;
-	app.db.y 		= ( app.hm.width - (2*app.hm.margin) ) / 2 + app.hm.margin;
-	app.db.rad 	= ( app.hm.width - (2*app.hm.margin) ) / 2;
-	//draw
-	//draw perimeter
-  app.drawCircle(app.db.x, app.db.y, app.db.rad+(app.hm.margin));
+	app.db.x = app.hm.width/2; // app.db.x is the central x coordinate.
+	app.db.y = app.hm.height/2; // app.db.y is the central y coordinate.
+	app.db.rad = app.hm.width/2;
+	
   //treble ring
-  app.drawCircle(app.db.x, app.db.y, app.db.rad);
-  app.drawCircle(app.db.x, app.db.y, app.db.rad-20);
+  app.drawCircle(app.ovCtx, app.db.x, app.db.y, app.db.rad*99/200);
+  app.drawCircle(app.ovCtx, app.db.x, app.db.y, app.db.rad*107/200);
   //double ring
-  app.drawCircle(app.db.x, app.db.y, app.db.rad-110);
-  app.drawCircle(app.db.x, app.db.y, app.db.rad-110-20);
+  app.drawCircle(app.ovCtx, app.db.x, app.db.y, app.db.rad*170/200);
+  app.drawCircle(app.ovCtx, app.db.x, app.db.y, app.db.rad*162/200);
   //bull
-  app.drawCircle(app.db.x, app.db.y, app.db.rad-285);
-  app.drawCircle(app.db.x, app.db.y, app.db.rad-285-10);
+  app.drawCircle(app.ovCtx, app.db.x, app.db.y, app.db.rad*6.35/200);
+  app.drawCircle(app.ovCtx, app.db.x, app.db.y, app.db.rad*15.9/200);
+  
+  for (var i = 0; i < 20; i++) {
+  	var theta = Math.Pi/20 + i*Math.Pi/10;
+  	var innerPoint = ((app.db.rad*15.9/200) * Math.cos(theta)) - app.db.x;
+  	var outerPoint = ((app.db.rad*170/200) * Math.cos(theta)) - app.db.x;
+
+    app.ovCtx.beginPath();
+    context.moveTo(innerPoint);
+    context.lineTo(outerPoint);
+    context.stroke();
 }
 
 app.refreshHeatMap = function() {
