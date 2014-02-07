@@ -61,6 +61,7 @@ app.drawDartBoard = function() {
     context.moveTo(innerPoint);
     context.lineTo(outerPoint);
     context.stroke();
+    }
 }
 
 app.refreshHeatMap = function() {
