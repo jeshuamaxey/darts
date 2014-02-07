@@ -51,18 +51,25 @@ app.drawDartBoard = function() {
   //bull
   app.drawCircle(app.ovCtx, app.db.x, app.db.y, app.db.rad*6.35/200);
   app.drawCircle(app.ovCtx, app.db.x, app.db.y, app.db.rad*15.9/200);
+
+  var theta, innerX, innerY, outerX, outerY;
   
   for (var i = 0; i < 20; i++) {
-  	var theta = Math.Pi/20 + i*Math.Pi/10;
-  	var innerX = Math.round(app.db.rad*15.9/200 * Math.cos(theta) + app.db.x);
-  	var innerY = Math.round(app.db.y - (app.db.rad*15.9/200 * Math.cos(theta)));
-  	var outerX = Math.round(app.db.rad*170/200 * Math.sin(theta) + app.db.x);
-  	var outerY = Math.round(app.db.y - (app.db.rad*170/200 * Math.sin(theta)));
+  	//Math.PI not Math.Pi
+  	theta = Math.PI/20 + i*Math.PI/10;
+  	innerX = Math.round(app.db.rad*15.9/200 * Math.cos(theta) + app.db.x);
+  	innerY = Math.round(app.db.y - (app.db.rad*15.9/200 * Math.cos(theta)));
+  	outerX = Math.round(app.db.rad*170/200 * Math.sin(theta) + app.db.x);
+  	outerY = Math.round(app.db.y - (app.db.rad*170/200 * Math.sin(theta)));
 
-    app.ovCtx.beginPath();
-    context.moveTo(innerPoint);
-    context.lineTo(outerPoint);
-    context.stroke();
+  	console.log(i, theta, innerX, innerY, outerX, outerY);
+  	//use this to draw lines a few at a time and debug
+    if(1==0 || i==1 || i==2) {
+    		app.ovCtx.beginPath();
+        app.ovCtx.moveTo(innerX, innerY);
+        app.ovCtx.lineTo(outerX, outerY);
+        app.ovCtx.stroke();
+      }
     }
 }
 
@@ -114,6 +121,7 @@ app.processData = function(data) {
 	app.pixelSize = app.hm.width/app.data.length;
 	app.generateHeatmap();
 	app.generateLegend();
+	app.drawDartBoard();
 }
 
 app.failedAJAX = function(url) {
@@ -253,7 +261,6 @@ app.greyScale = function(val) {
 // http://jsfiddle.net/jeshuamaxey/YQP82/2/
 app.clearCanvas = function(context, canvas) {
 	//context.clearRect(0, 0, canvas.width, canvas.height);
-	console.log(context.fillStyle)
   var w = canvas.width;
   canvas.width = 1;
   canvas.width = w;
