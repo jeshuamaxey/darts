@@ -54,8 +54,10 @@ app.drawDartBoard = function() {
   
   for (var i = 0; i < 20; i++) {
   	var theta = Math.Pi/20 + i*Math.Pi/10;
-  	var innerPoint = ((app.db.rad*15.9/200) * Math.cos(theta)) - app.db.x;
-  	var outerPoint = ((app.db.rad*170/200) * Math.cos(theta)) - app.db.x;
+  	var innerX = Math.round(app.db.rad*15.9/200 * Math.cos(theta) + app.db.x);
+  	var innerY = Math.round(app.db.y - (app.db.rad*15.9/200 * Math.cos(theta)));
+  	var outerX = Math.round(app.db.rad*170/200 * Math.sin(theta) + app.db.x);
+  	var outerY = Math.round(app.db.y - (app.db.rad*170/200 * Math.sin(theta)));
 
     app.ovCtx.beginPath();
     context.moveTo(innerPoint);
