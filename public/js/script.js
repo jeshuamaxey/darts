@@ -19,7 +19,13 @@ app.main = function() {
 	$('#canvasWrapper').mousemove(app.updateHoverPixel);
 	$('#canvasWrapper').on("click", app.updateFocusPixel);
 	$('#colorScheme').on('change', app.refreshHeatMap)
-	$('#stdDev').on('change', app.refreshHeatMap)
+	$('#stdDev').on('change', function() {
+		app.sd = parseFloat($('#stdDev').val()).toFixed(1);
+		if(app.sd<100) app.sd = '0' + app.sd;
+		if(app.sd<10) app.sd = '0' + app.sd;
+		$('.stdDevDisp').html(app.sd)
+		if($('#updateWithSlider').is(':checked')) app.refreshHeatMap();
+	})
 	$('#reload').on("click", function(e) {
 		e.preventDefault();
 		app.refreshHeatMap();
@@ -80,14 +86,16 @@ app.refreshHeatMap = function() {
 	if(app.firstDraw && app.URLparams.sd) {
 		//app.sd = app.acc2sd(app.URLparams.acc);
 		app.sd = app.URLparams.sd;
+		$('#stdDev').val(app.sd)
+		//remember we did this
 		app.firstDraw = !app.firstDraw;
-	} else {
-		app.sd = parseFloat($('#stdDev').val()).toFixed(1);
 	}
 	//make url
  if($('#filePath').val().length) {
 		url = $('#filePath').val();
 	} else {
+		app.sd = parseFloat($('#stdDev').val()).toFixed(1);
+		if(app.sd<100) app.sd = '0' + app.sd;
 		if(app.sd<10) app.sd = '0' + app.sd;
 		var url = 'data/symmetric/' + 'sd-' + app.sd + '.json';
 	}

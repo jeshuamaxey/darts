@@ -104,12 +104,13 @@ app.mesh = app.make2DMesh(config.meshSize);
 app.zeroMesh();
 
 //update model variables
-sd = 25.0;
+sd = 250.0;
 //crunch da numberz
 app.generateHeatmap(sd, sd);
 //output data
 var fileName = 'sd-';
 if(sd<10) fileName += '0';
+if(sd<100) fileName += '0';
 fileName += sd.toFixed(1);
 fileName += '.json';
 app.writeToFile(fileName, 'public/data/symmetric/');
