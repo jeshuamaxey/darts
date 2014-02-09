@@ -9,7 +9,7 @@ var port = 3000;
 //for serving static pages
 app.use(express.static(path.join(__dirname, 'public')));
 //for parsing the POSTs in the API
-app.use(express.bodyParser());
+app.use(express.urlencoded());
 
 app.post('/api/store', api.storeThrows);
 
