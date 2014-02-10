@@ -46,8 +46,8 @@ stats.gaussian2D = function(x, y, meanX, meanY, sdX, sdY) {
 	var varY = sdY*sdY;
 	//check the normalisation constant
   var e = Math.exp( - ( Math.pow(x - meanX, 2) / (2 * sdX) + Math.pow(y - meanY, 2) / (2 * sdY) ) );
-  var m = sdX * sdY * Math.sqrt(2 * Math.PI);
-  return ( (e / m) < 0.00001 ? 0 : e/m );
+  var m = sdX * sdY * 2 * Math.PI;
+  return ( (e / m) < 0.00000001 ? 0 : e/m );
 }
 
 // Currently going to have accuracy as a fraction rather than a percentage
