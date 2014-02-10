@@ -12,6 +12,9 @@ var db = require('./modules/dartboard.js');
 // Read in the mesh size
 //config.meshSize = config.meshSize;
 
+app.mmToPix = config.meshSize/400;
+app.pixTomm = 400/config.meshSize;
+
 app.make2DMesh = function(size) {
 	var arr = new Array(size);
 	for (var i = arr.length - 1; i >= 0; i--) {
@@ -104,7 +107,8 @@ app.mesh = app.make2DMesh(config.meshSize);
 app.zeroMesh();
 
 //update model variables
-sd = 250.0;
+
+sd = 250.0*app.mmToPix;
 //crunch da numberz
 app.generateHeatmap(sd, sd);
 //output data
