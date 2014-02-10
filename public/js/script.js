@@ -62,7 +62,7 @@ app.drawDartBoard = function() {
   
   for (var i = 0; i < 20; i++) {
   	//Math.PI not Math.Pi
-  	theta = Math.PI/20 + i*Math.PI/10;
+  	theta = Math.PI/20 + i*(Math.PI/10);
   	innerX = Math.round(app.db.rad*15.9/200 * Math.cos(theta) + app.db.x);
   	innerY = Math.round(app.db.y - (app.db.rad*15.9/200 * Math.cos(theta)));
   	outerX = Math.round(app.db.rad*170/200 * Math.sin(theta) + app.db.x);
