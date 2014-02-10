@@ -107,7 +107,7 @@ app.mesh = app.make2DMesh(config.meshSize);
 app.zeroMesh();
 
 //update model variables
-sd = 250.0*app.mmToPix;
+sd = 30.0*app.mmToPix;
 //crunch da numberz
 app.generateHeatmap(sd, sd);
 //output data
