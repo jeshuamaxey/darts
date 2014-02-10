@@ -12,9 +12,18 @@ var db = require('./modules/dartboard.js');
 // Read in the mesh size
 //config.meshSize = config.meshSize;
 
-app.mmToPix = config.meshSize/400;
-app.pixTomm = 400/config.meshSize;
+config.mm2px = config.meshSize/400;
+config.px2mm = 1/config.mm2px;
 
+//creates a standard deviation in mm and px
+app.setStdDev = function(sd) {
+	return {
+		'mm' : sd,
+		'px' : sd*config.mm2px
+	}
+}
+
+//creates a square 2D mesh with dimensions size x size
 app.make2DMesh = function(size) {
 	var arr = new Array(size);
 	for (var i = arr.length - 1; i >= 0; i--) {
@@ -23,17 +32,10 @@ app.make2DMesh = function(size) {
 	return arr;
 }
 
-app.fillMesh = function() {
-	for (x = 0; x < config.meshSize; x++) {
-		for (y = 0; y < config.meshSize; y++) {
-			app.mesh[x][y] = db.dartboard(x,y);
-		}
-	}
-}
-
+//creates the heatmap
 app.generateHeatmap = function(sdX, sdY) {
 	//creates nice progress bar in terminal
-	app.bar = new progressBar('sdX: '+sdX.toFixed(1)+', sdY: '+sdY.toFixed(1)+' [:bar] :percent :etas', {
+	app.bar = new progressBar('sdX: '+sdX.mm.toFixed(1)+'mm, sdY: '+sdY.mm.toFixed(1)+'mm [:bar] :percent :etas', {
 	    complete: '='
 	  , incomplete: ' '
 	  , width: 80
@@ -51,14 +53,16 @@ app.generateHeatmap = function(sdX, sdY) {
 	app.bar = null;
 }
 
+//calculates the value of each pixel of the heatmap
 app.weight = function(pixelX, pixelY, sdX, sdY) {
 	for (var x = 0; x < config.meshSize; x++) {
 		for (var y = 0; y < config.meshSize; y++) {
-			app.mesh[pixelX][pixelY] += db.dartboard(x, y) * stats.gaussian2D(x, y, pixelX, pixelY, sdX, sdY);
+			app.mesh[pixelX][pixelY] += db.dartboard(x, y) * stats.gaussian2D(x, y, pixelX, pixelY, sdX.px, sdY.px);
 		}
 	}	
 }
 
+//sets all elements in the mesh to zero
 app.zeroMesh = function() {
 	for (x = 0; x < config.meshSize; x++) {
 		for (y = 0; y < config.meshSize; y++) {
@@ -67,14 +71,7 @@ app.zeroMesh = function() {
 	};
 }
 
-app.addToMesh = function(meanX, meanY) {
-	for (var x = app.mesh.length - 1; x >= 0; x--) {
-		for (var y = app.mesh.length - 1; y >= 0; y--) {
-			app.mesh[x][y] += stats.gaussian2D(x,y,meanX,meanY,400,400);//*db.dartboard(x,y);
-		}
-	}
-}
-
+//save the heatmap mesh to file
 app.writeToFile = function(fileName, dir) {
 	outFile = (dir || 'public/data/') + (fileName || 'output.json');
 
@@ -92,31 +89,30 @@ app.randomInt = function(randMax) {
 	return Math.floor(Math.random()*randMax);
 }
 
-app.fakeData = function(n) {
-	for(c=0;c<n;c++) {
-		var x = app.randomInt(config.meshSize);
-		var y = app.randomInt(config.meshSize);
-		app.addToMesh(x,y);
-	}
-}
-
 //SCRIPT BIT
 
-app.mesh = app.make2DMesh(config.meshSize);
+var sdMin = 3.0, sdMax = 50.0, sdStep = 1.0;
 
-app.zeroMesh();
+var loopLim = (sdMax-sdMin)/sdStep;
 
-//update model variables
-sd = 30.0*app.mmToPix;
-//crunch da numberz
-app.generateHeatmap(sd, sd);
-//output data
-var fileName = 'sd-';
-if(sd<10) fileName += '0';
-if(sd<100) fileName += '0';
-fileName += sd.toFixed(1);
-fileName += '.json';
-app.writeToFile(fileName, 'public/data/symmetric/');
+for(var c=0; c<loopLim; c++) {
+	//configure mesh
+	app.mesh = app.make2DMesh(config.meshSize);
+	app.zeroMesh();
+
+	//set standard deviation
+	sd = app.setStdDev(sdMin + c*sdStep);
+
+	//crunch da numberz
+	app.generateHeatmap(sd, sd);
+	//output data
+	var fileName = 'sd-';
+	if(sd.mm<10) fileName += '0';
+	if(sd.mm<100) fileName += '0';
+	fileName += sd.mm.toFixed(1);
+	fileName += '.json';
+	app.writeToFile(fileName, 'public/data/symmetric-new/');
+}
 
 /*
 * end big fat loop
