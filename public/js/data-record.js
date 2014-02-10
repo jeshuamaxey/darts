@@ -138,7 +138,7 @@ app.calculateCalibration = function() {
 	var dx = Math.abs(app.calibClicks[0].offsetX - app.calibClicks[1].offsetX);
 	var dy = Math.abs(app.calibClicks[0].offsetY - app.calibClicks[1].offsetY);
 	var pxDiameter = Math.sqrt(dx*dx + dy*dy);
-	var mmDiameter = 451; //in mm
+	var mmDiameter = 340; //in mm
 	app.px2mm = mmDiameter / pxDiameter;
 	//store origin offsets
 	app.originOffset = {
@@ -227,8 +227,17 @@ app.confirmExport = function() {
 * Record a missed dart
 */
 app.missedDart = function() {
-	$('#clickCoords').prepend("<li>MISS</li>");
-	app.dataClicks.push("NaN");
+	$('#clickCoords').prepend("<li>Miss</li>");
+	var x = 170, y = 170;
+	var attempt = {
+		'pxX': x,
+		'pxY': y,
+		'pxR': Math.sqrt(x*x + y*y),
+		'mmX': x*app.px2mm,
+		'mmY': y*app.px2mm,
+		'mmR': Math.sqrt(x*x + y*y)*app.px2mm
+	};
+	app.dataClicks.push(attempt);
 }
 
 /*
