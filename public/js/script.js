@@ -178,6 +178,8 @@ app.generateLegend = function() {
 		app.lgCtx.fillStyle = app.color(c/app.lg.width);
 		app.lgCtx.fill();
 	}
+	$('#pc100').html((app.data.max).toFixed(1))
+	$('#pc50').html((app.data.max/2).toFixed(1))
 }
 
 app.generateHeatmap = function() {

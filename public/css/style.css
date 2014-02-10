@@ -30,3 +30,20 @@ body:not(modal-open) .heatmap:hover {
 .overlay:hover {
 	cursor: crosshair;
 }
+
+#scale .marker {
+	width: 33%;
+	float: left;
+}
+
+#scale #pc0 {
+	text-align: left;
+}
+
+#scale #pc50 {
+	text-align: center;
+}
+
+#scale #pc100 {
+	text-align: right;
+}
