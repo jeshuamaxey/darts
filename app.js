@@ -54,7 +54,7 @@ app.generateHeatmap = function(sdX, sdY) {
 app.weight = function(pixelX, pixelY, sdX, sdY) {
 	for (var x = 0; x < config.meshSize; x++) {
 		for (var y = 0; y < config.meshSize; y++) {
-			app.mesh[pixelX][pixelY] += db.dartboard(x, y)* stats.gaussian2D(x, y, pixelX, pixelY, sdX, sdY);
+			app.mesh[pixelX][pixelY] += db.dartboard(x, y) * stats.gaussian2D(x, y, pixelX, pixelY, sdX, sdY);
 		}
 	}	
 }
@@ -107,7 +107,6 @@ app.mesh = app.make2DMesh(config.meshSize);
 app.zeroMesh();
 
 //update model variables
-
 sd = 250.0*app.mmToPix;
 //crunch da numberz
 app.generateHeatmap(sd, sd);
