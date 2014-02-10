@@ -91,7 +91,7 @@ app.randomInt = function(randMax) {
 
 //SCRIPT BIT
 
-var sdMin = 3.0, sdMax = 50.0, sdStep = 1.0;
+var sdMin = 14.0, sdMax = 20.0, sdStep = 1.0;
 
 var loopLim = (sdMax-sdMin)/sdStep;
 
@@ -111,7 +111,7 @@ for(var c=0; c<loopLim; c++) {
 	if(sd.mm<100) fileName += '0';
 	fileName += sd.mm.toFixed(1);
 	fileName += '.json';
-	app.writeToFile(fileName, 'public/data/symmetric-new/');
+	app.writeToFile(fileName, 'public/data/symmetric/');
 }
 
 /*

@@ -363,7 +363,7 @@ app.redrawGrid = function(canvas, ctx) {
 	var x = w/2;
 	var y = h/2;
 
-	var radInc = 15;//sumthin || 8;
+	var radInc = 45;//sumthin || 8;
 
 	//draw radial grid
 	for (var rad = 0; rad < w/2; rad += radInc) {
