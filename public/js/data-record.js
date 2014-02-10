@@ -28,9 +28,12 @@ app.overlayRy = 0;
 app.overlayRz = 0;
 app.overlayTx = 0;
 app.overlayTy = 0;
+app.overlayPerspective = 1000;
+app.overlayPx = 100;
+app.overlayPy = 100;
 //required to keep overlay in front of body
 //this way all click events can be detected
-app.overlayTz = 2000;
+app.overlayTz = 200;
 
 /*
 *	Called on page load
@@ -82,6 +85,9 @@ app.stopVideo = function() {
 * Initialises the calibration routine
 */
 app.initialiseCalib = function() {
+	// app.resetPerspective();
+	$('.strikethrough').removeClass('strikethrough');
+	$($('#calibClickInstructions li')[0]).addClass('clickHere')
 	if(!app.videoShowing) {
 		alert('You need to start the video before you can record any data');
 		return 0;
@@ -102,6 +108,8 @@ app.initialiseCalib = function() {
 	$('#resetRotation').on('click', app.resetRotation);
 	$('.translationSlider').on('change', app.updateTranslation);
 	$('#resetTranslation').on('click', app.resetTranslation);
+	$('.perspectiveSlider').on('change', app.updatePerspective);
+	$('#resetPerspective').on('click', app.resetPerspective);
 	
 	$('#calibClickDialog').show();
 	app.overlay.unbind('click');
@@ -290,12 +298,7 @@ app.updateRotation = function() {
 	$('span#xRotationDisp').html(app.overlayRx);
 	$('span#yRotationDisp').html(app.overlayRy);
 	$('span#zRotationDisp').html(app.overlayRz);
-	$('#overlay').css('-webkit-transform','translateX('+app.overlayTx+'px)'
-																			+ 'translateY('+app.overlayTy+'px)'
-																			+ 'translateZ('+app.overlayTz+'px)'
-																			+	'rotateX('+app.overlayRx+'deg)'
-																			+ 'rotateY('+app.overlayRy+'deg)'
-																			+ 'rotateZ('+app.overlayRz+'deg)');
+	app.applyTransform()
 }
 
 app.updateTranslation = function() {
@@ -303,12 +306,7 @@ app.updateTranslation = function() {
 	app.overlayTy = $('#yTranslation').val();
 	$('span#xTranslationDisp').html(app.overlayTx);
 	$('span#yTranslationDisp').html(app.overlayTy);
-	$('#overlay').css('-webkit-transform','translateX('+app.overlayTx+'px)'
-																			+ 'translateY('+app.overlayTy+'px)'
-																			+ 'translateZ('+app.overlayTz+'px)'
-																			+	'rotateX('+app.overlayRx+'deg)'
-																			+ 'rotateY('+app.overlayRy+'deg)'
-																			+ 'rotateZ('+app.overlayRz+'deg)');
+	app.applyTransform()
 }
 
 app.resetRotation = function() {
@@ -321,12 +319,7 @@ app.resetRotation = function() {
 	$('span#xRotationDisp').html(0);
 	$('span#yRotationDisp').html(0);
 	$('span#zRotationDisp').html(0);
-	$('#overlay').css('-webkit-transform','translateX('+app.overlayTx+'px)'
-																			+ 'translateY('+app.overlayTy+'px)'
-																			+ 'translateZ('+app.overlayTz+'px)'
-																			+	'rotateX('+app.overlayRx+'deg)'
-																			+ 'rotateY('+app.overlayRy+'deg)'
-																			+ 'rotateZ('+app.overlayRz+'deg)');
+	app.applyTransform()
 }
 
 app.resetTranslation = function() {
@@ -337,6 +330,47 @@ app.resetTranslation = function() {
 	$('#zTranslation').val(0)
 	$('span#xTranslationDisp').html(0);
 	$('span#yTranslationDisp').html(0);
+	app.applyTransform()
+}
+
+app.updatePerspective = function() {
+	console.log(99)
+	//set vals
+	app.overlayPerspective = $('#perspective').val();
+	app.overlayPx = $('#xOrigin').val();
+	app.overlayPy = $('#yOrigin').val();
+	//set sliders
+	$('#perspective').val(app.overlayPerspective);
+	$('#xOrigin').val(app.overlayPx);
+	$('#yOrigin').val(app.overlayPy);
+	//set readouts
+	$('span#perspectiveDisp').html(app.overlayPerspective);
+	$('span#xOriginDisp').html(app.overlayPx+'%');
+	$('span#yOriginDisp').html(app.overlayPy+'%');
+	//apply
+	app.applyTransform();
+}
+
+app.resetPerspective = function() {
+	//set vals
+	app.overlayPerspective = 1000;
+	app.overlayPx = 100;
+	app.overlayPy = 100;
+	//set sliders
+	$('#perspective').val(100);
+	$('#xOrigin').val(100);
+	$('#yOrigin').val(100);
+	//set readouts
+	$('span#perspectiveDisp').html(100);
+	$('span#xOriginDisp').html(100+'%');
+	$('span#yOriginDisp').html(100+'%');
+	//apply
+	app.applyTransform();
+}
+
+app.applyTransform = function() {
+	$('#wrapper').css('-webkit-perspective-origin', app.overlayPx+'% '+ app.overlayPy+'%');
+	$('#wrapper').css('-webkit-perspective', app.overlayPerspective + 'px');
 	$('#overlay').css('-webkit-transform','translateX('+app.overlayTx+'px)'
 																			+ 'translateY('+app.overlayTy+'px)'
 																			+ 'translateZ('+app.overlayTz+'px)'

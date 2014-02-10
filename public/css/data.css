@@ -1,7 +1,7 @@
 html, body {
 	margin: 0;
 	padding: 0;
-
+	/*overflow-x: hidden;*/
 	font-family: 'helvetica', sans-serif;
 }
 
@@ -19,6 +19,19 @@ body:not(modal-open) .overlay:hover {
 	height: 540px;
 	width: 960px;
 	float: left;
+
+	-webkit-transform-style: preserve-3d;
+	-moz-transform-style: preserve-3d;
+	transform-style: preserve-3d;
+
+  -webkit-perspective-origin: 50% 50%;
+  -moz-perspective-origin: 50% 50%;
+  perspective-origin: 50% 50%;
+  
+  -webkit-perspective: 1000px;
+  -moz-perspective: 1000px;
+  perspective: 1000px;
+
 }
 
 .vid {
@@ -38,14 +51,15 @@ body:not(modal-open) .overlay:hover {
 			as per: http://stackoverflow.com/questions/13833227/css3-rotate-on-animated-element-causing-click-event-not-to-invoke */
 	float: left;
 	background-color: rgb(0,150,150);
-	opacity: 0.1;
-	/*
-	transform-style: 'preserve-3d';
-	perspective: 600;
-	-webkit-backface-visibility: hidden;
-	*/
+	opacity: 0.35;
+
 	-webkit-transform-style: preserve-3d;
-  -webkit-perspective: 1000;
+  -webkit-perspective: 100px;
+  -webkit-perspective-origin: 50% 50%;
+
+  -moz-transform-style: preserve-3d;
+  -moz-perspective: 100px;
+  -moz-perspective-origin: 50% 50%;
 }
 
 .overlay:hover {
@@ -65,6 +79,10 @@ body:not(modal-open) .overlay:hover {
 
 .calibControls, .calibClickDialog, .recordClickDialog {
 	display: none;
+}
+
+.calibClickDialog, .recordClickDialog {
+	padding: 0 15px;
 }
 
 input[type="range"] {

@@ -42,52 +42,72 @@
 	  </div>
 	  <div class="col-md-4">
 		  <h2>Settings</h2>
+			
 			<button id="startStream" class="btn btn-default">Start</button>
 			<button id="stopStream" class="btn btn-default">Stop</button>
 			<button id="calibrate" class="btn btn-default">Calibrate</button>
 			<button id="reviewData" class="btn btn-default" data-toggle="modal" data-target="#dataReview">Review Data</button>
 			<button id="clearData" class="btn btn-danger">Clear Data</button>
 			<hr>
+
 			<div id="controls" class="controls">
 				<div id="calibControls" class="calibControls sliderWrapper">
 					<div class="row">
 			      <div class="col-md-6 rotationControls">
 			      	<div class="form-group">
-								<label for="xRotation">X Rotation</label>: <span id="xRotationDisp"></span><br>
+								<label for="xRotation">X Rotation</label>: <span id="xRotationDisp">0</span><br>
 								<input id="xRotation" class="rotationSlider "type="range" min="-90" max="90" value="0">
 							</div>
 							<div class="form-group">
-								<label for="yRotation">Y Rotation</label>: <span id="yRotationDisp"></span><br>
+								<label for="yRotation">Y Rotation</label>: <span id="yRotationDisp">0</span><br>
 								<input id="yRotation" class="rotationSlider "type="range" min="-90" max="90" value="0">
 							</div>
 							<div class="form-group">
-								<label for="zRotation">Z Rotation</label>: <span id="zRotationDisp"></span><br>
+								<label for="zRotation">Z Rotation</label>: <span id="zRotationDisp">0</span><br>
 								<input id="zRotation" class="rotationSlider "type="range" min="-90" max="90" value="0">
 							</div>
 							<button id="resetRotation" class="btn btn-warning">Reset Rotations</button>
 			      </div><!-- .col -->
 			      <div class="col-md-6">
 			      	<div class="form-group">
-								<label for="xTranslation">X Translation</label>: <span id="xTranslationDisp"></span><br>
+								<label for="xTranslation">X Translation</label>: <span id="xTranslationDisp">0</span><br>
 								<input id="xTranslation" class="translationSlider "type="range" min="-400" max="400" value="0">
 							</div>
 							<div class="form-group">
-								<label for="yTranslation">Y Translation</label>: <span id="yTranslationDisp"></span><br>
+								<label for="yTranslation">Y Translation</label>: <span id="yTranslationDisp">0</span><br>
 								<input id="yTranslation" class="translationSlider "type="range" min="-400" max="400" value="0">
 							</div>
 							<div class="form-group">
-								<label for="overlayOpacity">Overlay Opacity</label>: <span id="overlayOpacityDisp"></span><br>
+								<label for="overlayOpacity">Overlay Opacity</label>: <span id="overlayOpacityDisp">0.35</span><br>
 								<input id="overlayOpacity" class="translationSlider "type="range" min="0" max="1" value="0.1" step="0.01">
 							</div>
 							<button id="resetTranslation" class="btn btn-warning">Reset Translations</button>
 			      </div><!-- .col -->
-		      </div>
+		      </div><!-- .row -->
+		      <div class="row">
+					  <div class="col-md-6 perspectiveControls">
+					  	<div class="form-group">
+								<label for="perspective">Perspective</label>: <span id="perspectiveDisp">1000</span><br>
+								<input id="perspective" class="perspectiveSlider "type="range" min="1000" max="5000" value="1000">
+							</div>
+							<div class="form-group">
+								<label for="xOrigin">X Origin</label>: <span id="xOriginDisp">100%</span><br>
+								<input id="xOrigin" class="perspectiveSlider "type="range" min="-100" max="200" value="50">
+							</div>
+							<div class="form-group">
+								<label for="yOrigin">Y Origin</label>: <span id="yOriginDisp">100%</span><br>
+								<input id="yOrigin" class="perspectiveSlider "type="range" min="-100" max="200" value="50">
+							</div>
+							<button id="resetPerspective" class="btn btn-warning">Reset Perspective</button>
+					  </div><!-- .col -->
+					</div><!-- .row -->
 				</div><!-- #calibControls -->
 			</div> <!-- #controls -->
-			<div id="calibClickDialog" class="container calibClickDialog">
+
+			<div id="calibClickDialog" class="calibClickDialog">
 				<h2>Calibration</h2>
 				<p>To calibrate the software, adjust the overlay to align with the dartboard and click on the indicated points of the board.</p>
-				<ul>
+				<ul id="calibClickInstructions">
 					<li class="calibClick clickHere">Furthest left point (outer double wire)</li>
 					<li class="calibClick ">Furthest right point (outer double wire)</li>
 					<li class="calibClick ">Middle of the bull</li>
@@ -101,8 +121,9 @@
 				<ul id="clickCoords" class="clickCoords"></ul>
 				<button id="missedDart" class="btn btn-primary">Record Miss</button>
 				<hr>
-			</div><!-- #recordClickDialog -->
-	</div><!-- .row -->
+			</div><!-- #calibClickDialog -->
+
+	</div><!-- col -->
 
 	<div id="dataReview" class="modal fade">
 	  <div class="modal-dialog">
@@ -167,7 +188,7 @@
 							<textarea name="" id="notes" cols="30" rows="10"></textarea>
 						</div>
 						<input id="submitExport" type="submit" class="btn btn-primary" value="Save to disk and clear data">
-						<a id="goToHeatmap" class="btn btn-info disabled" href="/" role="button">See your heatmap</a>
+						<a id="goToHeatmap" class="btn btn-info disabled" href="/" target="_blank" role="button">See your heatmap</a>
 					</form>
 					  </div>
 					</div>
