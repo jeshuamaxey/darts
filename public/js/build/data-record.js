@@ -1,3 +1,287 @@
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+var config = config || {};
+
+config = {
+	"meshSize": 200,
+	"meshRatio": {
+		"bullseye": 6.35/200,
+		"bull" : 15.9/200,
+		"innerTreble": 99/200,
+		"outerTreble": 107/200,
+		"innerDouble": 162/200,
+		"outerDouble": 170/200
+	}
+};
+
+module.exports = config;
+},{}],2:[function(require,module,exports){
+var config = require('./config.js');
+/*
+* All private variables and functions are attached to the priv object
+* which is not exported
+*/
+
+var priv = priv || {};
+
+/*
+* a 2D array w/ the same size as the mesh stores
+*	previously calculated values of the dartboard function
+*/
+priv.db = new Array(config.meshSize);
+for (var i = priv.db.length - 1; i >= 0; i--) {
+	priv.db[i] = new Array(config.meshSize);
+}
+
+
+/*
+* All public variables and functions are attached to the db object
+* which is exported at the end of the module
+*/
+
+var db = db || {};
+
+db.findradius = function(xcoord, ycoord) {
+    return Math.sqrt((xcoord*xcoord)+(ycoord*ycoord));
+}
+
+db.findtheta = function(xcoord, ycoord) {
+    // Need to Correct for each quadrant else arctan(-x/-y) returns same as arctan(x/y)
+    var correction = 0;
+    if (xcoord < 0) {
+        correction = Math.PI;
+    }
+    else if (ycoord < 0) {
+        correction = 2*(Math.PI);
+    }
+    return Math.atan(ycoord/xcoord) + correction;
+}
+
+db.dartboard = function(xcoord, ycoord) {
+	//first look at private array to see if we've
+	//calculated this value before
+	var mesh = {'x': xcoord, 'y': ycoord};
+	if(priv.db[mesh.x][mesh.y] != undefined) {
+		return priv.db[mesh.x][mesh.y];
+	}
+	//else calculate the value
+	//shift x,y array index to coord system centred on the bull
+	xcoord -= config.meshSize/2;
+	//ycoord += ((config.meshSize/2) - 2*ycoord);
+	ycoord = config.meshSize/2 - ycoord;
+	// Coordinate system has origin at the centre of the bullseye
+    var dartboardnumbers = [6,13,4,18,1,20,5,12,9,14,11,8,16,7,19,3,17,2,15,10,6];
+    // The list of dartboard numbers starting at 6 and moving anticlockwise
+	var radius = db.findradius(xcoord, ycoord);
+	var theta = db.findtheta(xcoord, ycoord);
+	var segmentcounter =0;
+    var dubtripfactor = 1;
+    // dubtripfactor is scaling factor for double/treble beds.
+    
+    // Wire thickness not considered. If a dart lands on the exact position of the wire
+    // the darts always comes onto the inside of the circle.
+	
+	if (radius <= (config.meshSize/2)*config.meshRatio.bullseye) {
+		// Bullseye
+		//store in private array before returning
+		return priv.db[mesh.x][mesh.y] = 50;
+	}
+	
+	else if (radius > (config.meshSize/2)*config.meshRatio.outerDouble) {
+		// Missed Board
+		//store in private array before returning
+		return priv.db[mesh.x][mesh.y] = 0;
+	}
+	
+	else if (radius <= (config.meshSize/2)*config.meshRatio.bull) {
+		// Single Bull
+		//store in private array before returning
+		return priv.db[mesh.x][mesh.y] = 25;
+	}
+	
+	else if (radius > (config.meshSize/2)*config.meshRatio.innerDouble && radius <= (config.meshSize/2)*config.meshRatio.outerDouble) {
+		// Double
+		dubtripfactor = 2;
+	}
+	
+	else if (radius > (config.meshSize/2)*config.meshRatio.innerTreble && radius <= (config.meshSize/2)*config.meshRatio.outerTreble) {
+		// Triple
+		dubtripfactor = 3;
+	}
+	
+	while (theta > (Math.PI/20)) {
+	// theta = 0 is defined as the horizontal line running through 6.
+	// Each Number has has an angle of pi/10
+	// theta > pi/20 means the coordinates are further anticlockwise than 6.
+		theta = theta-(Math.PI/10);
+		segmentcounter += 1;
+	}
+	
+	number = dartboardnumbers[segmentcounter];
+	//store in private array
+	return priv.db[mesh.x][mesh.y] = number*dubtripfactor;
+}
+
+/*
+db.wt = 0.75; // Half of wire thickness of 1.5mm
+
+db.wireboard = function(x, y) {
+	var radius = db.findradius(x, y);
+	var theta = db.findtheta(x, y);
+	
+	if (radius > (config.meshSize/2)*config.meshRatio.bullseye - db.wt &&
+		radius < (config.meshSize/2)*config.meshRatio.bullseye + db.wt) {
+		return 1;
+		}
+	if (radius > (config.meshSize/2)*config.meshRatio.outerDouble - db.wt &&
+		radius < (config.meshSize/2)*config.meshRatio.outerDouble + db.wt) {
+		return 1;
+		}
+	if (radius > (config.meshSize/2)*config.meshRatio.innerDouble - db.wt &&
+		radius < (config.meshSize/2)*config.meshRatio.innerDouble + db.wt) {
+		return 1;
+		}
+	if (radius > (config.meshSize/2)*config.meshRatio.innerTreble - db.wt &&
+		radius < (config.meshSize/2)*config.meshRatio.innerTreble + db.wt) {
+		return 1;
+		}
+	if (radius > (config.meshSize/2)*config.meshRatio.outerTreble - db.wt &&
+		radius < (config.meshSize/2)*config.meshRatio.outerTreble + db.wt) {
+		return 1;
+		}
+	if (radius > (config.meshSize/2)*config.meshRatio.bull - db.wt &&
+		radius < (config.meshSize/2)*config.meshRatio.bull + db.wt) {
+		return 1;
+		}
+}
+*/
+module.exports = db;
+},{"./config.js":1}],3:[function(require,module,exports){
+/*
+* All private variables and functions are attached to the priv object
+* which is not exported
+*/
+
+var priv = priv || {};
+
+//stores previously calculated values of the factorial function
+priv.f = [];
+
+//stores previously calculated values of returnStdDev
+priv.rSD = [1000];
+// priv.rSD[0] = 1000 and represents the standard deviation for 0% of darts in bull.
+
+/*
+* All public variables and functions are attached to the stats object
+* which is exported at the end of the module
+*/
+var stats = stats || {};
+/*
+* Returns the value of a 1D Gaussian PDF, centerd at meanX
+* and standard deviations sdX, at x. When only x is
+* provided as an argument it defaults to a normal distribution 
+*/
+stats.gaussian1D = function(x, meanX, sdX) {
+	var meanX = meanX || 0;
+	var sdX = sdX || 1;
+	var varX = sdX*sdX;
+
+  var m = stats.stdDev * Math.sqrt(2 * Math.PI);
+  var e = Math.exp(-Math.pow(x - stats.mean, 2) / (2 * stats.variance));
+  return e / m;
+}
+
+/*
+* Returns the value of a 2D Gaussian PDF, centerd at (meanX,meanY)
+* and standard deviations sdX & sdY, at (x,y). When only x & y are
+* provided as arguments it defaults to a normal distribution 
+*/
+stats.gaussian2D = function(x, y, meanX, meanY, sdX, sdY) {
+	var meanX = meanX || 0;
+	var meanY = meanY || 0;
+	var sdX = sdX || 1;
+	var sdY = sdY || 1;
+	var varX = sdX*sdX;
+	var varY = sdY*sdY;
+	//check the normalisation constant
+  var e = Math.exp( - ( Math.pow(x - meanX, 2) / (2 * varX) + Math.pow(y - meanY, 2) / (2 * varY) ) );
+  var m = sdX * sdY * 2 * Math.PI;
+  return ( (e / m) < 0.00000001 ? 0 : e/m );
+}
+
+// Currently going to have accuracy as a fraction rather than a percentage
+stats.calcStandardDev = function(accuracy) {
+	return config.meshSize*config.meshRatio.bullseye/0.4;
+}
+
+/*
+* Returns th value of the error function, accurate to 9 decimal places
+*/
+stats.erf = function(x) {
+	var k=0, el=0, sum=0;
+	do {
+		el = ( Math.pow(-1,k) / ( (2*k +1)*stats.factorial(k) ) ) * Math.pow(x, (2*k)+1);
+		sum += el;
+		k++;
+	} while(Math.abs(el) > 0.000000001)
+	var ans = ((2*sum/Math.sqrt(Math.PI))).toFixed(9);
+	return (ans == 'NaN' ? 1 : ans);
+}
+
+stats.factorial = function(n) {
+  if (n == 1 || n == 0)
+    return 1;
+  if (priv.f[n] > 0)
+    return priv.f[n];
+  return priv.f[n] = stats.factorial(n-1) * n;
+}
+
+/*
+* returns the mean value of an array
+*/
+stats.mean = function(arr) {
+	var total = 0;
+	for (var i = arr.length - 1; i >= 0; i--) {
+		total += arr[i];
+	};
+	return total/arr.length;
+}
+
+/*
+* returns the standard deviation of an array
+*/
+stats.stdDev = function(arr, mean) {
+	//if mean is not provided as an arg, calculate it
+	var mean = mean || stats.mean(arr);
+	var variance = 0;
+	for (var i = arr.length - 1; i >= 0; i--) {
+		variance += Math.pow((arr[i] - mean), 2);
+	};
+	return Math.sqrt(variance/arr.length);
+}
+
+// erf(n divided by root 2) = fraction of darts thrown contained within the n sigma
+// interval.
+// For a given percentage of darts within the bull, n values are trialled in the error
+// function until one falls within an error bound of the percentage we want.
+stats.returnStdDev = function(percentage) {
+	trialn = 1; // erf(0) is not defined.
+	percentage = Math.round(percentage*2)/2;
+	if (priv.rSD[percentage*2] > 0) {
+		return priv.rSD[percentage*2];
+	}
+	for (var i = 1; i <= percentage*2; i++) {
+		var resultaccuracy = 0;
+		do {
+			resultaccuracy = stats.erf((trialn/1000)*Math.pow(2, -0.5));
+			trialn += 1;
+		}
+		while (resultaccuracy < ((i/200) - 0.0005) || resultaccuracy > ((i/200) +0.0005))
+	}
+	return priv.rSD[percentage*2] = 1/((trialn/1000)-0.001);
+}
+
+module.exports = stats;
+},{}],4:[function(require,module,exports){
 var stats = require('../../modules/stats.js');
 var dartboard = require('../../modules/dartboard.js');
 
@@ -476,3 +760,4 @@ app.clearCanvas = function(context, canvas) {
 
 //must go last
 $(document).ready(app.main);
+},{"../../modules/dartboard.js":2,"../../modules/stats.js":3}]},{},[4])

@@ -124,7 +124,20 @@
 				<p>
 					Coordinates are displayed in cartsian form with the origin centred on the bull.
 				</p>
-				<ul id="clickCoords" class="clickCoords"></ul>
+				<!-- <ul id="clickCoords" class="clickCoords"></ul> -->
+				<table id="clickCoords" class="table clickCoords">
+					<thead>
+						<tr>
+							<th>Dart</th>
+							<th>Score</th>
+							<th>Cumulative Score</th>
+							<th>R (mm)</th>
+							<th>Cumulative R (mm)</th>
+						</tr>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
 				<button id="missedDart" class="btn btn-primary">Record Miss</button>
 				<hr>
 			</div><!-- #calibClickDialog -->
@@ -205,12 +218,10 @@
 	    </div><!-- /.modal-content -->
 	  </div><!-- /.modal-dialog -->
 	</div><!-- /.modal -->
-  
-<body>
 
-<script src="components/jquery/jquery.js"></script>
-<script src="components/bootstrap/dist/js/bootstrap.js"></script>
-<script src="js/stats.js"></script>
-<script src="js/data-record.js"></script>  
-</body>
+	<script src="components/jquery/jquery.js"></script>
+	<script src="components/bootstrap/dist/js/bootstrap.js"></script>
+	<script src="js/build/data-record.js"></script>
+
+<body>
 </html>

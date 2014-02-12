@@ -1,4 +1,3 @@
-var fs = require('fs');
 var config = require('./config.js');
 /*
 * All private variables and functions are attached to the priv object
@@ -138,17 +137,4 @@ db.wireboard = function(x, y) {
 		}
 }
 */
-	
-
 module.exports = db;
-
-		
-	
-	
-	
-	
-	
-	
-		
-
-

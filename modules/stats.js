@@ -122,11 +122,4 @@ stats.returnStdDev = function(percentage) {
 	return priv.rSD[percentage*2] = 1/((trialn/1000)-0.001);
 }
 
-if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
-	//export for node
-	module.exports = stats;
-}
-else {
-	//export for browser
-  window.stats = stats;
-}
+module.exports = stats;
