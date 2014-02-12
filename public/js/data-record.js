@@ -85,7 +85,6 @@ app.stopVideo = function() {
 * Initialises the calibration routine
 */
 app.initialiseCalib = function() {
-	// app.resetPerspective();
 	$('.strikethrough').removeClass('strikethrough');
 	$($('#calibClickInstructions li')[0]).addClass('clickHere')
 	if(!app.videoShowing) {
@@ -110,7 +109,7 @@ app.initialiseCalib = function() {
 	$('#resetTranslation').on('click', app.resetTranslation);
 	$('.perspectiveSlider').on('change', app.updatePerspective);
 	$('#resetPerspective').on('click', app.resetPerspective);
-	
+	$('#inputType').on('click', app.updateInputType)
 	$('#calibClickDialog').show();
 	app.overlay.unbind('click');
 	app.overlay.on('click', app.calibClick);
@@ -392,6 +391,14 @@ app.updateOverlayOpacity = function() {
 	var op = parseFloat($(this).val());
 	$('#overlayOpacityDisp').html(op)
 	$('#overlay').css('opacity', op);
+}
+
+app.updateInputType = function() {
+	if($(this).is(':checked')) {
+		$('#calibControls input[type=number]').attr('type','range');
+	} else {
+		$('#calibControls input[type=range]').attr('type','number');
+	}
 }
 
 /*
