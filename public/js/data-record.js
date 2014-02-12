@@ -159,7 +159,8 @@ app.calculateCalibration = function() {
 app.recordClick = function(e) {
 	//find x,y in our coordinate system
 	var x = e.offsetX - app.originOffset.x;
-	var y = e.offsetY - app.originOffset.y;
+	//var y = e.offsetY - app.originOffset.y;
+	var y = app.originOffset.y - e.offsetY;
 	//create object to hold all the data for post analysis
 	var attempt = {
 		'pxX': x,
