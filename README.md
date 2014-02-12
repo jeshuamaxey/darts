@@ -41,7 +41,15 @@ The web app visualiser won't work unless you start a server in the route directo
 
 Note: npm should install nodemon for you. If it doesn't, run 'npm install -g nodemon' and then try running the server again.
 
-Then just open up `http://localhost:3000` in your browser and you'll see `public/data/darts.json` plotted on a heatmap.
+To edit the javascript you'll need to run [gulp](https://github.com/gulpjs/gulp) (Sorry for having to install ANOTHER thing, but I suspect a `npm install` should do everything for you). This is so we can modularise all of our javascript 'The Node Way' (tm) and use it where ever we like.
+
+Once installed open up a separate terminal window and just run the gulp command:
+
+````
+$ gulp
+````
+
+Then just open up `http://localhost:3000` in your browser and you'll see ~~`public/data/darts.json`~~ plotted on a heatmap.
 
 ## To Do
 

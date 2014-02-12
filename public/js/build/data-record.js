@@ -282,8 +282,9 @@ stats.returnStdDev = function(percentage) {
 
 module.exports = stats;
 },{}],4:[function(require,module,exports){
-var stats = require('../../modules/stats.js');
-var dartboard = require('../../modules/dartboard.js');
+//import modules
+window.stats = require('../../modules/stats.js');
+window.dartboard = require('../../modules/dartboard.js');
 
 //shim the getUserMedia method
 navigator.getUserMedia = ( navigator.getUserMedia ||

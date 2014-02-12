@@ -1,6 +1,7 @@
-var stats = require('../../modules/stats.js');
+window.stats = require('../../modules/stats.js');
 
 var app = app || {};
+window.app = app;
 
 app.pixelSize = 2;
 
@@ -70,7 +71,7 @@ app.drawDartBoard = function() {
   	outerX = Math.round(app.db.rad*170/200 * Math.sin(theta) + app.db.x);
   	outerY = Math.round(app.db.y - (app.db.rad*170/200 * Math.sin(theta)));
 
-  	console.log(i, theta, innerX, innerY, outerX, outerY);
+  	// console.log(i, theta, innerX, innerY, outerX, outerY);
   	//use this to draw lines a few at a time and debug
     if(1==0 || i==1 || i==2) {
     		app.ovCtx.beginPath();
