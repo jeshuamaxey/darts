@@ -91,7 +91,7 @@ app.randomInt = function(randMax) {
 
 //SCRIPT BIT
 
-var sdMin = 20.5, sdMax = 30.0, sdStep = 0.5;
+var sdMin = 50.0, sdMax = 50.5, sdStep = 0.5;
 
 var loopLim = (sdMax-sdMin)/sdStep;
 

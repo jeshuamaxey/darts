@@ -506,13 +506,19 @@ app.recordClick = function(e) {
 		'mmR': Math.sqrt(x*x + y*y)*app.px2mm
 	};
 	app.dataClicks.push(attempt);
-	//$('#clickCoords').prepend("<li>("+x+ ", "+y+") - "+(attempt.mmR).toFixed(2)+"mm from bull.</li>");
+	
+	var cumulativeDist;
+	if(app.dataClicks.length-1) {
+		cumulativeDist = parseFloat($('#clickCoords tbody tr:first td:last').html()) + parseFloat(attempt.mmR.toFixed(2));
+	} else {
+		cumulativeDist = parseFloat(attempt.mmR.toFixed(2));
+	}
 	$('#clickCoords tbody').prepend("<tr>" +
 																		"<td>" + app.dataClicks.length + "</td>" +
 																		"<td>" + "db.dartboard(x,y)" + "</td>" +
 																		"<td>" + "CumScore() "+ "</td>" +
 																		"<td>" + attempt.mmR.toFixed(2) + "</td>" +
-																		"<td>" + "CumDist" + "</td>" +
+																		"<td>" + cumulativeDist.toFixed(2) + "</td>" +
 																	"</tr>");
 }
 
@@ -617,8 +623,8 @@ app.generateDataReview = function() {
 			$('#stdDev'+ dim[i] ).html((data['mm'+ dim[i] ].stdDev).toFixed(4) + ' mm');
 			$('#mean'+ dim[i] ).html((data['mm'+ dim[i] ].mean).toFixed(4) + ' mm');
 		}
-		//$('#goToHeatmap').attr('href', '/?acc=').removeClass('disabled');
-		var sd = Math.round(data.mmR.stdDev*2)/2
+		//round standard deviation to the nearest 0.5
+		var sd = Math.round(data.mmR.stdDev*2)/2;
 		$('#goToHeatmap').attr('href', '/?sd='+sd).removeClass('disabled');
 	} else {
 		$('#goToHeatmap').addClass('disabled');

@@ -8,8 +8,6 @@ app.pixelSize = 2;
 
 app.draw = require('./draw.js');
 
-console.log(app)
-
 app.hm = {
 	"width" : 800,
 	"height" : 800,
