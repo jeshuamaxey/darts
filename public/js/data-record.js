@@ -27,7 +27,7 @@ app.videoContraints = {
   }
 }
 
-app.drawDartBoard = require('./draw.js');
+app.draw = require('./draw.js');
 
 //these vars need initialising before any calibration to ensure
 //calibrating works immediately
@@ -37,8 +37,8 @@ app.overlayRz = 0;
 app.overlayTx = 0;
 app.overlayTy = 0;
 app.overlayPerspective = 1000;
-app.overlayPx = 100;
-app.overlayPy = 100;
+app.overlayPx = 50;
+app.overlayPy = 50;
 //required to keep overlay in front of body
 //this way all click events can be detected
 app.overlayTz = 200;
@@ -162,7 +162,7 @@ app.calculateCalibration = function() {
 
 app.dbAfterCalib = function() {
 	app.clearCanvas(app.ovCtx, app.ovCanvas);
-	app.drawDartBoard();
+	app.draw.dartBoard();
 }
 
 /*
@@ -247,7 +247,6 @@ app.confirmExport = function() {
 * Record a missed dart
 */
 app.missedDart = function() {
-	$('#clickCoords').prepend("<li>Miss</li>");
 	var x = 170, y = 170;
 	var attempt = {
 		'pxX': x,
@@ -258,6 +257,13 @@ app.missedDart = function() {
 		'mmR': Math.sqrt(x*x + y*y)*app.px2mm
 	};
 	app.dataClicks.push(attempt);
+	$('#clickCoords tbody').prepend("<tr>" +
+																		"<td>" + app.dataClicks.length + "</td>" +
+																		"<td>" + "db.dartboard(x,y)" + "</td>" +
+																		"<td>" + "CumScore() "+ "</td>" +
+																		"<td>" + attempt.mmR.toFixed(2) + "</td>" +
+																		"<td>" + "CumDist" + "</td>" +
+																	"</tr>");
 }
 
 /*
@@ -266,7 +272,7 @@ app.missedDart = function() {
 app.clearData = function() {
 	//ARE YOU SURE?
 	app.dataClicks = [];
-	$('#clickCoords').html('');
+	$('#clickCoords tbody').html('');
 }
 
 /*
@@ -383,8 +389,8 @@ app.updatePerspective = function() {
 app.resetPerspective = function() {
 	//set vals
 	app.overlayPerspective = 1000;
-	app.overlayPx = 100;
-	app.overlayPy = 100;
+	app.overlayPx = 50;
+	app.overlayPy = 50;
 	//set sliders
 	$('#perspective').val(100);
 	$('#xOrigin').val(100);
@@ -401,6 +407,14 @@ app.applyTransform = function() {
 	$('#wrapper').css('-webkit-perspective-origin', app.overlayPx+'% '+ app.overlayPy+'%');
 	$('#wrapper').css('-webkit-perspective', app.overlayPerspective + 'px');
 	$('#overlay').css('-webkit-transform','translateX('+app.overlayTx+'px)'
+																			+ 'translateY('+app.overlayTy+'px)'
+																			+ 'translateZ('+app.overlayTz+'px)'
+																			+	'rotateX('+app.overlayRx+'deg)'
+																			+ 'rotateY('+app.overlayRy+'deg)'
+																			+ 'rotateZ('+app.overlayRz+'deg)');
+	$('#wrapper').css('-moz-perspective-origin', app.overlayPx+'% '+ app.overlayPy+'%');
+	$('#wrapper').css('-moz-perspective', app.overlayPerspective + 'px');
+	$('#overlay').css('-moz-transform','translateX('+app.overlayTx+'px)'
 																			+ 'translateY('+app.overlayTy+'px)'
 																			+ 'translateZ('+app.overlayTz+'px)'
 																			+	'rotateX('+app.overlayRx+'deg)'
