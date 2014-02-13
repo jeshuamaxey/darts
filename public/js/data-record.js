@@ -57,6 +57,7 @@ app.main = function() {
 	$('#stopStream').on('click', app.stopVideo);
 	$('#calibrate').on('click', app.initialiseCalib);
 	$('#clearData').on('click', app.clearData);
+	$('#undoDataClick').on('click', app.undoDataClick);
 	$('#missedDart').on('click', app.missedDart);
 	$('#reviewData').on('click', app.generateDataReview);
 
@@ -264,6 +265,13 @@ app.missedDart = function() {
 																		"<td>" + attempt.mmR.toFixed(2) + "</td>" +
 																		"<td>" + "CumDist" + "</td>" +
 																	"</tr>");
+}
+
+app.undoDataClick = function() {
+	//remove last element from array
+	app.dataClicks.splice(app.dataClicks.length-1);
+	//remove corressponding entry in table
+	$('#clickCoords tbody tr:first').remove();
 }
 
 /*
