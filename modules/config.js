@@ -1,4 +1,6 @@
-module.exports = {
+var config = config || {};
+
+config = {
 	"meshSize": 200,
 	"meshRatio": {
 		"bullseye": 6.35/200,
@@ -9,3 +11,5 @@ module.exports = {
 		"outerDouble": 170/200
 	}
 };
+
+module.exports = config;

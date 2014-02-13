@@ -1,4 +1,6 @@
-drawDartBoard = function() {
+var draw = draw || {};
+
+draw.dartBoard = function() {
 	//set metrics
 	app.db = {};
 	app.db.x = app.hm.width/2; // app.db.x is the central x coordinate.
@@ -32,4 +34,4 @@ drawDartBoard = function() {
     }
 }
 
-drawDartBoard();
+module.exports = draw;
