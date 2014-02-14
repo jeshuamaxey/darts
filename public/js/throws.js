@@ -54,12 +54,29 @@ app.switchData = function() {
 		$('#meanR').html(parseFloat(data.preprocessed.mmR.mean).toFixed(3) + 'mm');
 		//
 		$('#sampleSize').html(data.raw.throws.length);
+		//add appropriate url to button link
+		var sd = Math.round(data.preprocessed.mmR.stdDev*2)/2;
+		$('#goToHeatmap').attr('href', '/?sd='+sd).removeClass('disabled');
 		//
 		app.refreshDartBoard(data);
 	});
 }
 
 app.refreshDartBoard = function(data) {
+	//
+	draw.clear(app.dbCtx, app.dbCanvas);
+	//plot data points
+	app.dbCtx.strokeStyle = '#ff0000';
+	var x,y,r = 3;
+	var mm2px = app.dbDim.width/340;
+	//draw each point
+	data.raw.throws.forEach(function(thrw) {
+		x = app.dbDim.width/2 + thrw.mmX*mm2px;
+		y = app.dbDim.height/2 + thrw.mmY*mm2px;
+		draw.circle(app.dbCtx, x, y, r)
+	})
+	//add wire frame
+	app.dbCtx.strokeStyle = '#000000'
 	draw.dartBoard(app.dbCtx, app.dbCanvas, app.dbDim)
 }
 

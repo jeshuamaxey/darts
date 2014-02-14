@@ -52,6 +52,18 @@ draw.circle = function(ctx, x, y, rad) {
 	ctx.closePath();
 }
 
+//a handy function to clear the canvas (X-browser friendly)
+//http://stackoverflow.com/questions/2142535/how-to-clear-the-canvas-for-redrawing
+// http://jsfiddle.net/jeshuamaxey/YQP82/2/
+draw.clear = function(context, canvas) {
+	context.clearRect(0, 0, canvas.width, canvas.height);
+  var w = canvas.width;
+  canvas.width = 1;
+  canvas.width = w;
+  // context.fillStyle = "rgba(0,0,0,0.0)";
+  // context.fillRect(0, 0, canvas.width, canvas.height);
+};
+
 module.exports = draw;
 },{}],2:[function(require,module,exports){
 window.draw = require('./draw.js');
@@ -110,12 +122,29 @@ app.switchData = function() {
 		$('#meanR').html(parseFloat(data.preprocessed.mmR.mean).toFixed(3) + 'mm');
 		//
 		$('#sampleSize').html(data.raw.throws.length);
+		//add appropriate url to button link
+		var sd = Math.round(data.preprocessed.mmR.stdDev*2)/2;
+		$('#goToHeatmap').attr('href', '/?sd='+sd).removeClass('disabled');
 		//
 		app.refreshDartBoard(data);
 	});
 }
 
 app.refreshDartBoard = function(data) {
+	//
+	draw.clear(app.dbCtx, app.dbCanvas);
+	//plot data points
+	app.dbCtx.strokeStyle = '#ff0000';
+	var x,y,r = 3;
+	var mm2px = app.dbDim.width/340;
+	//draw each point
+	data.raw.throws.forEach(function(thrw) {
+		x = app.dbDim.width/2 + thrw.mmX*mm2px;
+		y = app.dbDim.height/2 + thrw.mmY*mm2px;
+		draw.circle(app.dbCtx, x, y, r)
+	})
+	//add wire frame
+	app.dbCtx.strokeStyle = '#000000'
 	draw.dartBoard(app.dbCtx, app.dbCanvas, app.dbDim)
 }
 

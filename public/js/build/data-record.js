@@ -335,6 +335,18 @@ draw.circle = function(ctx, x, y, rad) {
 	ctx.closePath();
 }
 
+//a handy function to clear the canvas (X-browser friendly)
+//http://stackoverflow.com/questions/2142535/how-to-clear-the-canvas-for-redrawing
+// http://jsfiddle.net/jeshuamaxey/YQP82/2/
+draw.clear = function(context, canvas) {
+	context.clearRect(0, 0, canvas.width, canvas.height);
+  var w = canvas.width;
+  canvas.width = 1;
+  canvas.width = w;
+  // context.fillStyle = "rgba(0,0,0,0.0)";
+  // context.fillRect(0, 0, canvas.width, canvas.height);
+};
+
 module.exports = draw;
 },{}],5:[function(require,module,exports){
 //import modules
