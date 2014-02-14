@@ -4,7 +4,7 @@ var path = require('path');
 var api = require('./modules/api');
 
 var app = express();
-var port = 3000;
+var port = process.env.PORT ||  3000;
 
 //for serving static pages
 app.use(express.static(path.join(__dirname, 'public')));
