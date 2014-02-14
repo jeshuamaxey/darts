@@ -163,7 +163,7 @@ app.calculateCalibration = function() {
 
 app.dbAfterCalib = function() {
 	app.clearCanvas(app.ovCtx, app.ovCanvas);
-	app.draw.dartBoard();
+	app.draw.dartBoard(app.ovCtx, app.ovCanvas);
 }
 
 /*

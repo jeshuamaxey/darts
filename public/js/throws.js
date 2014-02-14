@@ -1,10 +1,19 @@
+window.draw = require('./draw.js');
 window.q = require('./quotes.js');
 
 var app = app || {};
 
 app.main = function() {
-	console.log(99)
+	//display list of available files
 	app.loadFileList();
+	//init canvases
+	app.dbCanvas = document.getElementById('dartboard');
+	app.dbCtx = app.dbCanvas.getContext('2d');
+	app.dbDim = {
+		"width" : $('#dartboard').width(),
+		"height" : $('#dartboard').height()
+	};
+	//add a random Sid Waddell quote
 	$('#quoteText').html(q.randomQuote());
 }
 
@@ -44,8 +53,14 @@ app.switchData = function() {
 		$('#stdDevR').html(parseFloat(data.preprocessed.mmR.stdDev).toFixed(3) + 'mm');
 		$('#meanR').html(parseFloat(data.preprocessed.mmR.mean).toFixed(3) + 'mm');
 		//
-		$('#sampleSize').html(data.raw.throws.length)
-	})
+		$('#sampleSize').html(data.raw.throws.length);
+		//
+		app.refreshDartBoard(data);
+	});
+}
+
+app.refreshDartBoard = function(data) {
+	draw.dartBoard(app.dbCtx, app.dbCanvas, app.dbDim)
 }
 
 //must go last

@@ -127,38 +127,55 @@ module.exports = stats;
 },{}],2:[function(require,module,exports){
 var draw = draw || {};
 
-draw.dartBoard = function() {
-	//set metrics
-	app.db = {};
-	app.db.x = app.hm.width/2; // app.db.x is the central x coordinate.
-	app.db.y = app.hm.height/2; // app.db.y is the central y coordinate.
-	app.db.rad = app.hm.width/2;
-	
-  	//treble ring
-  	app.drawCircle(app.ovCtx, app.db.x, app.db.y, app.db.rad*99/200);
-  	app.drawCircle(app.ovCtx, app.db.x, app.db.y, app.db.rad*107/200);
-  	//double ring
-  	app.drawCircle(app.ovCtx, app.db.x, app.db.y, app.db.rad*170/200);
-  	app.drawCircle(app.ovCtx, app.db.x, app.db.y, app.db.rad*162/200);
-  	//bull
-	app.drawCircle(app.ovCtx, app.db.x, app.db.y, app.db.rad*6.35/200);
-  	app.drawCircle(app.ovCtx, app.db.x, app.db.y, app.db.rad*15.9/200);
+/*
+* Takes three arguments:
+* context: the canvas context used to draw
+* canvas: the canvas element that pertains to the context
+* dim: a dimensions object of the form {height: 100, width: 100}
+*/
 
-  	var theta, innerX, innerY, outerX, outerY;
-  
-  	for (var i = 0; i < 20; i++) {
-  		//Math.PI not Math.Pi
-  		theta = Math.PI/20 + i*(Math.PI/10);
-  		innerX = Math.round((app.db.rad*15.9/200) * Math.cos(theta) + app.db.x);
-  		innerY = Math.round(app.db.y - ((app.db.rad*15.9/200) * Math.sin(theta)));
-  		outerX = Math.round(((app.db.rad*170/200) * Math.cos(theta)) + app.db.x);
-  		outerY = Math.round(app.db.y - ((app.db.rad*170/200) * Math.sin(theta)));
-  		
-    	app.ovCtx.beginPath();
-		app.ovCtx.moveTo(innerX, innerY);
-    	app.ovCtx.lineTo(outerX, outerY);
-		app.ovCtx.stroke();
-    }
+draw.dartBoard = function(context, canvas, dim) {
+	//set metrics
+	var db = {};
+	db.x = dim.width/2; // db.x is the central x coordinate.
+	db.y = dim.height/2; // db.y is the central y coordinate.
+	db.rad = dim.width/2;
+	
+	//treble ring
+	draw.circle(context, db.x, db.y, db.rad*99/200);
+	draw.circle(context, db.x, db.y, db.rad*107/200);
+	//double ring
+	draw.circle(context, db.x, db.y, db.rad*170/200);
+	draw.circle(context, db.x, db.y, db.rad*162/200);
+	//bull
+	draw.circle(context, db.x, db.y, db.rad*6.35/200);
+  draw.circle(context, db.x, db.y, db.rad*15.9/200);
+
+	var theta, innerX, innerY, outerX, outerY;
+
+	for (var i = 0; i < 20; i++) {
+		//Math.PI not Math.Pi
+		theta = Math.PI/20 + i*(Math.PI/10);
+		innerX = Math.round((db.rad*15.9/200) * Math.cos(theta) + db.x);
+		innerY = Math.round(db.y - ((db.rad*15.9/200) * Math.sin(theta)));
+		outerX = Math.round(((db.rad*170/200) * Math.cos(theta)) + db.x);
+		outerY = Math.round(db.y - ((db.rad*170/200) * Math.sin(theta)));
+		
+  	context.beginPath();
+    context.moveTo(innerX, innerY);
+  	context.lineTo(outerX, outerY);
+    context.stroke();
+  }
+}
+
+/*
+*
+*/
+draw.circle = function(ctx, x, y, rad) {
+	ctx.beginPath();
+	ctx.arc(x, y, rad, 0, Math.PI*2, true);
+	ctx.stroke();
+	ctx.closePath();
 }
 
 module.exports = draw;
@@ -173,17 +190,16 @@ app.pixelSize = 2;
 
 app.draw = require('./draw.js');
 
-app.hm = {
-	"width" : 800,
-	"height" : 800,
-	"margin" : 0
-}
-
 app.meshs = {};
 app.firstDraw = true;
 
 
 app.main = function() {
+	app.hm = {
+		"width" : $('#heatmap').width(),
+		"height" : $('#heatmap').height()
+	}
+
 	app.URLparams = app.getURLparams();
 	app.initialiseCanvases();
 	app.refreshHeatMap();
@@ -262,7 +278,7 @@ app.processData = function(data) {
 	app.pixelSize = app.hm.width/app.data.length;
 	app.generateHeatmap();
 	app.generateLegend();
-	app.draw.dartBoard();
+	app.draw.dartBoard(app.ovCtx, app.ovCanvas, app.hm);
 }
 
 app.failedAJAX = function(url) {
@@ -341,7 +357,7 @@ app.updateFocusPixel = function(e) {
 	if(x < app.data.length && y < app.data.length) {
 		var val = app.data[x][y];
 		//update canvas
-		app.drawCircle(app.ovCtx, (x*app.pixelSize) + app.pixelSize/2, (y*app.pixelSize) + app.pixelSize/2, 5);
+		draw.circle(app.ovCtx, (x*app.pixelSize) + app.pixelSize/2, (y*app.pixelSize) + app.pixelSize/2, 5);
 		//update info panel
 		app.focuxPxVal = val;
 		$('#focusPixelValue').html(app.focuxPxVal.toFixed(4));
@@ -361,13 +377,6 @@ app.plotPixel = function(x, y, size, val) {
   // app.hmCtx.lineWidth = 0;
   // app.hmCtx.strokeStyle = 'black';
   // app.hmCtx.stroke();
-}
-
-app.drawCircle = function(ctx, x, y, rad) {
-	ctx.beginPath();
-	ctx.arc(x, y, rad, 0, Math.PI*2, true);
-	ctx.stroke();
-	ctx.closePath();
 }
 
 app.color = function(val) {

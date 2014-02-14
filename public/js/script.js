@@ -8,17 +8,16 @@ app.pixelSize = 2;
 
 app.draw = require('./draw.js');
 
-app.hm = {
-	"width" : 800,
-	"height" : 800,
-	"margin" : 0
-}
-
 app.meshs = {};
 app.firstDraw = true;
 
 
 app.main = function() {
+	app.hm = {
+		"width" : $('#heatmap').width(),
+		"height" : $('#heatmap').height()
+	}
+
 	app.URLparams = app.getURLparams();
 	app.initialiseCanvases();
 	app.refreshHeatMap();
@@ -97,7 +96,7 @@ app.processData = function(data) {
 	app.pixelSize = app.hm.width/app.data.length;
 	app.generateHeatmap();
 	app.generateLegend();
-	app.draw.dartBoard();
+	app.draw.dartBoard(app.ovCtx, app.ovCanvas, app.hm);
 }
 
 app.failedAJAX = function(url) {
@@ -176,7 +175,7 @@ app.updateFocusPixel = function(e) {
 	if(x < app.data.length && y < app.data.length) {
 		var val = app.data[x][y];
 		//update canvas
-		app.drawCircle(app.ovCtx, (x*app.pixelSize) + app.pixelSize/2, (y*app.pixelSize) + app.pixelSize/2, 5);
+		draw.circle(app.ovCtx, (x*app.pixelSize) + app.pixelSize/2, (y*app.pixelSize) + app.pixelSize/2, 5);
 		//update info panel
 		app.focuxPxVal = val;
 		$('#focusPixelValue').html(app.focuxPxVal.toFixed(4));
@@ -196,13 +195,6 @@ app.plotPixel = function(x, y, size, val) {
   // app.hmCtx.lineWidth = 0;
   // app.hmCtx.strokeStyle = 'black';
   // app.hmCtx.stroke();
-}
-
-app.drawCircle = function(ctx, x, y, rad) {
-	ctx.beginPath();
-	ctx.arc(x, y, rad, 0, Math.PI*2, true);
-	ctx.stroke();
-	ctx.closePath();
 }
 
 app.color = function(val) {
