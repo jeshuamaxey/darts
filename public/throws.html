@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Darts</title>
+  <link rel="stylesheet" href="components/bootstrap/dist/css/bootstrap.css">
+  <link rel="stylesheet" href="css/throws.css">
+</head>
+<body>
+  <nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">Darts</a>
+      </div>
+
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+          <li><a href="/">Heatmaps</a></li>
+          <li><a href="/data.html">Data Recorder</a></li>
+          <li class="active" ><a href="/throws.html">Throw Data</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="http://github.com/jeshuamaxey/darts">GitHub</a></li>
+        </ul>
+      </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+  </nav>
+  
+  <div class="row">
+  <!-- File List-->
+  <div class="col-md-3 col-md-offset-1">
+      <div class="panel panel-default">
+        <div class="panel-heading">File list</div>
+        <div class="panel-body">
+          <p>Select a file to view the glorious datums within</p>
+        </div>
+
+        <!-- List group -->
+        <div id="fileList" class="list-group">
+        </div>
+      </div>
+    </div> <!-- col-md-3 -->
+
+    <!-- Main Stats Panel -->
+
+    <div class="col-md-4">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 id="name" class="panel-title">Name</h3>
+        </div>
+        <div class="panel-body">
+          <h3>Stats:</h3>
+          <table class="table">
+            <tbody>
+            <tr><th></th><th>σ</th><th>μ</th></tr>
+            <tr>
+              <td>x</td>
+              <td id="stdDevX"></td>
+              <td id="meanX"></td>
+            </tr>
+            <tr>
+              <td>y</td>
+              <td id="stdDevY"></td>
+              <td id="meanY"></td>
+            </tr>
+            <tr>
+              <td>R</td>
+              <td id="stdDevR"></td>
+              <td id="meanR"></td>
+            </tr>
+          </tbody>
+          </table>
+          <p>
+            Sample Size: <span id="sampleSize"></span>
+          </p>
+        </div> <!-- .panel-body -->
+      </div>
+    </div> <!-- col-md-4 -->
+
+    <!--  -->
+    <div class="col-md-3">
+      <div class="panel panel-default">
+        <!-- Default panel contents -->
+        <div class="panel-heading">What Would Sid Say?</div>
+        <div class="panel-body">
+          <blockquote>
+            <p id="quoteText"></p>
+            <footer><a href="http://en.wikipedia.org/wiki/Sid_Waddell">Sid Waddell</a></footer>
+          </blockquote>
+        </div>
+      </div>
+    </div> <!-- col-md-3 -->
+  </div> <!-- .row -->
+
+  <div id="" class="modal fade">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title"></h4>
+        </div>
+        <div class="modal-body">
+          
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+<body>
+
+<script src="components/jquery/jquery.js"></script>
+<script src="components/bootstrap/dist/js/bootstrap.js"></script>
+<script src="js/build/throws.js"></script>  
+</body>
+</html>

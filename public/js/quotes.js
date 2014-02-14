@@ -1,0 +1,10 @@
+var q = q || {};
+
+q.quotes = ["There's only one word for that: magic darts!","William Tell could take an apple off your head, Taylor could take out a processed pea.","The players are under so much duress, it's like duressic park out there!","The atmosphere is so tense, if Elvis walked in ,with a portion of chips……. you could hear the vinegar sizzle on them.","When Alexander of Macedonia was 33, he cried salt tears because there were no more worlds to conquer..... Bristow's only 27.","Phil Taylor's got the consistency of a planet ... and he's in a darts orbit!","That was like throwing three pickled onions into a thimble!","There hasn't been this much excitement since the Romans fed the Christians to the Lions.","It's like Dracula getting out of his grave and asking for a few chips with his steak.","This game of darts is twisting like a rattlesnake with a hernia!","Keith Deller's not just an underdog, he's an underpuppy!","This lad has more checkouts than Tescos.","Big Cliff Lazarenko's idea of exercise is sitting in a room with the windows open taking the lid off something cool and fizzy.","Jockey Wilson, he comes from the valleys and he's chuffing like a choo-choo train!","I don't know what he's had for breakfast but Taylor knocked the Snap, Crackle and Pop outta Bristow.","He looks about as happy as a penguin in a microwave.","Steve Beaton - The adonis of darts, what poise, what elegance - a true Roman gladiator with plenty of hair wax.","They won't just have to play outta their skin to beat Phil Taylor. They'll have to play outta their essence!","Steve Beaton, he's not Adonis, he's THE donis","If we'd had Phil Taylor at Hastings against the Normans, they'd have gone home.","Look at the man go, its like trying to stop a waterbuffalo with a pea-shooter.","Bristow reasons... Bristow quickens... Aaah, Bristow."];
+
+q.randomQuote = function() {
+	var i = Math.floor(Math.random()*q.quotes.length);
+	return q.quotes[i];
+}
+
+module.exports = q;

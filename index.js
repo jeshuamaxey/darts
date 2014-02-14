@@ -11,6 +11,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 //for parsing the POSTs in the API
 app.use(express.urlencoded());
 
+//GET
+app.get('/api/getFileList', api.getFileList);
+
+//POST
 app.post('/api/store', api.storeThrows);
 
 app.listen(port);

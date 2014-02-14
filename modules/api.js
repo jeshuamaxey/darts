@@ -23,6 +23,20 @@ api.storeThrows = function(req, res) {
 	}, 10);
 };
 
+//
+api.getFileList = function(res, req) {
+	var list = fs.readdirSync('public/data/throw-data');
+	if(list[0] == ".DS_Store") {
+		req.send(list.splice(1))
+	} else {
+		req.send(list);
+	}
+}
+
+/*
+* PRIVATE FUNCTIONS
+*/
+
 priv.writeToFile = function(req, res, interval) {
 	clearInterval(interval);
 	//create whole file path
