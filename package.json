@@ -4,8 +4,6 @@
   "description": "run `npm install` after pulling for the fisrt time",
   "main": "app.js",
   "dependencies": {
-    "gaussian": "~1.0.0",
-    "benchmark": "~1.0.0",
     "express": "3.4.8",
     "nodemon": "1.0.12",
     "progress": "1.1.3",
