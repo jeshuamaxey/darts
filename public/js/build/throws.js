@@ -70,6 +70,15 @@ window.draw = require('./draw.js');
 window.q = require('./quotes.js');
 
 var app = app || {};
+window.app = app;
+
+//set the correct data location URL
+app.dataLocation = '';
+if (document.location.hostname == "localhost") {
+	app.dataLocation = "data/";
+} else {
+	app.dataLocation = "http://jeshuamaxey.com/misc/data/darts-data/";
+}
 
 app.main = function() {
 	//display list of available files
@@ -86,7 +95,7 @@ app.main = function() {
 }
 
 app.loadFileList = function() {
-	var url = 'api/getFileList'
+	var url = 'api/getFileList';
 	$.ajax({
 		url: url,
 		cache: false
@@ -107,7 +116,9 @@ app.displayFileList = function(list) {
 app.switchData = function() {
 	$('.list-group-item').removeClass('active');
 	$(this).addClass('active');
-	var url = 'data/throw-data/' + $(this).attr('url');
+	var url = 'throw-data/' + $(this).attr('url');
+	url = app.dataLocation + url;
+	//make the call
 	$.ajax({
 		url: url,
 		cache: false

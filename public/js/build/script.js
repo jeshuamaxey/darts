@@ -198,6 +198,14 @@ window.stats = require('../../modules/stats.js');
 var app = app || {};
 window.app = app;
 
+//set the correct data location URL
+app.dataLocation = '';
+if (document.location.hostname == "localhost") {
+	app.dataLocation = "data/";
+} else {
+	app.dataLocation = "http://jeshuamaxey.com/misc/data/darts-data/";
+}
+
 app.pixelSize = 2;
 
 app.draw = require('./draw.js');
@@ -258,7 +266,7 @@ app.refreshHeatMap = function() {
 		app.sd = parseFloat($('#stdDev').val()).toFixed(1);
 		if(app.sd<100) app.sd = '0' + app.sd;
 		if(app.sd<10) app.sd = '0' + app.sd;
-		var url = 'data/symmetric/' + 'sd-' + app.sd + '.json';
+		var url = 'symmetric/' + 'sd-' + app.sd + '.json';
 	}
 	//display standard deviation
 	$('.stdDevDisp').html(app.sd)
@@ -266,8 +274,10 @@ app.refreshHeatMap = function() {
 	if(app.meshs[app.sd.toString]) {
 		app.processData(app.meshs[app.sd.toString])
 	}
+	url = app.dataLocation + url;
 	//make the call
-	else {
+	console.log('url: '+url);
+	{
 		$.ajax({
 			url: url,
 			cache: false
