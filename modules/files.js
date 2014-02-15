@@ -5,6 +5,8 @@ var fs = require('fs');
 var files = files || {};
 
 files.makeList = function(dir) {
+  //deal with that pesky .DS_Store file in OSX
+  fs.unlink('./**/.DS_Store', function(err){});
 	//get dir listing as an array
 	walk(dir, outputToFile);
 }

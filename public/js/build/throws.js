@@ -121,7 +121,9 @@ app.displayFileList = function(data) {
 	data.list.forEach(function(filePath){
 		if(filePath.startsWith(app.dataSubDir)) {
 			fileName = filePath.substring(app.dataSubDir.length);
-			$('#fileList').append('<a href="#" class="list-group-item" url=' + fileName + '>'+ fileName +'</a>')
+			if(fileName != '.DS_Store') {
+				$('#fileList').append('<a href="#" class="list-group-item" url=' + fileName + '>'+ fileName +'</a>');
+			}
 		}
 	});
 	$('#fileList .list-group-item').on('click', app.switchData)

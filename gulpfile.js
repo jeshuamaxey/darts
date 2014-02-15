@@ -7,7 +7,7 @@ var files = require('./modules/files.js');
 
 var paths = {
   scripts: ['public/js/data-record.js', 'public/js/script.js', 'public/js/throws.js'],
-  dataDir: 'public/data'
+  dataDir: 'public/data/*'
 };
 
 //runs the server with nodemon
@@ -27,7 +27,7 @@ gulp.task('scripts', function() {
 
 //creates a json file with a list of all the data files
 gulp.task('file-lists', function() {
-	files.makeList(paths.dataDir);
+	files.makeList('public/data');
 });
 
 /*
