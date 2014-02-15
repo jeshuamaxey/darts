@@ -38,18 +38,16 @@ function walk(dir, done) {
 function outputToFile(err, list) {
 
 	var outputFile = 'public/data/data-files.json';
-
-  var str = '["'
-  list.forEach(function(file, i) {
-    if(i != list.length) {
-      str += file + '","';
-    }
-    else {
-      str += file + '"]';
-    }
+  
+  //strip off the public from the start of the strings
+  list.forEach(function(filePath, i) {
+    list[i] = filePath.substring('public/'.length);
   })
 
-	fs.writeFile(outputFile, str, function(err) {
+  var data = { 'list' : list };
+  var dataStr = JSON.stringify(data);
+
+	fs.writeFile(outputFile, dataStr, function(err) {
 		if(err) {
 			console.log(err);
 		} else {

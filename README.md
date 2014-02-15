@@ -1,6 +1,11 @@
 # DARTS
 
-## Setup
+## Try The App
+
+A version of the app should be live on the web, hosted by Heroku. You can visit it by clicking [here](http://dartstats.herokuapp.com). Not all features are currently supported on the live version. Its capabilities are changing all the time but as a rule of thumb, expect to be able to view and review data (currently only our own data sets). Logging your own throw data isn't yet possible.
+
+
+## Local Setup
 
 Run `npm install` after pulling. You'll need to symlink to a directory full of relevant data of the form:
 
@@ -35,21 +40,15 @@ replacing `path/to/shared/dropbox/folder` with the actual path to the folder we'
 $ ln -s ~/Dropbox/data/darts-data/ public/data
 ````
 
-The web app visualiser won't work unless you start a server in the route directory. I've built us a basic on in node. Open up a terminal window and run:
+The app requires a server, run with nodemon. To build the front end javascript files also requires browserify. All dependencies will be installed with `npm install`. All this is taken care of by [gulp](https://github.com/gulpjs/gulp).
 
-````nodemon index.js````
-
-Note: npm should install nodemon for you. If it doesn't, run 'npm install -g nodemon' and then try running the server again.
-
-To edit the javascript you'll need to run [gulp](https://github.com/gulpjs/gulp) (Sorry for having to install ANOTHER thing, but I suspect a `npm install` should do everything for you). This is so we can modularise all of our javascript 'The Node Way' (tm) and use it where ever we like.
-
-Once installed open up a separate terminal window and just run the gulp command:
+Once installed just run the gulp command:
 
 ````
 $ gulp
 ````
 
-Then just open up `http://localhost:3000` in your browser and you'll see ~~`public/data/darts.json`~~ plotted on a heatmap.
+and open up `http://localhost:3000` in your browser and you're good use the app or develop it.
 
 ## To Do
 

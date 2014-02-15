@@ -1,5 +1,5 @@
 window.stats = require('../../modules/stats.js');
-
+window.draw = require('./draw.js');
 
 var app = app || {};
 window.app = app;
@@ -13,8 +13,6 @@ if (document.location.hostname == "localhost") {
 }
 
 app.pixelSize = 2;
-
-app.draw = require('./draw.js');
 
 app.meshs = {};
 app.firstDraw = true;
@@ -82,7 +80,6 @@ app.refreshHeatMap = function() {
 	}
 	url = app.dataLocation + url;
 	//make the call
-	console.log('url: '+url);
 	{
 		$.ajax({
 			url: url,
@@ -106,7 +103,7 @@ app.processData = function(data) {
 	app.pixelSize = app.hm.width/app.data.length;
 	app.generateHeatmap();
 	app.generateLegend();
-	app.draw.dartBoard(app.ovCtx, app.ovCanvas, app.hm);
+	draw.dartBoard(app.ovCtx, app.ovCanvas, app.hm);
 }
 
 app.failedAJAX = function(url) {

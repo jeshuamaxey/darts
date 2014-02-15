@@ -72,6 +72,14 @@ window.q = require('./quotes.js');
 var app = app || {};
 window.app = app;
 
+//useful string function
+if (typeof String.prototype.startsWith != 'function') {
+  // see below for better implementation!
+  String.prototype.startsWith = function (str){
+    return this.indexOf(str) == 0;
+  };
+}
+
 //set the correct data location URL
 app.dataLocation = '';
 if (document.location.hostname == "localhost") {
@@ -79,6 +87,9 @@ if (document.location.hostname == "localhost") {
 } else {
 	app.dataLocation = "http://jeshuamaxey.com/misc/data/darts-data/";
 }
+
+//determines the directory that is listed in the left hand panel
+app.dataSubDir = 'data/throw-data/';
 
 app.main = function() {
 	//display list of available files
@@ -95,20 +106,23 @@ app.main = function() {
 }
 
 app.loadFileList = function() {
-	var url = 'api/getFileList';
+	var url = app.dataLocation + 'data-files.json'; //'api/getFileList';
 	$.ajax({
 		url: url,
 		cache: false
 	})
 	.done(app.displayFileList)
 	.fail(function() {
-		//app.failedAJAX()
+		app.failedAJAX();
 	})
 }
 
-app.displayFileList = function(list) {
-	list.forEach(function(file){
-		$('#fileList').append('<a href="#" class="list-group-item" url=' + file + '>'+ file +'</a>')
+app.displayFileList = function(data) {
+	data.list.forEach(function(filePath){
+		if(filePath.startsWith(app.dataSubDir)) {
+			fileName = filePath.substring(app.dataSubDir.length);
+			$('#fileList').append('<a href="#" class="list-group-item" url=' + fileName + '>'+ fileName +'</a>')
+		}
 	});
 	$('#fileList .list-group-item').on('click', app.switchData)
 }
@@ -157,6 +171,12 @@ app.refreshDartBoard = function(data) {
 	//add wire frame
 	app.dbCtx.strokeStyle = '#000000'
 	draw.dartBoard(app.dbCtx, app.dbCanvas, app.dbDim)
+}
+
+app.failedAJAX = function(url) {
+	alert('bad ajax');
+	// $('#failedAJAX #badURL').html(url)
+	// $('#failedAJAX').modal('show');
 }
 
 //must go last
