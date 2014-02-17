@@ -27,9 +27,13 @@ app.main = function() {
 	app.URLparams = app.getURLparams();
 	app.initialiseCanvases();
 	app.refreshHeatMap();
+	
 	$('#canvasWrapper').mousemove(app.updateHoverPixel);
 	$('#canvasWrapper').on("click", app.updateFocusPixel);
-	$('#colorScheme').on('change', app.refreshHeatMap)
+	$('#colorScheme').on('change', app.refreshHeatMap);
+	$('#showDartboard').on('change', app.refreshHeatMap);
+	$('#showNumbers').on('change', app.refreshHeatMap);
+	
 	$('#stdDev').on('change', function() {
 		app.sd = parseFloat($('#stdDev').val()).toFixed(1);
 		if(app.sd<100) app.sd = '0' + app.sd;
@@ -53,7 +57,9 @@ app.initialiseCanvases = function() {
 }
 
 app.refreshHeatMap = function() {
-	app.colorScheme = ( $('#colorScheme').is(':checked') ? 'color' : 'bw')
+	app.colorScheme = ( $('#colorScheme').is(':checked') ? 'color' : 'bw');
+	app.showDartboard = ( $('#showDartboard').is(':checked') ? true : false);
+	app.showNumbers = ( $('#showNumbers').is(':checked') ? true : false);
 	//set app.sd
 	app.sd = false;
 	if(app.firstDraw && app.URLparams.sd) {
@@ -103,7 +109,7 @@ app.processData = function(data) {
 	app.pixelSize = app.hm.width/app.data.length;
 	app.generateHeatmap();
 	app.generateLegend();
-	draw.dartBoard(app.ovCtx, app.ovCanvas, app.hm);
+	if(app.showDartboard) draw.dartBoard(app.ovCtx, app.ovCanvas, app.hm, app.showNumbers);
 }
 
 app.failedAJAX = function(url) {

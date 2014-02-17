@@ -1,13 +1,19 @@
 var draw = draw || {};
 
 /*
-* Takes three arguments:
+* Takes four arguments:
 * context: the canvas context used to draw
 * canvas: the canvas element that pertains to the context
 * dim: a dimensions object of the form {height: 100, width: 100}
+* displayNumbers: a bool to determine whether to draw bed values on the board
 */
 
-draw.dartBoard = function(context, canvas, dim) {
+draw.dartBoard = function(context, canvas, dim, displayNumbers) {
+	//
+	var dartboardnumbers = [6,13,4,18,1,20,5,12,9,14,11,8,16,7,19,3,17,2,15,10];
+	context.textAlign = "center"
+	context.fillStyle = "#000";
+	context.font = dim.width/25 + "px Helvetica";
 	//set metrics
 	var db = {};
 	db.x = dim.width/2; // db.x is the central x coordinate.
@@ -27,17 +33,23 @@ draw.dartBoard = function(context, canvas, dim) {
 	var theta, innerX, innerY, outerX, outerY;
 
 	for (var i = 0; i < 20; i++) {
-		//Math.PI not Math.Pi
 		theta = Math.PI/20 + i*(Math.PI/10);
 		innerX = Math.round((db.rad*15.9/200) * Math.cos(theta) + db.x);
 		innerY = Math.round(db.y - ((db.rad*15.9/200) * Math.sin(theta)));
 		outerX = Math.round(((db.rad*170/200) * Math.cos(theta)) + db.x);
 		outerY = Math.round(db.y - ((db.rad*170/200) * Math.sin(theta)));
 		
-  	context.beginPath();
+		context.beginPath();
     context.moveTo(innerX, innerY);
   	context.lineTo(outerX, outerY);
-    context.stroke();
+
+	  if(displayNumbers) {
+	  	theta -= Math.PI/20;
+	  	outerX = Math.round(((db.rad*135/200) * Math.cos(theta)) + db.x);
+			outerY = Math.round(db.y - ((db.rad*135/200) * Math.sin(theta)));
+	  	context.fillText(dartboardnumbers[i], outerX, outerY);
+		}
+		context.stroke();
   }
 }
 

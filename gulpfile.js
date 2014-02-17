@@ -11,7 +11,7 @@ var paths = {
 };
 
 //runs the server with nodemon
-gulp.task('nodemon', function () {
+gulp.task('serve', function () {
     nodemon({
         script: 'server.js'
     });
@@ -35,7 +35,7 @@ gulp.task('file-lists', function() {
 */
 gulp.task('default', function(){
 	//run everything once
-	gulp.run('nodemon');
+	gulp.run('serve');
 	gulp.run('scripts');
 	gulp.run('file-lists');
 	//watch js

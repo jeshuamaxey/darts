@@ -5,9 +5,9 @@ var fs = require('fs');
 var progressBar = require('progress');
 
 /* OUR MODULES */
-var config = require('./modules/config.js');
-var stats = require('./modules/stats.js');
-var db = require('./modules/dartboard.js');
+var config = require('../modules/config.js');
+var stats = require('../modules/stats.js');
+var db = require('../modules/dartboard.js');
 
 // Read in the mesh size
 //config.meshSize = config.meshSize;

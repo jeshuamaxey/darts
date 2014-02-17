@@ -128,13 +128,19 @@ module.exports = stats;
 var draw = draw || {};
 
 /*
-* Takes three arguments:
+* Takes four arguments:
 * context: the canvas context used to draw
 * canvas: the canvas element that pertains to the context
 * dim: a dimensions object of the form {height: 100, width: 100}
+* displayNumbers: a bool to determine whether to draw bed values on the board
 */
 
-draw.dartBoard = function(context, canvas, dim) {
+draw.dartBoard = function(context, canvas, dim, displayNumbers) {
+	//
+	var dartboardnumbers = [6,13,4,18,1,20,5,12,9,14,11,8,16,7,19,3,17,2,15,10];
+	context.textAlign = "center"
+	context.fillStyle = "#000";
+	context.font = dim.width/25 + "px Helvetica";
 	//set metrics
 	var db = {};
 	db.x = dim.width/2; // db.x is the central x coordinate.
@@ -154,17 +160,23 @@ draw.dartBoard = function(context, canvas, dim) {
 	var theta, innerX, innerY, outerX, outerY;
 
 	for (var i = 0; i < 20; i++) {
-		//Math.PI not Math.Pi
 		theta = Math.PI/20 + i*(Math.PI/10);
 		innerX = Math.round((db.rad*15.9/200) * Math.cos(theta) + db.x);
 		innerY = Math.round(db.y - ((db.rad*15.9/200) * Math.sin(theta)));
 		outerX = Math.round(((db.rad*170/200) * Math.cos(theta)) + db.x);
 		outerY = Math.round(db.y - ((db.rad*170/200) * Math.sin(theta)));
 		
-  	context.beginPath();
+		context.beginPath();
     context.moveTo(innerX, innerY);
   	context.lineTo(outerX, outerY);
-    context.stroke();
+
+	  if(displayNumbers) {
+	  	theta -= Math.PI/20;
+	  	outerX = Math.round(((db.rad*135/200) * Math.cos(theta)) + db.x);
+			outerY = Math.round(db.y - ((db.rad*135/200) * Math.sin(theta)));
+	  	context.fillText(dartboardnumbers[i], outerX, outerY);
+		}
+		context.stroke();
   }
 }
 
@@ -221,9 +233,13 @@ app.main = function() {
 	app.URLparams = app.getURLparams();
 	app.initialiseCanvases();
 	app.refreshHeatMap();
+	
 	$('#canvasWrapper').mousemove(app.updateHoverPixel);
 	$('#canvasWrapper').on("click", app.updateFocusPixel);
-	$('#colorScheme').on('change', app.refreshHeatMap)
+	$('#colorScheme').on('change', app.refreshHeatMap);
+	$('#showDartboard').on('change', app.refreshHeatMap);
+	$('#showNumbers').on('change', app.refreshHeatMap);
+	
 	$('#stdDev').on('change', function() {
 		app.sd = parseFloat($('#stdDev').val()).toFixed(1);
 		if(app.sd<100) app.sd = '0' + app.sd;
@@ -247,7 +263,9 @@ app.initialiseCanvases = function() {
 }
 
 app.refreshHeatMap = function() {
-	app.colorScheme = ( $('#colorScheme').is(':checked') ? 'color' : 'bw')
+	app.colorScheme = ( $('#colorScheme').is(':checked') ? 'color' : 'bw');
+	app.showDartboard = ( $('#showDartboard').is(':checked') ? true : false);
+	app.showNumbers = ( $('#showNumbers').is(':checked') ? true : false);
 	//set app.sd
 	app.sd = false;
 	if(app.firstDraw && app.URLparams.sd) {
@@ -297,7 +315,7 @@ app.processData = function(data) {
 	app.pixelSize = app.hm.width/app.data.length;
 	app.generateHeatmap();
 	app.generateLegend();
-	draw.dartBoard(app.ovCtx, app.ovCanvas, app.hm);
+	if(app.showDartboard) draw.dartBoard(app.ovCtx, app.ovCanvas, app.hm, app.showNumbers);
 }
 
 app.failedAJAX = function(url) {
