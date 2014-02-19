@@ -172,18 +172,44 @@ app.switchData = function() {
 app.refreshDartBoard = function(data) {
 	//
 	draw.clear(app.dbCtx, app.dbCanvas);
+	//
+	var x,y,r = 1;
+	var mm2px = app.dbDim.width/340;
+	
+	//add mean point w/ std dev
+	//centre coords
+	x = app.dbDim.width/2 + data.preprocessed.mmX.mean*mm2px;
+	y = app.dbDim.height/2 + data.preprocessed.mmY.mean*mm2px;
+	//crosshair coords
+	//horizontal
+	startX = x - data.preprocessed.mmX.stdDev*mm2px
+	endX = x + data.preprocessed.mmX.stdDev*mm2px
+	//vertical
+	startY = y - data.preprocessed.mmY.stdDev*mm2px
+	endY = y + data.preprocessed.mmY.stdDev*mm2px
+	//define lines
+	app.dbCtx.moveTo(startX, y);
+	app.dbCtx.lineTo(endX, y);
+	app.dbCtx.moveTo(x, startY);
+	app.dbCtx.lineTo(x, endY);
+	//draw
+	app.dbCtx.strokeStyle = '#006600';
+	app.dbCtx.lineWidth = 2;
+	app.dbCtx.stroke();
+
 	//plot data points
 	app.dbCtx.strokeStyle = '#ff0000';
-	var x,y,r = 3;
-	var mm2px = app.dbDim.width/340;
 	//draw each point
-	data.raw.throws.forEach(function(thrw) {
+	data.raw.throws.forEach(function(thrw, i) {
 		x = app.dbDim.width/2 + thrw.mmX*mm2px;
 		y = app.dbDim.height/2 + thrw.mmY*mm2px;
-		draw.circle(app.dbCtx, x, y, r)
-	})
+		console.log(app.dbCtx.strokeStyle);
+		draw.circle(app.dbCtx, x, y, r);
+	});
+
 	//add wire frame
-	app.dbCtx.strokeStyle = '#000000'
+	app.dbCtx.strokeStyle = '#000000';
+	app.dbCtx.lineWidth = 1;
 	draw.dartBoard(app.dbCtx, app.dbCanvas, app.dbDim, true)
 }
 
