@@ -99,7 +99,7 @@ app.refreshDartBoard = function(data) {
 	//add mean point w/ std dev
 	//centre coords
 	x = app.dbDim.width/2 + data.preprocessed.mmX.mean*mm2px;
-	y = app.dbDim.height/2 + data.preprocessed.mmY.mean*mm2px;
+	y = app.dbDim.height/2 - data.preprocessed.mmY.mean*mm2px;
 	//crosshair coords
 	//horizontal
 	startX = x - data.preprocessed.mmX.stdDev*mm2px
