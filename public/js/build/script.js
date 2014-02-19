@@ -135,7 +135,7 @@ var draw = draw || {};
 * displayNumbers: a bool to determine whether to draw bed values on the board
 */
 
-draw.dartBoard = function(context, canvas, dim, displayNumbers) {
+draw.dartBoard = function(context, canvas, dim, displayNumbers, margin) {
 	//
 	var dartboardnumbers = [6,13,4,18,1,20,5,12,9,14,11,8,16,7,19,3,17,2,15,10];
 	context.textAlign = "center"
@@ -146,25 +146,27 @@ draw.dartBoard = function(context, canvas, dim, displayNumbers) {
 	db.x = dim.width/2; // db.x is the central x coordinate.
 	db.y = dim.height/2; // db.y is the central y coordinate.
 	db.rad = dim.width/2;
+	//determines whether a margin is included in the dartboard drawing
+	var scaleFactor = (margin ? 200 : 170);
 	
 	//treble ring
-	draw.circle(context, db.x, db.y, db.rad*99/200);
-	draw.circle(context, db.x, db.y, db.rad*107/200);
+	draw.circle(context, db.x, db.y, db.rad*99/scaleFactor);
+	draw.circle(context, db.x, db.y, db.rad*107/scaleFactor);
 	//double ring
-	draw.circle(context, db.x, db.y, db.rad*170/200);
-	draw.circle(context, db.x, db.y, db.rad*162/200);
+	draw.circle(context, db.x, db.y, db.rad*170/scaleFactor);
+	draw.circle(context, db.x, db.y, db.rad*162/scaleFactor);
 	//bull
-	draw.circle(context, db.x, db.y, db.rad*6.35/200);
-  draw.circle(context, db.x, db.y, db.rad*15.9/200);
+	draw.circle(context, db.x, db.y, db.rad*6.35/scaleFactor);
+  draw.circle(context, db.x, db.y, db.rad*15.9/scaleFactor);
 
 	var theta, innerX, innerY, outerX, outerY;
 
 	for (var i = 0; i < 20; i++) {
 		theta = Math.PI/20 + i*(Math.PI/10);
-		innerX = Math.round((db.rad*15.9/200) * Math.cos(theta) + db.x);
-		innerY = Math.round(db.y - ((db.rad*15.9/200) * Math.sin(theta)));
-		outerX = Math.round(((db.rad*170/200) * Math.cos(theta)) + db.x);
-		outerY = Math.round(db.y - ((db.rad*170/200) * Math.sin(theta)));
+		innerX = Math.round((db.rad*15.9/scaleFactor) * Math.cos(theta) + db.x);
+		innerY = Math.round(db.y - ((db.rad*15.9/scaleFactor) * Math.sin(theta)));
+		outerX = Math.round(((db.rad*170/scaleFactor) * Math.cos(theta)) + db.x);
+		outerY = Math.round(db.y - ((db.rad*170/scaleFactor) * Math.sin(theta)));
 		
 		context.beginPath();
     context.moveTo(innerX, innerY);
@@ -172,8 +174,8 @@ draw.dartBoard = function(context, canvas, dim, displayNumbers) {
 
 	  if(displayNumbers) {
 	  	theta -= Math.PI/20;
-	  	outerX = Math.round(((db.rad*135/200) * Math.cos(theta)) + db.x);
-			outerY = Math.round(db.y - ((db.rad*135/200) * Math.sin(theta)));
+	  	outerX = Math.round(((db.rad*135/scaleFactor) * Math.cos(theta)) + db.x);
+			outerY = Math.round(db.y - ((db.rad*135/scaleFactor) * Math.sin(theta)));
 	  	context.fillText(dartboardnumbers[i], outerX, outerY);
 		}
 		context.stroke();
@@ -315,7 +317,7 @@ app.processData = function(data) {
 	app.pixelSize = app.hm.width/app.data.length;
 	app.generateHeatmap();
 	app.generateLegend();
-	if(app.showDartboard) draw.dartBoard(app.ovCtx, app.ovCanvas, app.hm, app.showNumbers);
+	if(app.showDartboard) draw.dartBoard(app.ovCtx, app.ovCanvas, app.hm, app.showNumbers, true);
 }
 
 app.failedAJAX = function(url) {

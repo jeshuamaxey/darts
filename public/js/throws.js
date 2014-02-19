@@ -130,7 +130,7 @@ app.refreshDartBoard = function(data) {
 	//add wire frame
 	app.dbCtx.strokeStyle = '#000000';
 	app.dbCtx.lineWidth = 1;
-	draw.dartBoard(app.dbCtx, app.dbCanvas, app.dbDim, true)
+	draw.dartBoard(app.dbCtx, app.dbCanvas, app.dbDim, true, false)
 }
 
 app.failedAJAX = function(url) {
