@@ -99,7 +99,7 @@ app.refreshDartBoard = function(data) {
 	//add mean point w/ std dev
 	//centre coords
 	x = app.dbDim.width/2 + data.preprocessed.mmX.mean*mm2px;
-	y = app.dbDim.height/2 - data.preprocessed.mmY.mean*mm2px;
+	y = data.preprocessed.mmY.mean*mm2px - app.dbDim.height/2;
 	//crosshair coords
 	//horizontal
 	startX = x - data.preprocessed.mmX.stdDev*mm2px
@@ -122,7 +122,7 @@ app.refreshDartBoard = function(data) {
 	//draw each point
 	data.raw.throws.forEach(function(thrw, i) {
 		x = app.dbDim.width/2 + thrw.mmX*mm2px;
-		y = app.dbDim.height/2 + thrw.mmY*mm2px;
+		y = app.dbDim.height/2 - thrw.mmY*mm2px;
 		console.log(app.dbCtx.strokeStyle);
 		draw.circle(app.dbCtx, x, y, r);
 	});

@@ -2,11 +2,12 @@
 var draw = draw || {};
 
 /*
-* Takes four arguments:
+* Takes five arguments:
 * context: the canvas context used to draw
 * canvas: the canvas element that pertains to the context
 * dim: a dimensions object of the form {height: 100, width: 100}
 * displayNumbers: a bool to determine whether to draw bed values on the board
+* margin: a bool to determine whether to include a margin when drawing the board
 */
 
 draw.dartBoard = function(context, canvas, dim, displayNumbers, margin) {
@@ -181,7 +182,7 @@ app.refreshDartBoard = function(data) {
 	//add mean point w/ std dev
 	//centre coords
 	x = app.dbDim.width/2 + data.preprocessed.mmX.mean*mm2px;
-	y = app.dbDim.height/2 - data.preprocessed.mmY.mean*mm2px;
+	y = data.preprocessed.mmY.mean*mm2px - app.dbDim.height/2;
 	//crosshair coords
 	//horizontal
 	startX = x - data.preprocessed.mmX.stdDev*mm2px
@@ -204,7 +205,7 @@ app.refreshDartBoard = function(data) {
 	//draw each point
 	data.raw.throws.forEach(function(thrw, i) {
 		x = app.dbDim.width/2 + thrw.mmX*mm2px;
-		y = app.dbDim.height/2 + thrw.mmY*mm2px;
+		y = app.dbDim.height/2 - thrw.mmY*mm2px;
 		console.log(app.dbCtx.strokeStyle);
 		draw.circle(app.dbCtx, x, y, r);
 	});

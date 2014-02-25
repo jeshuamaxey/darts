@@ -128,11 +128,12 @@ module.exports = stats;
 var draw = draw || {};
 
 /*
-* Takes four arguments:
+* Takes five arguments:
 * context: the canvas context used to draw
 * canvas: the canvas element that pertains to the context
 * dim: a dimensions object of the form {height: 100, width: 100}
 * displayNumbers: a bool to determine whether to draw bed values on the board
+* margin: a bool to determine whether to include a margin when drawing the board
 */
 
 draw.dartBoard = function(context, canvas, dim, displayNumbers, margin) {
