@@ -424,7 +424,7 @@ app.main = function() {
 	$('#calibrate').on('click', app.initialiseCalib);
 	$('#clearData').on('click', app.clearData);
 	$('#undoDataClick').on('click', app.undoDataClick);
-	$('#missedDart').on('click', app.missedDart);
+	$('#bounceOut').on('click', app.bounceOut);
 	$('#reviewData').on('click', app.generateDataReview);
 
 	$('#submitExport').on('click', app.submitExport);
@@ -474,8 +474,7 @@ app.initialiseCalib = function() {
 	app.calibClicks = [];
 	app.dataClicks = app.dataClicks || [];
 	
-	$('#uncalibratedMessage').show()
-	$('#uncalibratedMessage').html('CALIBRATING')
+	$('#uncalibratedMessage').html('CALIBRATING').show();
 	$('#controls').show();
 
 	$('.rotationSlider').on('change', app.updateRotation);
@@ -498,7 +497,7 @@ app.calibClick = function(e) {
 	$($('.calibClick')[app.calibClicks.length]).removeClass('clickHere').addClass('strikethrough');
 	$($('.calibClick')[app.calibClicks.length+1]).addClass('clickHere')
 	app.calibClicks.push(e);
-	if(app.calibClicks.length == 3) {
+	if(app.calibClicks.length == 5) {
 		app.calculateCalibration()
 	}
 }
@@ -508,12 +507,18 @@ app.calibClick = function(e) {
 * and hide the calibration UI
 */
 app.calculateCalibration = function() {
-	//calculate pixel to mm ratio
+	//calculate pixel to mm ratio in x
 	var dx = Math.abs(app.calibClicks[0].offsetX - app.calibClicks[1].offsetX);
 	var dy = Math.abs(app.calibClicks[0].offsetY - app.calibClicks[1].offsetY);
 	var pxDiameter = Math.sqrt(dx*dx + dy*dy);
 	var mmDiameter = 340; //in mm
-	app.px2mm = mmDiameter / pxDiameter;
+	app.px2mm.x = mmDiameter / pxDiameter;
+	//calculate pixel to mm ratio in x
+	var dx = Math.abs(app.calibClicks[3].offsetX - app.calibClicks[4].offsetX);
+	var dy = Math.abs(app.calibClicks[3].offsetY - app.calibClicks[4].offsetY);
+	var pxDiameter = Math.sqrt(dx*dx + dy*dy);
+	var mmDiameter = 340; //in mm
+	app.px2mm.y = mmDiameter / pxDiameter;
 	//store origin offsets
 	app.originOffset = {
 		'x': app.calibClicks[2].offsetX,
@@ -545,9 +550,9 @@ app.recordClick = function(e) {
 		'pxX': x,
 		'pxY': y,
 		'pxR': Math.sqrt(x*x + y*y),
-		'mmX': x*app.px2mm,
-		'mmY': y*app.px2mm,
-		'mmR': Math.sqrt(x*x + y*y)*app.px2mm
+		'mmX': x*app.px2mm.x,
+		'mmY': y*app.px2mm.y,
+		'mmR': Math.sqrt( Math.pow(x*app.px2mm.x, 2.0) + Math.pow(y*app.px2mm.y, 2.0) )
 	};
 	app.dataClicks.push(attempt);
 	
@@ -587,7 +592,10 @@ app.submitExport = function(e) {
 	var preprocessed = app.generateProcessedData();
 	//the raw throw data and conversion ratio
 	var raw = {
-		'px2mm': app.px2mm,
+		'px2mm': {
+			x: app.px2mm.x,
+			y: app.px2mm.y
+		},
 		'throws' : app.dataClicks
 	}
 	//collect all the data to export
@@ -619,21 +627,16 @@ app.confirmExport = function() {
 /*
 * Record a missed dart
 */
-app.missedDart = function() {
+app.bounceOut = function() {
 	var x = 170, y = 170;
 	var attempt = {
-		'pxX': x,
-		'pxY': y,
-		'pxR': Math.sqrt(x*x + y*y),
-		'mmX': x*app.px2mm,
-		'mmY': y*app.px2mm,
-		'mmR': Math.sqrt(x*x + y*y)*app.px2mm
+		'bounceOut': true
 	};
 	app.dataClicks.push(attempt);
 	$('#clickCoords tbody').prepend("<tr>" +
 																		"<td>" + app.dataClicks.length + "</td>" +
-																		"<td>" + "db.dartboard(x,y)" + "</td>" +
-																		"<td>" + "CumScore() "+ "</td>" +
+																		"<td>" + "Bounce out" + "</td>" +
+																		"<td>" + "CumScore()"+ "</td>" +
 																		"<td>" + attempt.mmR.toFixed(2) + "</td>" +
 																		"<td>" + "CumDist" + "</td>" +
 																	"</tr>");
