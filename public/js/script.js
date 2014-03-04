@@ -100,15 +100,21 @@ app.refreshHeatMap = function() {
 
 app.processData = function(data) {
 	app.data = data;
+	//set pixel size
+	app.pixelSize = app.hm.width/app.data.length;
+	//find max value of array
 	app.data.max = 0;
 	app.data.forEach(function(arr) {
 		arr.forEach(function(el) {
 			el > app.data.max ? app.data.max = el : null;
 		})
 	});
-	app.pixelSize = app.hm.width/app.data.length;
+	//find coordinates of the maximum point
+	var coordsMax = stats.maxXY(app.data);
+	//draw
 	app.generateHeatmap();
 	app.generateLegend();
+	app.plotMaxPoint(coordsMax);
 	if(app.showDartboard) draw.dartBoard(app.ovCtx, app.ovCanvas, app.hm, app.showNumbers, true);
 }
 
@@ -169,6 +175,19 @@ app.generateHeatmap = function() {
 			app.plotPixel(x*app.pixelSize, y*app.pixelSize, app.pixelSize, app.data[x][y]);
 		};
 	};
+}
+
+app.plotMaxPoint = function(c) {
+	app.hmCtx.beginPath();
+	var x = {l: app.pixelSize*c.x - 4, r: app.pixelSize*c.x + 4};
+	var y = {l: app.pixelSize*c.y - 4, r: app.pixelSize*c.y + 4};
+	//draw the cross
+	app.hmCtx.moveTo(x.l, y.r);
+	app.hmCtx.lineTo(x.r, y.l);
+	app.hmCtx.moveTo(x.l, y.l);
+	app.hmCtx.lineTo(x.r, y.r);
+	app.hmCtx.stroke();
+	app.hmCtx.closePath();
 }
 
 app.updateHoverPixel = function(e) {

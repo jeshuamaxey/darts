@@ -122,4 +122,23 @@ stats.returnStdDev = function(percentage) {
 	return priv.rSD[percentage*2] = 1/((trialn/1000)-0.001);
 }
 
+/*
+* returns the x and y coords of the largest value in a 2d array
+*/
+stats.maxXY = function(arr) {
+  var max = 0;
+	var c = {'x': 0,'y': 0};
+  //begin search
+  for(x=0;x<arr.length;x++) {
+  	for(y=0;y<arr.length;y++) {
+      	if(arr[x][y] > max) {
+          max = arr[x][y]; 
+        	c.x = x;
+          c.y = y;
+    		}
+  	}
+	}
+	return c;
+}
+
 module.exports = stats;
