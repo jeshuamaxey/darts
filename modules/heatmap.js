@@ -29,16 +29,16 @@ hm.generateHeatmap = function(sd, mesh) {
 				'x': x*config.px2mm,
 				'y': y*config.px2mm
 			};
-			mesh[x][y] = hm.weight(pos, sd, mesh);
+			mesh[x+N/2][N/2-y] = hm.weight(pos, sd, mesh);
 		}
 		//update progress bar
 		priv.bar.tick();
 	}
 	//output data
 	var fileName = 'sd-';
-	if(sdX.mm<10) fileName += '0';
-	if(sdX.mm<100) fileName += '0';
-	fileName += sdX.mm.toFixed(1);
+	if(sd.x<10) fileName += '0';
+	if(sd.x<100) fileName += '0';
+	fileName += sd.x.toFixed(1);
 	fileName += '.json';
 	files.writeToFile(mesh, fileName, 'public/data/new-symmetric/');
 	//destroy progress bar
@@ -63,6 +63,7 @@ hm.weight = function(pos, sd, mesh) {
 *
 */
 hm.generateHeatmapPartials = function(sd) {
+	var N = mesh.length;
 	//creates nice progress bar in terminal
 	priv.bar = new progressBar('sd: '+sd.mm.toFixed(1)+'mm [:bar] :percent :etas', {
 	    complete: '='
@@ -73,14 +74,13 @@ hm.generateHeatmapPartials = function(sd) {
 	//create x partial
 	var dim = 'x';
 	//start big loop
-	var N = mesh.length;
 	for (var x = -N/2; x < N/2; x++) {
 		for (var y = -N/2; y < N/2; y++) {
 			var pos = {
 				'x': x*config.px2mm,
 				'y': y*config.px2mm
 			};
-			mesh[x][y] = app.partialWeight(pos, sd, mesh, dim);
+			mesh[x+N/2][N/2-y] = app.partialWeight(pos, sd, mesh, dim);
 		}
 		//update progress bar
 		if(x%2 == 0) priv.bar.tick();
@@ -98,14 +98,13 @@ hm.generateHeatmapPartials = function(sd) {
 	mesh.zeroMesh(mesh);
 	dim = 'y';
 	//start big loop
-	var N = mesh.length;
 	for (var x = -N/2; x < N/2; x++) {
 		for (var y = -N/2; y < N/2; y++) {
 			var pos = {
 				'x': x*config.px2mm,
 				'y': y*config.px2mm
 			};
-			mesh[x][y] = app.partialWeight(pos, sd, mesh, dim);
+			mesh[x+N/2][y+N/2] = app.partialWeight(pos, sd, mesh, dim);
 		}
 		//update progress bar
 		if(x%2 == 0) priv.bar.tick();

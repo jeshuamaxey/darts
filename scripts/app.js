@@ -21,7 +21,9 @@ config.px2mm = 1/config.mm2px;
 */
 app.main = function() {
 	var sd;
-	var sdMin = 50.5, sdMax = 51.0, sdStep = 0.5;
+	//if you want to do ust sd = z then set it so:
+	//var sdMin = x, sdMax = x+sdStep, sdStep = whatever;
+	var sdMin = 25, sdMax = 25.5, sdStep = 0.5;
 	var loopLim = (sdMax-sdMin)/sdStep;
 
 	for(var c=0; c<loopLim; c++) {
