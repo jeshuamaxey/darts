@@ -1,4 +1,5 @@
 var config = require('./config.js');
+
 /*
 * All private variables and functions are attached to the priv object
 * which is not exported
@@ -6,19 +7,14 @@ var config = require('./config.js');
 
 var priv = priv || {};
 
-/*
-* a 2D array w/ the same size as the mesh stores
-*	previously calculated values of the dartboard function
-*/
+// a 2D array with size 400 stores all previous calculated values of the dartboard function
+// which took integer numbers of mm.
+// The 'remembering' mesh does not remember decimal values of mm.
 
-/*
-priv.db = new Array(config.meshSize);
+priv.db = new Array(4000);
 for (var i = priv.db.length - 1; i >= 0; i--) {
-	priv.db[i] = new Array(config.meshSize);
+	priv.db[i] = new Array(4000);
 }
-
-*/
-
 
 /*
 * All public variables and functions are attached to the db object
@@ -44,30 +40,35 @@ db.findtheta = function(xcoord, ycoord) {
 }
 
 db.dartboard = function(xcoord, ycoord) {
+	// first round these numbers
+	xcoord = Math.round(xcoord*10)/10;
+	ycoord = Math.round(ycoord*10)/10;
+	console.log(xcoord);
+	console.log(ycoord);
+	
 	//first look at private array to see if we've
 	//calculated this value before
-	/*
-	var mesh = {'x': xcoord+(config.meshSize/2), 'y': (config.meshSize/2)-ycoord};
+	
+	// Coordinate system has origin at the centre of the bullseye
+	
+	
+	var mesh = {'x': (xcoord*10)+2000, 'y': 2000-(ycoord*10)};
 	if(priv.db[mesh.x][mesh.y] != undefined) {
 		return priv.db[mesh.x][mesh.y];
 	
 	}
-	*/
 	
 	//else calculate the value
-
-	// Coordinate system has origin at the centre of the bullseye
 	
-    var dartboardnumbers = [6,13,4,18,1,20,5,12,9,14,11,8,16,7,19,3,17,2,15,10,6];
-    
     // The list of dartboard numbers starting at 6 and moving anticlockwise
+    var dartboardnumbers = [6,13,4,18,1,20,5,12,9,14,11,8,16,7,19,3,17,2,15,10,6];
     
 	var radius = db.findradius(xcoord, ycoord);
 	var theta = db.findtheta(xcoord, ycoord);
 	var segmentcounter =0;
-    var dubtripfactor = 1;
-    
+	
     // dubtripfactor is scaling factor for double/treble beds.
+    var dubtripfactor = 1;
     
     // Wire thickness not considered. If a dart lands on the exact position of the wire
     // the darts always comes onto the inside of the circle.
@@ -75,27 +76,19 @@ db.dartboard = function(xcoord, ycoord) {
 	if (radius <= 6.35) {
 		// Bullseye
 		//store in private array before returning
-		
-		
-		return 50;
-		
-		
+		return priv.db[mesh.x][mesh.y] = 50;
 	}
 	
 	else if (radius > 170) {
 		// Missed Board
 		//store in private array before returning
-		
-		return 0;
-		
+		return priv.db[mesh.x][mesh.y] = 0;
 	}
 	
 	else if (radius <= 15.9) {
 		// Single Bull
 		//store in private array before returning
-		
-		return 25;
-		
+		return priv.db[mesh.x][mesh.y] = 25;
 	}
 	
 	else if (radius > 162 && radius <= 170) {
@@ -119,7 +112,7 @@ db.dartboard = function(xcoord, ycoord) {
 	number = dartboardnumbers[segmentcounter];
 	//store in private array
 	
-	return number*dubtripfactor;
+	return priv.db[mesh.x][mesh.y] = number*dubtripfactor;
 
 }
 
@@ -157,5 +150,6 @@ db.wireboard = function(x, y) {
 }
 */
 
-console.log(db.dartboard(-100,0));
+console.log(db.dartboard(0,170));
+console.log(priv.db[2000][300])
 module.exports = db;
