@@ -10,10 +10,14 @@ var priv = priv || {};
 * a 2D array w/ the same size as the mesh stores
 *	previously calculated values of the dartboard function
 */
+
+/*
 priv.db = new Array(config.meshSize);
 for (var i = priv.db.length - 1; i >= 0; i--) {
 	priv.db[i] = new Array(config.meshSize);
 }
+
+*/
 
 
 /*
@@ -42,11 +46,13 @@ db.findtheta = function(xcoord, ycoord) {
 db.dartboard = function(xcoord, ycoord) {
 	//first look at private array to see if we've
 	//calculated this value before
-	
-	var mesh = {'x': xcoord, 'y': ycoord};
+	/*
+	var mesh = {'x': xcoord+(config.meshSize/2), 'y': (config.meshSize/2)-ycoord};
 	if(priv.db[mesh.x][mesh.y] != undefined) {
 		return priv.db[mesh.x][mesh.y];
+	
 	}
+	*/
 	
 	//else calculate the value
 
@@ -70,20 +76,26 @@ db.dartboard = function(xcoord, ycoord) {
 		// Bullseye
 		//store in private array before returning
 		
-		return priv.db[mesh.x][mesh.y] = 50;
+		
+		return 50;
+		
 		
 	}
 	
 	else if (radius > 170) {
 		// Missed Board
 		//store in private array before returning
-		return priv.db[mesh.x][mesh.y] = 0;
+		
+		return 0;
+		
 	}
 	
 	else if (radius <= 15.9) {
 		// Single Bull
 		//store in private array before returning
-		return priv.db[mesh.x][mesh.y] = 25;
+		
+		return 25;
+		
 	}
 	
 	else if (radius > 162 && radius <= 170) {
@@ -106,7 +118,9 @@ db.dartboard = function(xcoord, ycoord) {
 	
 	number = dartboardnumbers[segmentcounter];
 	//store in private array
-	return priv.db[mesh.x][mesh.y] = number*dubtripfactor;
+	
+	return number*dubtripfactor;
+
 }
 
 /*
@@ -143,5 +157,5 @@ db.wireboard = function(x, y) {
 }
 */
 
-console.log(db.dartboard(-169,0));
+console.log(db.dartboard(-100,0));
 module.exports = db;
