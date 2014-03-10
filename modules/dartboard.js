@@ -150,6 +150,4 @@ db.wireboard = function(x, y) {
 }
 */
 
-console.log(db.dartboard(0,170));
-console.log(priv.db[2000][300])
 module.exports = db;
