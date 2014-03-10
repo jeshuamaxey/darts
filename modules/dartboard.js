@@ -43,8 +43,6 @@ db.dartboard = function(xcoord, ycoord) {
 	// first round these numbers
 	xcoord = Math.round(xcoord*10)/10;
 	ycoord = Math.round(ycoord*10)/10;
-	console.log(xcoord);
-	console.log(ycoord);
 	
 	//first look at private array to see if we've
 	//calculated this value before
