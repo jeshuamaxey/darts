@@ -449,7 +449,7 @@ app.resizeCanvas = function() {
 
 app.plotPixel = function(x, y, size, val) {
 	app.hmCtx.beginPath();
-	app.hmCtx.rect(x, y, size, size);
+	app.hmCtx.rect(x-app.pixelSize/2, y-app.pixelSize/2, size, size);
   app.hmCtx.fillStyle = app.color(val/app.data.max);
   app.hmCtx.fill();
   // app.hmCtx.lineWidth = 0;
