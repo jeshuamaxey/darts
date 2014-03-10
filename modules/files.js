@@ -12,7 +12,7 @@ files.makeList = function(dir) {
 }
 
 //taken from incredible stackoverflow answer
-//http://stackoverflow.com/questions/5827612/node-js-fs-readdir-recursive-directory-search
+//http://stackoverflow.com/questions/5827612
 function walk(dir, done) {
   var results = [];
   fs.readdir(dir, function(err, list) {
@@ -37,6 +37,9 @@ function walk(dir, done) {
   });
 };
 
+/*
+* private function of the module
+*/
 function outputToFile(err, list) {
 
 	var outputFile = 'public/data/data-files.json';
@@ -57,6 +60,17 @@ function outputToFile(err, list) {
 		}
 	});
 	return false;
+}
+
+//save data to file
+files.writeToFile = function(data, fileName, dir) {
+  var outFile = (dir || 'public/data/') + (fileName || 'output.json');
+
+  fs.writeFile(outFile, JSON.stringify(data, null, 2), function(err) {
+    if(err) {
+      console.log(err);
+    }
+  });
 }
 
 module.exports = files;

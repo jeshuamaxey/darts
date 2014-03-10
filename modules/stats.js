@@ -19,7 +19,7 @@ priv.rSD = [1000];
 var stats = stats || {};
 /*
 * Returns the value of a 1D Gaussian PDF, centerd at meanX
-* and standard deviations sdX, at x. When only x is
+* and standard deviation sdX, at x. When only x is
 * provided as an argument it defaults to a normal distribution 
 */
 stats.gaussian1D = function(x, meanX, sdX) {
@@ -27,8 +27,8 @@ stats.gaussian1D = function(x, meanX, sdX) {
 	var sdX = sdX || 1;
 	var varX = sdX*sdX;
 
-  var m = stats.stdDev * Math.sqrt(2 * Math.PI);
-  var e = Math.exp(-Math.pow(x - stats.mean, 2) / (2 * stats.variance));
+  var m = sdX * Math.sqrt(2 * Math.PI);
+  var e = Math.exp(-Math.pow(x - meanX, 2) / (2 * varX));
   return e / m;
 }
 
