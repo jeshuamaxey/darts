@@ -41,7 +41,7 @@ app.overlayPx = 50;
 app.overlayPy = 50;
 //required to keep overlay in front of body
 //this way all click events can be detected
-app.overlayTz = 200;
+app.overlayTz = 1000;
 
 /*
 *	Called on page load
@@ -141,6 +141,7 @@ app.calibClick = function(e) {
 * and hide the calibration UI
 */
 app.calculateCalibration = function() {
+	app.px2mm = {};
 	//calculate pixel to mm ratio in x
 	var dx = Math.abs(app.calibClicks[0].offsetX - app.calibClicks[1].offsetX);
 	var dy = Math.abs(app.calibClicks[0].offsetY - app.calibClicks[1].offsetY);
@@ -167,8 +168,27 @@ app.calculateCalibration = function() {
 }
 
 app.dbAfterCalib = function() {
+	$('#overlay').on('mousemove', app.updateHoverCoords);
 	app.clearCanvas(app.ovCtx, app.ovCanvas);
 	app.draw.dartBoard(app.ovCtx, app.ovCanvas);
+}
+
+/*
+*
+*/
+app.updateHoverCoords = function(e) {
+	var x = e.offsetX - app.originOffset.x;
+	var y = app.originOffset.y - e.offsetY;
+
+	var pos = {
+		'x': x*app.px2mm.x,
+		'y': y*app.px2mm.y,
+		'r': Math.sqrt( Math.pow(x*app.px2mm.x, 2.0) + Math.pow(y*app.px2mm.y, 2.0) )
+	};
+	//update display
+	$('#hoverX').html(pos.x.toFixed(2)+'mm');
+	$('#hoverY').html(pos.y.toFixed(2)+'mm');
+	$('#hoverRadius').html(pos.r.toFixed(2)+'mm');
 }
 
 /*
@@ -356,8 +376,10 @@ app.updateRotation = function() {
 app.updateTranslation = function() {
 	app.overlayTx = $('#xTranslation').val();
 	app.overlayTy = $('#yTranslation').val();
+	app.overlayTz = $('#zTranslation').val();
 	$('span#xTranslationDisp').html(app.overlayTx);
 	$('span#yTranslationDisp').html(app.overlayTy);
+	$('span#zTranslationDisp').html(app.overlayTz);
 	app.applyTransform()
 }
 
