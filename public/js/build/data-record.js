@@ -2,7 +2,7 @@
 var config = config || {};
 
 config = {
-	"meshSize": 100,
+	"meshSize": 80,
 	"meshRatio": {
 		"bullseye": 6.35/200,
 		"bull" : 15.9/200,
@@ -687,7 +687,7 @@ app.bounceOut = function() {
 																		"<td>" + app.dataClicks.length + "</td>" +
 																		"<td>" + "Bounce out" + "</td>" +
 																		"<td>" + "CumScore()"+ "</td>" +
-																		"<td>" + attempt.mmR.toFixed(2) + "</td>" +
+																		"<td>" + ":)" + "</td>" +
 																		"<td>" + "CumDist" + "</td>" +
 																	"</tr>");
 }
@@ -745,7 +745,12 @@ app.generateProcessedData = function() {
 			processedData[val[i]] = {};
 			//create an array of just the values we're interested in
 			for (var j = app.dataClicks.length - 1; j >= 0; j--) {
-				arr.push(app.dataClicks[j][val[i]])
+				//make sure to exclude bounce outs from the array
+				if(!app.dataClicks[j].bounceOut) {
+					arr.push(app.dataClicks[j][val[i]])
+				} else {
+					console.log("BOUNCE")
+				}
 			};
 			processedData[val[i]].mean = stats.mean(arr)
 			processedData[val[i]].stdDev = stats.stdDev(arr)
