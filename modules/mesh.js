@@ -22,4 +22,26 @@ mesh.zeroMesh = function(mesh) {
 	};
 }
 
+//Sums all the elements in a mesh
+
+mesh.sumMesh = function(mesh) {
+	var sum = 0;
+	for (var x = 0; x < mesh.length; x++) {
+		for (var y = 0; y < mesh[x].length; y++) {
+			sum += mesh[x][y];
+		};
+	};
+	return sum;
+}
+
+mesh.normaliseMesh = function(meshToBeNormalised) {
+	var factor = mesh.sumMesh(meshToBeNormalised);
+	for (var x = 0; x < meshToBeNormalised.length; x++) {
+		for (var y = 0; y < meshToBeNormalised[x].length; y++) {
+			meshToBeNormalised[x][y] = meshToBeNormalised[x][y]/factor;
+		}
+	}
+	return meshToBeNormalised;
+}
+
 module.exports = mesh;

@@ -7,6 +7,19 @@ var db = require('../modules/dartboard.js');
 var stats = require('../modules/stats.js');
 var files = require('../modules/files.js');
 var config = require('./config.js');
+var mesh = require('./mesh.js');
+
+// Need to generate the Gaussian mesh first
+hm.generateGaussian = function(meanX, meanY, stdX, stdY) {
+	var gaussianMesh = make2DMesh(config.meshSize*2);
+	for (var i = 0; i < gaussianMesh.length; i++) {
+		for (var j = 0;  j< gaussianMesh.length; j++) {
+		gaussianMesh[i][j] = stats.gaussian2D((i - config.meshSize)*2*config.px2mm, (config.meshSize - j)*2*config.px2mm, meanX, meanY, stdX, stdY);
+		}
+	}
+	return mesh.normaliseMesh(gaussianMesh);
+}
+
 
 /*
 * Convolves a 2D, symmetric Gaussian with the dartboard
@@ -21,6 +34,7 @@ hm.generateHeatmap = function(sd, mesh) {
 	  , width: 80
 	  , total: mesh.length
 	});
+	var gaussianMesh = hm.generateGaussian;
 	//start big loop
 	var N = mesh.length;
 	for (var x = -N/2; x < N/2; x++) {
