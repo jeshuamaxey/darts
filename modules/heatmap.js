@@ -7,6 +7,29 @@ var db = require('./dartboard.js');
 var stats = require('./stats.js');
 var files = require('./files.js');
 var config = require('./config.js');
+var mesh = require('./mesh.js');
+
+// Need to generate the Gaussian mesh first
+hm.generateGaussian = function(mean, sd) {
+	var gaussianMesh = mesh.make2DMesh(config.meshSize*2);
+	for (var i = 0; i < gaussianMesh.length; i++) {
+		for (var j = 0;  j< gaussianMesh.length; j++) {
+		gaussianMesh[i][j] = stats.gaussian2D((i - config.meshSize)*2*config.px2mm, (config.meshSize - j)*2*config.px2mm, mean.x, mean.y, sd.x, sd.y);
+		}
+	}
+	return mesh.normaliseMesh(gaussianMesh);
+}
+
+hm.generateDartboardMesh = function() {
+	var dartboardMesh = mesh.make2DMesh(config.meshSize);
+	for (var i = 0; i < meshSize; i++) {
+		for (var j = 0;  j< meshSize; j++) {
+			dartboardMesh[i][j] = db.dartboard((i-meshSize/2)*px2mm, (meshSize/2-j)*px2mm);
+		}
+	}
+	return dartboardMesh;
+}
+
 
 // config.mm2px = config.meshSize/400;
 // config.px2mm = 1/config.mm2px;
@@ -18,7 +41,8 @@ var config = require('./config.js');
 * function and writes the result to file in the
 * symmetric directory
 */
-hm.generateHeatmap = function(sd, mesh, normalise) {
+
+hm.generateHeatmap = function(mean, sd) {
 	//creates nice progress bar in terminal
 	priv.bar = new progressBar('sdX: '+sd.x.toFixed(1)+'mm, sdY: '+sd.y.toFixed(1)+'mm [:bar] :percent :etas', {
 	    complete: '='
@@ -26,16 +50,15 @@ hm.generateHeatmap = function(sd, mesh, normalise) {
 	  , width: 80
 	  , total: mesh.length
 	});
+	var gaussianMesh = hm.generateGaussian(mean, sd);
+	var dartboardMesh = hm.generateBartboardMesh();
+	var resultMesh = mesh.make2DMesh(config.meshSize);
 	//start big loop
-	var N = config.meshSize;
-	for (var x = -N/2; x < N/2; x++) {
-		for (var y = -N/2; y < N/2; y++) {
-			var pos = {
-				'x': x*config.px2mm,
-				'y': y*config.px2mm
-			};
-			mesh[x+N/2][N/2-y] = hm.weight(pos, sd);
+	for (var i = 0; i < meshSize; i++) {
+		for (var j = 0;  j< meshSize; j++) {
+			resultMesh[i][j] = hm.weight(i, j);
 		}
+	}
 		//update progress bar
 		priv.bar.tick();
 	}
@@ -57,45 +80,14 @@ hm.generateHeatmap = function(sd, mesh, normalise) {
 /*
 * Calculates the value of each pixel of the heatmap
 */
-hm.weight = function(pos, sd) {
-	var N = config.meshSize, sum = 0;
-	for (var x = -N/2; x < N/2; x++) {
-		for (var y = -N/2; y < N/2; y++) {
-			//mesh[pixelX][pixelY] += db.dartboard(x, y) * stats.gaussian2D(x, y, pixelX, pixelY, sdX.px, sdY.px);
-			sum += db.dartboard(x*config.px2mm, y*config.px2mm) * stats.gaussian2D(x*config.px2mm, y*config.px2mm, pos.x, pos.y, sd.x, sd.y);
-			//sum += db.dartboard(x*config.px2mm, y*config.px2mm) * stats.gaussian2D(x, y, pos.x*config.mm2px, pos.y*config.mm2px, sd.x*config.mm2px, sd.y*config.mm2px);
-			//sum += (5/3)*stats.gaussian2D(x*config.px2mm, y*config.px2mm, pos.x, pos.y, sd.x, sd.y);
+hm.weight = function(xPixel, yPixel) {
+	var sum = 0;
+	for (var i = 0; i < meshSize; i++) {
+		for (var j = 0; j < meshSize; j++) {
+			sum += dartboardMesh[i][j] * gaussianMesh[meshSize - xPixel + i][meshSize + j - yPixel];
 		}
 	}
 	return sum;
-}
-
-/*
-* Divides every element in a mesh by the maximum value so all values
-* are in the range 0 < x < 1
-*/
-hm.normaliseHeatmap = function(mesh) {
-	//find max value of array
-	var max = 0;
-	var c = {'x': 0,'y': 0};
-  //begin search
-  for(x=0;x<mesh.length;x++){
-  	for(y=0;y<mesh.length;y++){
-      	if(mesh[x][y] > max) {
-          max = mesh[x][y]; 
-        	c.x = x;
-          c.y = y;
-    		}
-  	}
-	}
-	//normalise
-	for (var i = mesh.length - 1; i >= 0; i--) {
-		for (var j = mesh.length - 1; j >= 0; j--) {
-			mesh[i][j] /= max;
-		};
-	};
-	//
-	return mesh;
 }
 
 /*
