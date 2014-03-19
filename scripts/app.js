@@ -23,7 +23,7 @@ app.main = function() {
 	var sd;
 	//if you want to do ust sd = z then set it so:
 	//var sdMin = x, sdMax = x+sdStep, sdStep = whatever;
-	var sdMin = 25, sdMax = 25.5, sdStep = 0.5;
+	var sdMin = 0.5, sdMax = 1.0, sdStep = 0.5;
 	var loopLim = (sdMax-sdMin)/sdStep;
 
 	for(var c=0; c<loopLim; c++) {
@@ -31,19 +31,12 @@ app.main = function() {
 		app.mesh = mesh.make2DMesh(config.meshSize);
 		mesh.zeroMesh(app.mesh);
 		//set standard deviation
-		sd = app.setStdDev(sdMin + c*sdStep, sdMin + c*sdStep);
+		sd = {
+			'x' : sdMin + c*sdStep,
+			'y' : sdMin + c*sdStep
+		};
 		//crunch da numberz
-		hm.generateHeatmap(sd, app.mesh);
-	}
-}
-
-/*
-* Creates a standard deviation in mm and px
-*/
-app.setStdDev = function(x, y) {
-	return {
-		'x' : x,
-		'y' : y
+		hm.generateHeatmap(sd, app.mesh, true);
 	}
 }
 

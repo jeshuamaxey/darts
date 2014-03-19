@@ -250,24 +250,26 @@ stats.factorial = function(n) {
 * returns the mean value of an array
 */
 stats.mean = function(arr) {
+	var N = arr.length;
 	var total = 0;
 	for (var i = arr.length - 1; i >= 0; i--) {
 		total += arr[i];
 	};
-	return total/arr.length;
+	return total/(N-1);
 }
 
 /*
 * returns the standard deviation of an array
 */
 stats.stdDev = function(arr, mean) {
+	var N = arr.length;
 	//if mean is not provided as an arg, calculate it
 	var mean = mean || stats.mean(arr);
 	var variance = 0;
 	for (var i = arr.length - 1; i >= 0; i--) {
 		variance += Math.pow((arr[i] - mean), 2);
 	};
-	return Math.sqrt(variance/arr.length);
+	return Math.sqrt(variance/(N-1));
 }
 
 // erf(n divided by root 2) = fraction of darts thrown contained within the n sigma
