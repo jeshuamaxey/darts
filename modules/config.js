@@ -1,7 +1,7 @@
 var config = config || {};
 
 config = {
-	"meshSize": 80,
+	"meshSize": 200,
 	"meshRatio": {
 		"bullseye": 6.35/200,
 		"bull" : 15.9/200,

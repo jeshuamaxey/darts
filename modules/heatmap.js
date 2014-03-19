@@ -22,19 +22,13 @@ hm.generateGaussian = function(mean, sd) {
 
 hm.generateDartboardMesh = function() {
 	var dartboardMesh = mesh.make2DMesh(config.meshSize);
-	for (var i = 0; i < meshSize; i++) {
-		for (var j = 0;  j< meshSize; j++) {
-			dartboardMesh[i][j] = db.dartboard((i-meshSize/2)*px2mm, (meshSize/2-j)*px2mm);
+	for (var i = 0; i < config.meshSize; i++) {
+		for (var j = 0;  j< config.meshSize; j++) {
+			dartboardMesh[i][j] = db.dartboard((i-config.meshSize/2)*config.px2mm, (config.meshSize/2-j)*config.px2mm);
 		}
 	}
 	return dartboardMesh;
 }
-
-
-// config.mm2px = config.meshSize/400;
-// config.px2mm = 1/config.mm2px;
-
-
 
 /*
 * Convolves a 2D, symmetric Gaussian with the dartboard
@@ -48,43 +42,39 @@ hm.generateHeatmap = function(mean, sd) {
 	    complete: '='
 	  , incomplete: ' '
 	  , width: 80
-	  , total: mesh.length
+	  , total: config.meshSize
 	});
-	var gaussianMesh = hm.generateGaussian(mean, sd);
-	var dartboardMesh = hm.generateBartboardMesh();
-	var resultMesh = mesh.make2DMesh(config.meshSize);
+	priv.gaussianMesh = hm.generateGaussian(mean, sd);
+	priv.dartboardMesh = hm.generateDartboardMesh();
+	priv.resultMesh = mesh.make2DMesh(config.meshSize);
 	//start big loop
-	for (var i = 0; i < meshSize; i++) {
-		for (var j = 0;  j< meshSize; j++) {
-			resultMesh[i][j] = hm.weight(i, j);
+	for (var i = 0; i < config.meshSize; i++) {
+		for (var j = 0;  j< config.meshSize; j++) {
+			priv.resultMesh[i][j] = hm.weight(i, j);
 		}
-	}
-		//update progress bar
 		priv.bar.tick();
 	}
-	//normalise heatmap
-	if(normalise) {
-		mesh = hm.normaliseHeatmap(mesh);
-	}
+	//update progress bar
+
 	//output data
 	var fileName = 'sd-';
 	if(sd.x<10) fileName += '0';
 	if(sd.x<100) fileName += '0';
 	fileName += sd.x.toFixed(1);
 	fileName += '.json';
-	files.writeToFile(mesh, fileName, 'public/data/new-symmetric/');
+	files.writeToFile(priv.resultMesh, fileName, 'public/data/new-symmetric/');
 	//destroy progress bar
 	priv.bar = null;
-};
+}
 
 /*
 * Calculates the value of each pixel of the heatmap
 */
 hm.weight = function(xPixel, yPixel) {
 	var sum = 0;
-	for (var i = 0; i < meshSize; i++) {
-		for (var j = 0; j < meshSize; j++) {
-			sum += dartboardMesh[i][j] * gaussianMesh[meshSize - xPixel + i][meshSize + j - yPixel];
+	for (var i = 0; i < config.meshSize; i++) {
+		for (var j = 0; j < config.meshSize; j++) {
+			sum += priv.dartboardMesh[i][j] * priv.gaussianMesh[config.meshSize - xPixel + i][config.meshSize + j - yPixel];
 		}
 	}
 	return sum;

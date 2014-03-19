@@ -23,7 +23,7 @@ app.main = function() {
 	var sd;
 	//if you want to do ust sd = z then set it so:
 	//var sdMin = x, sdMax = x+sdStep, sdStep = whatever;
-	var sdMin = 0.5, sdMax = 1.0, sdStep = 0.5;
+	var sdMin = 5.0, sdMax = 5.5, sdStep = 0.5;
 	var loopLim = (sdMax-sdMin)/sdStep;
 
 	for(var c=0; c<loopLim; c++) {
