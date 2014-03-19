@@ -27,13 +27,11 @@ app.main = function() {
 	var loopLim = (sdMax-sdMin)/sdStep;
 
 	for(var c=0; c<loopLim; c++) {
-		//configure mesh
-		app.mesh = mesh.make2DMesh(config.meshSize);
-		mesh.zeroMesh(app.mesh);
 		//set standard deviation
 		sd = app.setStdDev(sdMin + c*sdStep, sdMin + c*sdStep);
+		mean = app.setMean(0, 0);
 		//crunch da numberz
-		hm.generateHeatmap(sd, app.mesh);
+		hm.generateHeatmap(mean, sd);
 	}
 }
 
@@ -41,6 +39,13 @@ app.main = function() {
 * Creates a standard deviation in mm and px
 */
 app.setStdDev = function(x, y) {
+	return {
+		'x' : x,
+		'y' : y
+	}
+}
+
+app.setMean = function(x, y) {
 	return {
 		'x' : x,
 		'y' : y
