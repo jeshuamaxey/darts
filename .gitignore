@@ -4,3 +4,28 @@ public/data
 
 .katon
 katon.log
+
+#ignore all symlinks
+./node_modules/.bin/browserify
+./node_modules/.bin/express
+./node_modules/.bin/gulp
+./node_modules/.bin/nodemon
+./node_modules/browserify/node_modules/.bin/browser-pack
+./node_modules/browserify/node_modules/.bin/deps-sort
+./node_modules/browserify/node_modules/.bin/insert-module-globals
+./node_modules/browserify/node_modules/.bin/module-deps
+./node_modules/browserify/node_modules/.bin/umd
+./node_modules/browserify/node_modules/derequire/node_modules/.bin/esparse
+./node_modules/browserify/node_modules/derequire/node_modules/esrefactor/node_modules/.bin/esparse
+./node_modules/browserify/node_modules/derequire/node_modules/esrefactor/node_modules/.bin/esvalidate
+./node_modules/browserify/node_modules/insert-module-globals/node_modules/lexical-scope/node_modules/astw/node_modules/.bin/esparse
+./node_modules/browserify/node_modules/syntax-error/node_modules/.bin/esparse
+./node_modules/browserify/node_modules/umd/node_modules/.bin/uglifyjs
+./node_modules/browserify/node_modules/umd/node_modules/ruglify/node_modules/.bin/uglifyjs
+./node_modules/gulp/node_modules/.bin/semver
+./node_modules/gulp-util/node_modules/chalk/node_modules/.bin/strip-ansi
+./node_modules/nodemon/node_modules/update-notifier/node_modules/.bin/semver
+./node_modules/nodemon/node_modules/update-notifier/node_modules/configstore/node_modules/.bin/js-yaml
+./node_modules/nodemon/node_modules/update-notifier/node_modules/configstore/node_modules/js-yaml/node_modules/.bin/esparse
+./node_modules/nodemon/node_modules/update-notifier/node_modules/configstore/node_modules/js-yaml/node_modules/.bin/esvalidate
+./public/data
