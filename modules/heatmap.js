@@ -57,12 +57,8 @@ hm.generateHeatmap = function(mean, sd) {
 	//update progress bar
 
 	//output data
-	var fileName = 'sd-';
-	if(sd.x<10) fileName += '0';
-	if(sd.x<100) fileName += '0';
-	fileName += sd.x.toFixed(1);
-	fileName += '.json';
-	files.writeToFile(priv.resultMesh, fileName, 'public/data/new-symmetric/');
+	var fileName = files.generateFileName(sd);
+	files.writeToFile(priv.resultMesh, fileName, 'public/data/symmetric/');
 	//destroy progress bar
 	priv.bar = null;
 }

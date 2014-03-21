@@ -62,6 +62,24 @@ function outputToFile(err, list) {
 	return false;
 }
 
+files.generateFileName = function(sd) {
+  var fileName = '';
+  //x
+  fileName += 'sdx-';
+  if(sd.x<10) fileName += '0';
+  if(sd.x<100) fileName += '0';
+  fileName += sd.x.toFixed(1);
+  //y
+  fileName += '-sdy-';
+  if(sd.y<10) fileName += '0';
+  if(sd.y<100) fileName += '0';
+  fileName += sd.y.toFixed(1);
+  //extension
+  fileName += '.json';
+
+  return fileName;
+}
+
 //save data to file
 files.writeToFile = function(data, fileName, dir) {
   var outFile = (dir || 'public/data/') + (fileName || 'output.json');

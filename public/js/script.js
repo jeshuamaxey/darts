@@ -34,11 +34,10 @@ app.main = function() {
 	$('#showDartboard').on('change', app.refreshHeatMap);
 	$('#showNumbers').on('change', app.refreshHeatMap);
 	
-	$('#stdDev').on('change', function() {
-		app.sd = parseFloat($('#stdDev').val()).toFixed(1);
-		if(app.sd<100) app.sd = '0' + app.sd;
-		if(app.sd<10) app.sd = '0' + app.sd;
-		$('.stdDevDisp').html(app.sd)
+	$('#stdDevX, #stdDevY').on('change', function() {
+		app.sd = app.getStdDev();
+		$('.stdDevXDisp').html(app.sd.x);
+		$('.stdDevYDisp').html(app.sd.y);
 		if($('#updateWithSlider').is(':checked')) app.refreshHeatMap();
 	})
 	$('#reload').on("click", function(e) {
@@ -46,6 +45,21 @@ app.main = function() {
 		app.refreshHeatMap();
 		return false;
 	});
+}
+
+app.getStdDev = function() {
+	var x = parseFloat($('#stdDevX').val()).toFixed(1);
+	var y = parseFloat($('#stdDevY').val()).toFixed(1);
+
+	if(x<100) x = '0' + x;
+	if(x<10) x = '0' + x;
+	if(y<100) y = '0' + y;
+	if(y<10) y = '0' + y;
+
+	return {
+		'x': x,
+		'y': y
+	};
 }
 
 
@@ -70,28 +84,34 @@ app.refreshHeatMap = function() {
 		app.firstDraw = !app.firstDraw;
 	}
 	//make url
- if($('#filePath').val().length) {
+	if($('#filePath').val().length) {
 		url = $('#filePath').val();
 	} else {
-		app.sd = parseFloat($('#stdDev').val()).toFixed(1);
-		if(app.sd<100) app.sd = '0' + app.sd;
-		if(app.sd<10) app.sd = '0' + app.sd;
-		var url = 'symmetric/' + 'sd-' + app.sd + '.json';
+		app.sd = app.getStdDev();
+		console.log(app.sd)
+		var url = 'symmetric/' + 'sdx-' + app.sd.x + '-sdy-' + app.sd.y + '.json';
 	}
 	//display standard deviation
-	$('.stdDevDisp').html(app.sd)
+	$('.stdDevXDisp').html(app.sd.x);
+	$('.stdDevYDisp').html(app.sd.y);
 	//check if this mesh is already saved
-	if(app.meshs[app.sd.toString]) {
-		app.processData(app.meshs[app.sd.toString])
+	
+	if(app.meshs[app.sd.x] && app.meshs[app.sd.x][app.sd.y]) {
+		app.processData(app.meshs[app.sd.x][app.sd.y]);
 	}
-	url = app.dataLocation + url;
-	//make the call
-	{
+	
+	//else make the call
+	else {
+		url = app.dataLocation + url;
 		$.ajax({
 			url: url,
 			cache: false
 		})
-		.done(app.processData)
+		.done(function(data) {
+			app.meshs[app.sd.x] = {};
+			app.meshs[app.sd.x][app.sd.y] = data;
+			app.processData(data);
+		})
 		.fail(function() {
 			app.failedAJAX(url)
 		})

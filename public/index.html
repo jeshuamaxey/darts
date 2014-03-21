@@ -83,8 +83,12 @@
         <h3>Load New Heatmap</h3>
         <form target="/">
           <div class="form-group">
-            <label for="stdDev">&sigma;<sub>R</sub>: <span class="stdDevDisp">3.0</span> mm</label>
-            <input id="stdDev" class="" type="range" min=1 max=50.0 step=0.5 value=3.0>
+            <label for="stdDevX">&sigma;<sub>x</sub>: <span class="stdDevXDisp">5.0</span> mm</label>
+            <input id="stdDevX" class="" type="range" min=1 max=50.0 step=0.5 value=5.0>
+          </div>
+          <div class="form-group">
+            <label for="stdDevY">&sigma;<sub>y</sub>: <span class="stdDevYDisp">5.0</span> mm</label>
+            <input id="stdDevY" class="" type="range" min=1 max=50.0 step=0.5 value=5.0>
           </div>
           <div class="form-group">
             <label for="filePath">File Path: </label>
@@ -118,7 +122,12 @@
           <h4 class="modal-title">Whoops</h4>
         </div>
         <div class="modal-body">
-          <p>Either you have mistyped the filename or this file does not exist. Double check your spelling and try again</p>
+          <p><b>We couldn't find that data.</b></p>
+          <p>Either you have mistyped the filename or this heatmap hasn't been generated yet. Double check your spelling and try again, or generate the necessary data on th ebackend and try again.</p>
+          
+          <p><b>&sigma;<sub>x</sub></b>: <span class="stdDevXDisp"></span> mm</p>
+          <p><b>&sigma;<sub>y</sub></b>: <span class="stdDevYDisp"></span> mm</p>
+
           <p>File URL: <code id="badURL"></code></p>
         </div>
         <div class="modal-footer">
