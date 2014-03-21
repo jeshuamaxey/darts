@@ -34,7 +34,7 @@ body:not(modal-open) .heatmap:hover {
 .working {
 	display: inline;
 	display: none;
-	max-width: 30px;
+	max-width: 25px;
 }
 
 #scale .marker {

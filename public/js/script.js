@@ -76,10 +76,11 @@ app.refreshHeatMap = function() {
 	app.showNumbers = ( $('#showNumbers').is(':checked') ? true : false);
 	//set app.sd
 	app.sd = false;
-	if(app.firstDraw && app.URLparams.sd) {
+	if(app.firstDraw && app.URLparams) {
 		//app.sd = app.acc2sd(app.URLparams.acc);
-		app.sd = app.URLparams.sd;
-		$('#stdDev').val(app.sd)
+		app.sd = app.URLparams;
+		$('#stdDevX').val(app.sd.x);
+		$('#stdDevY').val(app.sd.y);
 		//remember we did this
 		app.firstDraw = !app.firstDraw;
 	}
@@ -174,8 +175,11 @@ app.getURLparams = function () {
     } else {
       query_string[pair[0]].push(pair[1]);
     }
-  } 
-  return query_string;
+  }
+  return {
+  	'x': query_string.sdx,
+  	'y': query_string.sdy,
+  };
 }
 
 /*

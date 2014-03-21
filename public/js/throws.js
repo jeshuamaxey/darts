@@ -38,7 +38,7 @@ app.main = function() {
 }
 
 app.loadFileList = function() {
-	var url = app.dataLocation + 'data-files.json'; //'api/getFileList';
+	var url = app.dataLocation + 'data-files.json';
 	$.ajax({
 		url: url,
 		cache: false
@@ -82,8 +82,12 @@ app.switchData = function() {
 		//
 		$('#sampleSize').html(data.raw.throws.length);
 		//add appropriate url to button link
-		var sd = Math.round(data.preprocessed.mmR.stdDev*2)/2;
-		$('#goToHeatmap').attr('href', '/?sd='+sd).removeClass('disabled');
+		var sd = {
+			'x': Math.round(data.preprocessed.mmX.stdDev*2)/2,
+			'y': Math.round(data.preprocessed.mmY.stdDev*2)/2
+		};
+		console.log(sd)
+		$('#goToHeatmap').attr('href', '/?sdx='+sd.x+'&sdy='+sd.y).removeClass('disabled');
 		//
 		app.refreshDartBoard(data);
 	});
@@ -123,7 +127,6 @@ app.refreshDartBoard = function(data) {
 	data.raw.throws.forEach(function(thrw, i) {
 		x = app.dbDim.width/2 + thrw.mmX*mm2px;
 		y = app.dbDim.height/2 - thrw.mmY*mm2px;
-		console.log(app.dbCtx.strokeStyle);
 		draw.circle(app.dbCtx, x, y, r);
 	});
 
