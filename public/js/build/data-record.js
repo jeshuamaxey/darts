@@ -2,7 +2,7 @@
 var config = config || {};
 
 config = {
-	"meshSize": 100,
+	"meshSize": 200,
 	"meshRatio": {
 		"bullseye": 6.35/200,
 		"bull" : 15.9/200,
@@ -12,6 +12,10 @@ config = {
 		"outerDouble": 170/200
 	}
 };
+
+/* Fix Variables */
+config.mm2px = config.meshSize/400;
+config.px2mm = 1/config.mm2px;
 
 module.exports = config;
 },{}],2:[function(require,module,exports){
@@ -68,7 +72,8 @@ db.dartboard = function(xcoord, ycoord) {
 	
 	
 	var mesh = {'x': (xcoord*10)+2000, 'y': 2000-(ycoord*10)};
-	if(priv.db[mesh.x][mesh.y] != undefined) {
+
+	if(priv.db[mesh.x] != undefined && priv.db[mesh.x][mesh.y] != undefined) {
 		return priv.db[mesh.x][mesh.y];
 	
 	}

@@ -1,12 +1,20 @@
 var qs = require('querystring');
 var fs = require('fs');
 
+var hm = require('./heatmap.js');
+
 //exported namespace
 var api = api || {};
 //private namespace
 var priv = priv || {};
 
 priv.outFileDir = 'public/data/throw-data/';
+
+api.status = function(req, res) {
+	res.send({
+		'status': 'OK'
+	});
+}
 
 api.storeThrows = function(req, res) {
 	req.setEncoding("utf8");
@@ -24,13 +32,25 @@ api.storeThrows = function(req, res) {
 };
 
 //
-api.getFileList = function(res, req) {
+api.getFileList = function(req, res) {
 	var list = fs.readdirSync('public/data/throw-data');
 	if(list[0] == ".DS_Store") {
-		req.send(list.splice(1))
+		res.send(list.splice(1))
 	} else {
-		req.send(list);
+		res.send(list);
 	}
+}
+
+//
+api.makeHeatmap = function(req, res) {
+	req.setEncoding("utf8");
+	var sd = {
+		'x': parseFloat(req.body.x),
+		'y': parseFloat(req.body.y)
+	};
+	
+	var mesh = hm.generateHeatmap({'x':0, 'y':0}, sd);
+	res.send(mesh)
 }
 
 /*

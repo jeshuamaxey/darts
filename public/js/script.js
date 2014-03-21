@@ -88,7 +88,6 @@ app.refreshHeatMap = function() {
 		url = $('#filePath').val();
 	} else {
 		app.sd = app.getStdDev();
-		console.log(app.sd)
 		var url = 'symmetric/' + 'sdx-' + app.sd.x + '-sdy-' + app.sd.y + '.json';
 	}
 	//display standard deviation
@@ -139,8 +138,21 @@ app.processData = function(data) {
 }
 
 app.failedAJAX = function(url) {
-	$('#failedAJAX #badURL').html(url)
+	$('#failedAJAX #badURL').html(url);
+	$('.working').show();
 	$('#failedAJAX').modal('show');
+
+	var settings = {
+		'url': 'api/makeHeatmap',
+		'type': 'post',
+		'data': app.sd
+	}
+	//make the call!
+	$.ajax(settings).done(function(data) {
+		$('#failedAJAX').modal('hide');
+		$('.working').hide();
+		app.processData(data);
+	});
 }
 
 app.getURLparams = function () {

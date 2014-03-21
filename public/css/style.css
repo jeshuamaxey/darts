@@ -31,6 +31,12 @@ body:not(modal-open) .heatmap:hover {
 	cursor: crosshair;
 }
 
+.working {
+	display: inline;
+	display: none;
+	max-width: 30px;
+}
+
 #scale .marker {
 	width: 33%;
 	float: left;

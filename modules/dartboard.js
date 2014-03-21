@@ -51,7 +51,8 @@ db.dartboard = function(xcoord, ycoord) {
 	
 	
 	var mesh = {'x': (xcoord*10)+2000, 'y': 2000-(ycoord*10)};
-	if(priv.db[mesh.x][mesh.y] != undefined) {
+
+	if(priv.db[mesh.x] != undefined && priv.db[mesh.x][mesh.y] != undefined) {
 		return priv.db[mesh.x][mesh.y];
 	
 	}

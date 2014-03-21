@@ -12,10 +12,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded());
 
 //GET
+app.get('/api', api.status);
 app.get('/api/getFileList', api.getFileList);
 
 //POST
 app.post('/api/store', api.storeThrows);
+app.post('/api/makeHeatmap', api.makeHeatmap);
 
 app.listen(port);
 

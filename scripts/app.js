@@ -12,23 +12,22 @@ var config = require('../modules/config.js');
 var hm = require('../modules/heatmap.js');
 var mesh = require('../modules/mesh.js');
 
-/* Fix Variables */
-config.mm2px = config.meshSize/400;
-config.px2mm = 1/config.mm2px;
-
 /*
-* This get called
+* This gets called
 */
 app.main = function() {
 	var sd;
-	//if you want to do ust sd = z then set it so:
+	//if you want to do use sd = z then set it so:
 	//var sdMin = x, sdMax = x+sdStep, sdStep = whatever;
-	var sdMin = 5.0, sdMax = 5.5, sdStep = 0.5;
-	var loopLim = (sdMax-sdMin)/sdStep;
+	var sdXMin = 1.0, sdXMax = 2.0,
+			sdYMin = 10.0, sdYMax = 11.0,
+			sdStep = 1.0;
 
-	for(var c=0; c<loopLim; c++) {
+	var loopLimY = (sdYMax-sdYMin)/sdStep;
+
+	for(var d=0; d<loopLimY; d++) {
 		//set standard deviation
-		sd = app.setStdDev(sdMin + c*sdStep, sdMin + c*sdStep);
+		sd = app.setStdDev(3.0, sdYMin + d*sdStep);
 		mean = app.setMean(0, 0);
 		//crunch da numberz
 		hm.generateHeatmap(mean, sd);

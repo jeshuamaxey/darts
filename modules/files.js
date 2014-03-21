@@ -55,8 +55,6 @@ function outputToFile(err, list) {
 	fs.writeFile(outputFile, dataStr, function(err) {
 		if(err) {
 			console.log(err);
-		} else {
-			console.log("Files listed in " + outputFile);
 		}
 	});
 	return false;
@@ -87,6 +85,8 @@ files.writeToFile = function(data, fileName, dir) {
   fs.writeFile(outFile, JSON.stringify(data, null, 2), function(err) {
     if(err) {
       console.log(err);
+    } else {
+      console.log('Written to: '+ outFile); 
     }
   });
 }
