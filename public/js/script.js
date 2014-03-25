@@ -39,12 +39,18 @@ app.main = function() {
 		$('.stdDevXDisp').html(app.sd.x);
 		$('.stdDevYDisp').html(app.sd.y);
 		if($('#updateWithSlider').is(':checked')) app.refreshHeatMap();
-	})
+	});
+	//standard request to reload heatmap using sliders as inputs
 	$('#reload').on("click", function(e) {
 		e.preventDefault();
 		app.refreshHeatMap();
 		return false;
 	});
+	$('#reloadFromFile').on('click', function(e) {
+		e.preventDefault();
+		app.refreshHeatMap(true);
+		return false;
+	})
 }
 
 app.getStdDev = function() {
@@ -70,7 +76,7 @@ app.initialiseCanvases = function() {
 	app.ovCtx = app.hmCanvas.getContext('2d');
 }
 
-app.refreshHeatMap = function() {
+app.refreshHeatMap = function(useFilePath) {
 	app.colorScheme = ( $('#colorScheme').is(':checked') ? 'color' : 'bw');
 	app.showDartboard = ( $('#showDartboard').is(':checked') ? true : false);
 	app.showNumbers = ( $('#showNumbers').is(':checked') ? true : false);
@@ -85,7 +91,8 @@ app.refreshHeatMap = function() {
 		app.firstDraw = !app.firstDraw;
 	}
 	//make url
-	if($('#filePath').val().length) {
+	//if($('#filePath').val().length) {
+	if(useFilePath) {
 		url = $('#filePath').val();
 	} else {
 		app.sd = app.getStdDev();
@@ -96,12 +103,14 @@ app.refreshHeatMap = function() {
 	$('.stdDevYDisp').html(app.sd.y);
 	//check if this mesh is already saved
 	
-	if(app.meshs[app.sd.x] && app.meshs[app.sd.x][app.sd.y]) {
+	if(app.meshs[app.sd.x] && app.meshs[app.sd.x][app.sd.y] && !useFilePath) {
+		console.log('load from cache')
 		app.processData(app.meshs[app.sd.x][app.sd.y]);
 	}
 	
 	//else make the call
 	else {
+		console.log('ajax called made. url = ' + url)
 		url = app.dataLocation + url;
 		$.ajax({
 			url: url,
