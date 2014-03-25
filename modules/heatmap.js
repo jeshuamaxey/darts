@@ -14,7 +14,7 @@ hm.generateGaussian = function(mean, sd) {
 	var gaussianMesh = mesh.make2DMesh(config.meshSize*2);
 	for (var i = 0; i < gaussianMesh.length; i++) {
 		for (var j = 0;  j< gaussianMesh.length; j++) {
-		gaussianMesh[i][j] = stats.gaussian2D((i - config.meshSize)*2*config.px2mm, (config.meshSize - j)*2*config.px2mm, mean.x, mean.y, sd.x, sd.y);
+		gaussianMesh[i][j] = stats.gaussian2D((i - config.meshSize)*config.px2mm, (config.meshSize - j)*config.px2mm, mean.x, mean.y, sd.x, sd.y);
 		}
 	}
 	return mesh.normaliseMesh(gaussianMesh);
@@ -58,7 +58,7 @@ hm.generateHeatmap = function(mean, sd) {
 
 	//output data
 	var fileName = files.generateFileName(sd);
-	files.writeToFile(priv.resultMesh, fileName, 'public/data/symmetric/');
+	files.writeToFile(priv.resultMesh, fileName, '../public/data/symmetric/');
 	//destroy progress bar
 	priv.bar = null;
 
