@@ -273,12 +273,14 @@ app.main = function() {
 	//standard request to reload heatmap using sliders as inputs
 	$('#reload').on("click", function(e) {
 		e.preventDefault();
+		app.useFilePath = false;
 		app.refreshHeatMap();
 		return false;
 	});
 	$('#reloadFromFile').on('click', function(e) {
 		e.preventDefault();
-		app.refreshHeatMap(true);
+		app.useFilePath = true;
+		app.refreshHeatMap();
 		return false;
 	})
 }
@@ -306,8 +308,24 @@ app.initialiseCanvases = function() {
 	app.ovCtx = app.hmCanvas.getContext('2d');
 }
 
-app.refreshHeatMap = function(useFilePath) {
-	app.colorScheme = ( $('#colorScheme').is(':checked') ? 'color' : 'bw');
+app.refreshHeatMap = function() {
+	//app.colorScheme = ( $('#colorScheme').is(':checked') ? 'color' : 'bw')
+	app.colorScheme = $('#colorScheme').val(); 
+	switch(app.colorScheme) {
+		case 'bw':
+			app.color = app.greyScale;
+			break;
+		case 'whitehot':
+			app.color = app.whiteHot;
+			break;
+		case 'neonblue':
+			app.color = app.neonBlue;
+			break;
+		case 'color':
+		default:
+			app.color = app.fullColor;
+			break;
+	}
 	app.showDartboard = ( $('#showDartboard').is(':checked') ? true : false);
 	app.showNumbers = ( $('#showNumbers').is(':checked') ? true : false);
 	//set app.sd
@@ -322,7 +340,7 @@ app.refreshHeatMap = function(useFilePath) {
 	}
 	//make url
 	//if($('#filePath').val().length) {
-	if(useFilePath) {
+	if(app.useFilePath) {
 		url = $('#filePath').val();
 	} else {
 		app.sd = app.getStdDev();
@@ -333,14 +351,12 @@ app.refreshHeatMap = function(useFilePath) {
 	$('.stdDevYDisp').html(app.sd.y);
 	//check if this mesh is already saved
 	
-	if(app.meshs[app.sd.x] && app.meshs[app.sd.x][app.sd.y] && !useFilePath) {
-		console.log('load from cache')
+	if(app.meshs[app.sd.x] && app.meshs[app.sd.x][app.sd.y] && !app.useFilePath) {
 		app.processData(app.meshs[app.sd.x][app.sd.y]);
 	}
 	
 	//else make the call
 	else {
-		console.log('ajax called made. url = ' + url)
 		url = app.dataLocation + url;
 		$.ajax({
 			url: url,
@@ -504,10 +520,6 @@ app.plotPixel = function(x, y, size, val) {
   // app.hmCtx.stroke();
 }
 
-app.color = function(val) {
-	return (app.colorScheme == 'bw') ? app.greyScale(val) : app.fullColor(val);
-}
-
 //takes a value in the range 0-1
 app.fullColor = function(val) {
 	var c = Math.floor(5*255*val);
@@ -530,6 +542,35 @@ app.greyScale = function(val) {
 	if(val>1){console.log('val: '+val)}
 	var shade = (255*(1-val)).toFixed(0);
 	return 'rgba('+shade+','+shade+','+shade+',1)';
+}
+
+//
+app.whiteHot = function(val) {
+	var c = Math.floor(3*255*val);
+	var r = 0, g = 0, b = 0;
+	while(c > 0) {
+		if(b==0 && r!=255)		r++;	//rgb(255,255,255)		-> rgb(255,255,0)
+		if(r==255 && g!=255)	g++;		//rgb(255,255,0)				-> rgb(255,0,0)
+		if(g==255 && b!=255) 	b++;		//rgb(255,255,0)				-> rgb(0,0,0)
+		c--;
+	}
+	var color = 'rgba('+r+','+g+','+b+',1)';
+	//var color = 'rgba('+88+','+shade+','+shade+',1)';
+	return color;
+}
+
+app.neonBlue = function(val) {
+	var c = Math.floor(3*255*val);
+	var r = 0, g = 0, b = 0;
+	while(c > 0) {
+		if(g==0 && b!=255)		b++;	//rgb(255,255,255)		-> rgb(255,255,0)
+		if(b==255 && g!=255)	g++;		//rgb(255,255,0)				-> rgb(255,0,0)
+		if(g==255 && b==0)		r++;		//rgb(255,255,0)				-> rgb(0,0,0)
+		c--;
+	}
+	var color = 'rgba('+r+','+g+','+b+',1)';
+	//var color = 'rgba('+88+','+shade+','+shade+',1)';
+	return color;
 }
 
 //a handy function to clear the canvas (X-browser friendly)
