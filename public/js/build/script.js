@@ -384,6 +384,7 @@ app.processData = function(data) {
 			el > app.data.max ? app.data.max = el : null;
 		})
 	});
+	$('#maxValue').html(app.data.max.toFixed(2));
 	//find coordinates of the maximum point
 	var coordsMax = stats.maxXY(app.data);
 	//draw
