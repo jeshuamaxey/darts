@@ -58,7 +58,7 @@ hm.generateHeatmap = function(mean, sd) {
 
 	//output data
 	var fileName = files.generateFileName(sd);
-	files.writeToFile(priv.resultMesh, fileName, '../public/data/symmetric/');
+	files.writeToFile(priv.resultMesh, fileName, '../public/data/symmetric');
 	//destroy progress bar
 	priv.bar = null;
 

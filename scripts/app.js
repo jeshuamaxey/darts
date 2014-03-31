@@ -19,9 +19,9 @@ app.main = function() {
 	var sd;
 	//if you want to do use sd = z then set it so:
 	//var sdMin = x, sdMax = x+sdStep, sdStep = whatever;
-	var sdXMin = 13.0, sdXMax = 21.0,
-			sdYMin = 13.0, sdYMax = 21.0,
-			sdStep = 2.0;
+	var sdXMin = 50.5, sdXMax = 51.0,
+			sdYMin = 50.5, sdYMax = 51.0,
+			sdStep = 0.5;
 
 	var loopLimY = (sdYMax-sdYMin)/sdStep;
 
@@ -32,6 +32,11 @@ app.main = function() {
 		mean = app.setMean(0, 0);
 		//crunch da numberz
 		hm.generateHeatmap(mean, sd);
+		//write data to file
+		var fileName = files.generateFileName(sd);
+		var dirName = (config.meshSize == 400) ? '../public/data/symmetric/res400' : '../public/data/symmetric'
+		files.writeToFile(mesh, fileName, dirName);
+
 	}
 }
 

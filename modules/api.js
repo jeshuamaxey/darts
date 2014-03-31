@@ -2,6 +2,7 @@ var qs = require('querystring');
 var fs = require('fs');
 
 var hm = require('./heatmap.js');
+var files = require('./files.js');
 
 //exported namespace
 var api = api || {};
@@ -49,7 +50,14 @@ api.makeHeatmap = function(req, res) {
 		'y': parseFloat(req.body.y)
 	};
 	
+	//generate data
 	var mesh = hm.generateHeatmap({'x':0, 'y':0}, sd);
+
+	//write data to file
+	var fileName = files.generateFileName(sd);
+	files.writeToFile(mesh, fileName, '../public/data/symmetric');
+	
+	//send data to client
 	res.send(mesh)
 }
 
