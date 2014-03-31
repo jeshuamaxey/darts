@@ -1,7 +1,8 @@
 // Objective: Return the chance of hitting each of the doubles.
 
-// This script only currrently works with mesh sizes of 400.
-var meshSize = 1300;
+var doubles = doubles || {};
+
+var meshSize = 3000;
 
 // Getting anomolous result. Chance of hitting 20 and 3 higher than 19 and 17 etc.
 // Think this could be a resolution problem. Script needs changing to use a higher resolution.
@@ -134,22 +135,26 @@ fillResultMesh = function() {
 	}
 }
 
-// Let's check we are creating the right shaped beds.
+/*
+* Exported functions
+*/
 
-
-fillGaussianMesh(0, 0, 43.1, 51.9);
-mesh.normaliseMesh(gaussianMesh);
-console.log(mesh.sumMesh(gaussianMesh));
-files.writeToFile(gaussianMesh, "gaussianTest.json", "./../public/data/Jack/doubles/");
-
-for (var i=0; i<dartboardnumbers.length; i++) {
-	fillDoubleShapeMesh(dartboardnumbers[i]);
+/*
+* Given a player's mean and sd, it returns the probability that
+* player will hit the double bed of the number argument
+*/
+doubles.chance = function(number, sd, mean) {
+	//set defaults when no gaussian params given
+	sd = sd || {'x':1, 'y':1};
+	mean = mean || {'x':0, 'y':0};
+	//create and normailse the gaussian mesh of this player
+	fillGaussianMesh(mean.x, mean.y, sd.y, sd.y);
+	mesh.normaliseMesh(gaussianMesh);
+	//do some mesh stuff that jack wrote to determine prob
+	fillDoubleShapeMesh(number);
 	fillResultMesh();
-	files.writeToFile(bedShapeMesh, "bedshape"+dartboardnumbers[i]+".json", "./../public/data/Jack/doubles/");
-	files.writeToFile(resultMesh, "resultfor"+dartboardnumbers[i]+".json", "./../public/data/Jack/doubles/");
-	console.time(''+i);
-	console.log(dartboardnumbers[i]+", "+mesh.sumMesh(resultMesh));
-	console.timeEnd(''+i);
-};
+	//return probability
+	return mesh.sumMesh(resultMesh);
+}
 
-console.log("finished now?");
+module.exports = doubles;
