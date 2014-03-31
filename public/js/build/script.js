@@ -384,7 +384,7 @@ app.processData = function(data) {
 			el > app.data.max ? app.data.max = el : null;
 		})
 	});
-	$('#maxValue').html(app.data.max.toFixed(2));
+	$('#maxValue').html(app.data.max.toFixed(6));
 	//find coordinates of the maximum point
 	var coordsMax = stats.maxXY(app.data);
 	//draw
@@ -396,19 +396,23 @@ app.processData = function(data) {
 
 app.failedAJAX = function(url) {
 	$('#failedAJAX #badURL').html(url);
-	$('.working').show();
 	$('#failedAJAX').modal('show');
+	$('#generateHeatmapData').show();
 
-	var settings = {
-		'url': 'api/makeHeatmap',
-		'type': 'post',
-		'data': app.sd
-	}
-	//make the call!
-	$.ajax(settings).done(function(data) {
-		$('#failedAJAX').modal('hide');
-		$('.working').hide();
-		app.processData(data);
+	$('#generateHeatmapData').on('click', function() {
+		$('#generateHeatmapData').hide();
+		$('.working').show();
+		var settings = {
+			'url': 'api/makeHeatmap',
+			'type': 'post',
+			'data': app.sd
+		}
+		//make the call!
+		$.ajax(settings).done(function(data) {
+			$('#failedAJAX').modal('hide');
+			$('.working').hide();
+			app.processData(data);
+		});
 	});
 }
 
