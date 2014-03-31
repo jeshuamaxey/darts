@@ -56,3 +56,4 @@ and open up `http://localhost:3000` in your browser and you're good use the app 
 - [x] add a link to the heatmap viewer with an argument in the URL containing your standard deviation
 - [x] improve the heatmap viewer to read URL arguments
 - [x] add bootstrap V3
+- [x] make generation of new heatmap optional (and validate sd's)

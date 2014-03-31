@@ -4,7 +4,7 @@ public/data
 
 .katon
 katon.log
-docs/*
+docs
 
 #ignore all symlinks
 ./node_modules/.bin/browserify
