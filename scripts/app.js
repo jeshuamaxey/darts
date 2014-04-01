@@ -20,8 +20,8 @@ app.main = function() {
 	var sd;
 	//if you want to do use sd = z then set it so:
 	//var sdMin = x, sdMax = x+sdStep, sdStep = whatever;
-	var sdXMin = 10.0, sdXMax = 100.5,
-			sdYMin = 10.0, sdYMax = 100.5,
+	var sdXMin = 1.0, sdXMax = 10.5,
+			sdYMin = 1.0, sdYMax = 10.5,
 			sdStep = 0.5;
 
 	var loopLimY = (sdYMax-sdYMin)/sdStep;
@@ -32,7 +32,8 @@ app.main = function() {
 		mean = app.setMean(0, 0);
 		//set file names
 		var fileName = files.generateFileName(sd);
-		var dirName = (config.meshSize == 400) ? config.dataDir + 'symmetric/res400' : config.dataDir + '/symmetric';
+		var dirName = __dirname + '/../public/data/symmetric';
+		if(config.meshSize == 400) dirName += '/res400';
 		//only bother to generate data if the file doesn't already exist
 		if(!fs.existsSync(dirName+'/'+fileName)) {
 			console.log(dirName+'/'+fileName + " doesn't exist");
