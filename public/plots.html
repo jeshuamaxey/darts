@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Darts</title>
+  <link rel="stylesheet" href="components/bootstrap/dist/css/bootstrap.css">
+  <!-- <link rel="stylesheet" href="css/style.css"> -->
+</head>
+<body>
+  <nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">Darts</a>
+      </div>
+
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+          <li><a href="/">Heatmaps</a></li>
+          <li><a href="/data.html">Data Recorder</a></li>
+          <li><a href="/throws.html">Throw Data</a></li>
+          <li class="active"><a href="/plots.html">Plots</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <!-- <li><img class="working" src="img/loading.gif" alt=""></li> -->
+          <li><a href="http://github.com/jeshuamaxey/darts">GitHub</a></li>
+        </ul>
+      </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+  </nav>
+  <div id="canvasWrapper" class="container">
+    <div class="row">
+      <div class="col-md-9 no-padding">
+        <canvas   id="dartboard" class="heatmap"
+              height="800px"
+              width = "800px">
+        </canvas>
+      </div>
+      <div id="infoPanel" class="col-md-3 ">
+      </div>
+    </div>
+  </div>
+<body>
+
+<script src="components/jquery/jquery.js"></script>
+<script src="components/bootstrap/dist/js/bootstrap.js"></script>
+<script src="js/build/plots.js"></script>  
+</body>
+</html>

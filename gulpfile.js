@@ -6,7 +6,7 @@ var nodemon = require('gulp-nodemon');
 var files = require('./modules/files.js');
 
 var paths = {
-  scripts: ['public/js/data-record.js', 'public/js/script.js', 'public/js/throws.js'],
+  scripts: ['public/js/data-record.js', 'public/js/script.js', 'public/js/throws.js', 'public/js/plots.js'],
   dataDir: 'public/data/*'
 };
 
