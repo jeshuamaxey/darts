@@ -80,10 +80,11 @@ files.generateFileName = function(sd) {
 
 //save data to file
 files.writeToFile = function(data, fileName, dir) {
-  var outFile = (dir || 'public/data/') + (fileName || 'output.json');
+  var outFile = (dir || 'public/data/') + '/' + (fileName || 'output.json');
 
   fs.writeFile(outFile, JSON.stringify(data, null, 2), function(err) {
     if(err) {
+      console.log('Error writing to file:\n')
       console.log(err);
     } else {
       console.log('Written to: '+ outFile); 

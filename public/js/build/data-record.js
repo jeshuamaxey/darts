@@ -2,7 +2,7 @@
 var config = config || {};
 
 config = {
-	"meshSize": 400,
+	"meshSize": 200,
 	"meshRatio": {
 		"bullseye": 6.35/200,
 		"bull" : 15.9/200,
@@ -10,7 +10,8 @@ config = {
 		"outerTreble": 107/200,
 		"innerDouble": 162/200,
 		"outerDouble": 170/200
-	}
+	},
+	"dataDir": "/Users/jeshuamaxey/dev/darts/public"
 };
 
 /* Fix Variables */

@@ -1,6 +1,7 @@
 var qs = require('querystring');
 var fs = require('fs');
 
+var config = require('./config.js');
 var hm = require('./heatmap.js');
 var files = require('./files.js');
 
@@ -50,12 +51,15 @@ api.makeHeatmap = function(req, res) {
 		'y': parseFloat(req.body.y)
 	};
 	
+	//log request to console
+	console.log("Request for heatmap received. sd.x = " + sd.x + "& sd.y = " + sd.y);
+	
 	//generate data
 	var mesh = hm.generateHeatmap({'x':0, 'y':0}, sd);
 
 	//write data to file
 	var fileName = files.generateFileName(sd);
-	files.writeToFile(mesh, fileName, '../public/data/symmetric');
+	files.writeToFile(mesh, fileName, __dirname + '/../public/data/symmetric');
 	
 	//send data to client
 	res.send(mesh)

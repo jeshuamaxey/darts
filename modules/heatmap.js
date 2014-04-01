@@ -38,12 +38,12 @@ hm.generateDartboardMesh = function() {
 
 hm.generateHeatmap = function(mean, sd) {
 	//creates nice progress bar in terminal
-	// priv.bar = new progressBar('sdX: '+sd.x.toFixed(1)+'mm, sdY: '+sd.y.toFixed(1)+'mm [:bar] :percent :etas', {
-	//     complete: '='
-	//   , incomplete: ' '
-	//   , width: 80
-	//   , total: config.meshSize
-	// });
+	priv.bar = new progressBar('sdX: '+sd.x.toFixed(1)+'mm, sdY: '+sd.y.toFixed(1)+'mm [:bar] :percent :etas', {
+	    complete: '='
+	  , incomplete: ' '
+	  , width: 80
+	  , total: config.meshSize
+	});
 	priv.gaussianMesh = hm.generateGaussian(mean, sd);
 	priv.dartboardMesh = hm.generateDartboardMesh();
 	priv.resultMesh = mesh.make2DMesh(config.meshSize);
@@ -53,12 +53,9 @@ hm.generateHeatmap = function(mean, sd) {
 			priv.resultMesh[i][j] = hm.weight(i, j);
 		}
 		//update progress bar
-		// priv.bar.tick();
+		priv.bar.tick();
 	}
 
-	//output data
-	var fileName = files.generateFileName(sd);
-	files.writeToFile(priv.resultMesh, fileName, '../public/data/symmetric');
 	//destroy progress bar
 	priv.bar = null;
 

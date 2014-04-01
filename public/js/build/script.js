@@ -399,6 +399,7 @@ app.failedAJAX = function(url) {
 	$('#failedAJAX').modal('show');
 	$('#generateHeatmapData').show();
 
+	//only generate the heatmap on the backend if the client says so
 	$('#generateHeatmapData').on('click', function() {
 		$('#generateHeatmapData').hide();
 		$('.working').show();
