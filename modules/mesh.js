@@ -44,4 +44,33 @@ mesh.normaliseMesh = function(meshToBeNormalised) {
 	return meshToBeNormalised;
 }
 
+mesh.maxXY = function(mesh) {
+  var max = 0;
+	var c = {'x': 0,'y': 0};
+  //begin search
+  for(x=0;x<mesh.length;x++){
+  	for(y=0;y<mesh.length;y++){
+      	if(mesh[x][y] > max) {
+          max = mesh[x][y]; 
+        	c.x = x;
+          c.y = y;
+    		}
+  	}
+	}
+	return c;
+}
+
+mesh.max = function(mesh) {
+  var max = 0;
+  //begin search
+  for(x=0;x<mesh.length;x++){
+    for(y=0;y<mesh.length;y++){
+        if(mesh[x][y] > max) {
+          max = mesh[x][y]; 
+        }
+    }
+  }
+  return max;
+}
+
 module.exports = mesh;
