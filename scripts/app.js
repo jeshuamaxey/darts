@@ -17,11 +17,11 @@ var files = require('../modules/files.js');
 * This gets called
 */
 app.main = function() {
-	var sd;
+	var sd, mesh;
 	//if you want to do use sd = z then set it so:
 	//var sdMin = x, sdMax = x+sdStep, sdStep = whatever;
-	var sdXMin = 1.0, sdXMax = 10.5,
-			sdYMin = 1.0, sdYMax = 10.5,
+	var sdXMin = 1.0, sdXMax = 100.5,
+			sdYMin = 1.0, sdYMax = 100.5,
 			sdStep = 0.5;
 
 	var loopLimY = (sdYMax-sdYMin)/sdStep;
@@ -38,7 +38,7 @@ app.main = function() {
 		if(!fs.existsSync(dirName+'/'+fileName)) {
 			console.log(dirName+'/'+fileName + " doesn't exist");
 			//crunch da numberz
-			hm.generateHeatmap(mean, sd);
+			mesh = hm.generateHeatmap(mean, sd);
 			//write data to file
 			files.writeToFile(mesh, fileName, dirName);
 		} else {
