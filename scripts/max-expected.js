@@ -34,10 +34,11 @@ for (var i = 0; i < loopLim; i++) {
 
 //each file is opened and the max value stored in series
 heatmaps.forEach(function(fileName, i) {
-  getMax(fileName, function(max) {
+  getMax(fileName, function(max, coords) {
   	series.push({
   		'sd': sdMin + sdStep*i,
-  		'max': max
+  		'max': max,
+  		'coords': coords || {'x': 0,'y': 0}
   	});
     if(series.length == heatmaps.length) {
     	//once all the heatmaps have been reviewed, the data can be processed
@@ -51,7 +52,7 @@ heatmaps.forEach(function(fileName, i) {
 * and passes it to a callback
 */
 function getMax(file, callback) {
-	var max;
+	var max, coords;
 	//if the file exists, find the max point
 	if(fs.existsSync(file)) {
 		//load up file
@@ -68,22 +69,24 @@ function getMax(file, callback) {
 		  		console.log("Error: "+e)
 		  	}
 		  	max = mesh.max(data);
+		  	coords = mesh.maxXY(data);
 		  }
 		});
 	} else {
 		console.log(file + " NOT FOUND")
 	}
 	//do something with the max value
-	setTimeout(function() { callback(max); }, 500);
+	setTimeout(function() { callback(max, coords); }, 500);
 }
 
 function processData() {
 	var fileName = 'max-expected';
 	var dirName = __dirname + '/../public/data'
 	//generate a csv string
-	var csv = 'sd, max' + os.EOL;
+	var csv = 'sd, max, x, y' + os.EOL;
 	series.forEach(function(s) {
-		csv += s.sd + ', ' + s.max + os.EOL;
+		//console.log(s.coords)
+		csv += s.sd + ', ' + s.max + ', ' + s.coords.x + ', ' + s.coords.y + os.EOL;
 	});
 	//write json to file
 	files.writeToFile(series, fileName+'.json', dirName);
