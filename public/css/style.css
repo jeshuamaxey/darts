@@ -53,3 +53,26 @@ body:not(modal-open) .heatmap:hover {
 #scale #pc100 {
 	text-align: right;
 }
+
+/*
+*
+*/
+#lineGraphWrapper {
+	display: none;
+}
+
+/*
+* D3 styles
+*/
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.line {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 1.5px;
+}

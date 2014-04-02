@@ -96,7 +96,7 @@ if (document.location.hostname == "localhost") {
 
 //run on page load
 plots.main = function() {
-	$('#stdDev').on('change', plots.updatePlot);
+	$('#stdDev').on('change', plots.updateOverlay);
 
 	plots.db = {
 		"width" : $('#dartboard').width(),
@@ -106,9 +106,29 @@ plots.main = function() {
 	//200 was the mesh size used for the heatmaps which the max-expected data was taken from
 	plots.pixelSize = plots.db.width/200;
 
+	//initialise canvases
 	plots.dbCanvas = document.getElementById('dartboard');
 	plots.dbCtx = plots.dbCanvas.getContext('2d');
+	plots.ovCanvas = document.getElementById('overlay');
+	plots.ovCtx = plots.ovCanvas.getContext('2d');
 
+	//draw plots
+	plots.plotDartboard();
+	plots.plotLineGraph();
+
+	//setup event listeners
+	$('.panel-collapse').on('hide.bs.collapse', function () {
+		var id = $(this).data('plot-id');
+		$('#'+id).hide();
+	});
+	$('.panel-collapse').on('show.bs.collapse', function () {
+		var id = $(this).data('plot-id');
+		$('#'+id).show();
+	});
+}
+
+//
+plots.plotDartboard = function() {
 	//draw a dartboard onto the canvas
 	draw.dartBoard(plots.dbCtx, plots.dbCanvas, plots.db, true, true);
 
@@ -157,15 +177,85 @@ plots.main = function() {
 }
 
 //
-plots.updatePlot = function() {
+plots.updateOverlay = function() {
+	//clear canvas
+	draw.clear(plots.ovCtx, plots.ovCanvas);
+	//get all the info we need
 	var sd = parseFloat($(this).val());
-	$('.stdDevDisp').html(sd.toFixed(1));
 	var i = sd/0.5 - 1;
 	var x = plots.data[i].coords.x*plots.pixelSize;
 	var y = plots.data[i].coords.y*plots.pixelSize;
-	plots.dbCtx.strokeStyle = '#f00';
-	draw.circle(plots.dbCtx, x, y, 2);
-	plots.dbCtx.strokeStyle = '#fff'
+	var maxExp = plots.data[i].max;
+	//update displays
+	$('.stdDevDisp').html(sd.toFixed(1));
+	$('.maxExpDisp').html(maxExp.toFixed(2));
+	//update canvas
+	plots.ovCtx.strokeStyle = '#f00';
+	draw.circle(plots.ovCtx, x, y, 2);
+	plots.ovCtx.strokeStyle = '#fff'
+}
+
+//
+plots.plotLineGraph = function() {
+	var margin = {top: 80, right: 20, bottom: 30, left: 50},
+    width = 800 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
+
+	var x = d3.scale.linear()
+	    .range([0, width]);
+
+	var y = d3.scale.linear()
+	    .range([height, 0]);
+
+	var xAxis = d3.svg.axis()
+	    .scale(x)
+	    .orient("bottom");
+
+	var yAxis = d3.svg.axis()
+	    .scale(y)
+	    .orient("left");
+
+	var line = d3.svg.line()
+	    .x(function(d) { return x(d.sd); })
+	    .y(function(d) { return y(d.max); });
+
+	var svg = d3.select("#lineGraphWrapper").append("svg")
+	    .attr("width", width + margin.left + margin.right)
+	    .attr("height", height + margin.top + margin.bottom)
+	  .append("g")
+	    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+	d3.csv(plots.dataLocation+"max-expected.csv", function(error, data) {
+	  data.forEach(function(d) {
+	    d.sd = +d.sd;
+	    d.max = +d.max;
+	  });
+
+	  console.log(data)
+
+	  x.domain(d3.extent(data, function(d) { return d.sd; }));
+	  y.domain(d3.extent(data, function(d) { return d.max; }));
+
+	  svg.append("g")
+	      .attr("class", "x axis")
+	      .attr("transform", "translate(0," + height + ")")
+	      .call(xAxis);
+
+	  svg.append("g")
+	      .attr("class", "y axis")
+	      .call(yAxis)
+	    .append("text")
+	      .attr("transform", "rotate(-90)")
+	      .attr("y", 6)
+	      .attr("dy", ".71em")
+	      .style("text-anchor", "end")
+	      .text("Maximum expected score per dart");
+
+	  svg.append("path")
+	      .datum(data)
+	      .attr("class", "line")
+	      .attr("d", line);
+	});
 }
 
 //
