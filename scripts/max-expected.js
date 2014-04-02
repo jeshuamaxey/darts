@@ -76,17 +76,17 @@ function getMax(file, callback) {
 		console.log(file + " NOT FOUND")
 	}
 	//do something with the max value
-	setTimeout(function() { callback(max, coords); }, 500);
+	setTimeout(function() { callback(max, coords); }, heatmaps.length*10);
 }
 
 function processData() {
 	var fileName = 'max-expected';
 	var dirName = __dirname + '/../public/data'
 	//generate a csv string
-	var csv = 'sd, max, x, y' + os.EOL;
+	var csv = 'sd,max,x,y' + os.EOL;
 	series.forEach(function(s) {
 		//console.log(s.coords)
-		csv += s.sd + ', ' + s.max + ', ' + s.coords.x + ', ' + s.coords.y + os.EOL;
+		csv += s.sd + ',' + s.max + ',' + s.coords.x + ',' + s.coords.y + os.EOL;
 	});
 	//write json to file
 	files.writeToFile(series, fileName+'.json', dirName);
