@@ -78,7 +78,13 @@ files.generateFileName = function(sd) {
   return fileName;
 }
 
-//save data to file
+/*
+* Only use for writing JSON to file
+* DO NOT USE FOR CSV
+* This is a hideous function, I regret the day I wrote it
+* I apologise to the node.js community at large that it even exists
+* - Jeshua
+*/
 files.writeToFile = function(data, fileName, dir) {
   var outFile = (dir || 'public/data/') + '/' + (fileName || 'output.json');
 
