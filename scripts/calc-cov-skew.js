@@ -38,7 +38,7 @@ fs.readFile(dir+file+'.json', 'utf8', function (err, data) {
 	var meanY = app.data.preprocessed.mmY.mean;
 	var sdX = app.data.preprocessed.mmX.stdDev;
 	var sdY = app.data.preprocessed.mmY.stdDev;
-	console.log(meanX,meanY,sdX,sdY)
+
 	var covariance = stats.covariance(arr, meanX, meanY, sdX, sdY);
 	//console.log(covariance);
 	//write to file
