@@ -20,25 +20,28 @@ app.main = function() {
 	var sd, mesh;
 	//if you want to do use sd = z then set it so:
 	//var sdMin = x, sdMax = x+sdStep, sdStep = whatever;
-	var sdXMin = 1.0, sdXMax = 100.5,
-			sdYMin = 1.0, sdYMax = 100.5,
+	var sdXMin = 35, sdXMax = 35.5,
+			sdYMin = 34, sdYMax = 34.5,
 			sdStep = 0.5;
+
+	var cov = -0.55;
 
 	var loopLimY = (sdYMax-sdYMin)/sdStep;
 
 	for(var d=0; d<loopLimY; d++) {
 		//set standard deviation
 		sd = app.setStdDev(sdXMin + d*sdStep, sdYMin + d*sdStep);
-		mean = app.setMean(0, 0);
+		mean = app.setMean(9, -5);
 		//set file names
-		var fileName = files.generateFileName(sd);
+		var fileName = files.generateFileName(sd, cov);
 		var dirName = __dirname + '/../public/data/symmetric';
+		//intelligently choose directory based on mesh size
 		if(config.meshSize == 400) dirName += '/res400';
 		//only bother to generate data if the file doesn't already exist
 		if(!fs.existsSync(dirName+'/'+fileName)) {
 			console.log(dirName+'/'+fileName + " doesn't exist");
 			//crunch da numberz
-			mesh = hm.generateHeatmap(mean, sd);
+			mesh = hm.generateHeatmap(mean, sd, cov);
 			//write data to file
 			files.writeToFile(mesh, fileName, dirName);
 		} else {

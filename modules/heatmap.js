@@ -10,11 +10,11 @@ var config = require('./config.js');
 var mesh = require('./mesh.js');
 
 // Need to generate the Gaussian mesh first
-hm.generateGaussian = function(mean, sd) {
+hm.generateGaussian = function(mean, sd, cov) {
 	var gaussianMesh = mesh.make2DMesh(config.meshSize*2);
 	for (var i = 0; i < gaussianMesh.length; i++) {
 		for (var j = 0;  j< gaussianMesh.length; j++) {
-		gaussianMesh[i][j] = stats.gaussian2D((i - config.meshSize)*config.px2mm, (config.meshSize - j)*config.px2mm, mean.x, mean.y, sd.x, sd.y);
+		gaussianMesh[i][j] = stats.gaussian2D((i - config.meshSize)*config.px2mm, (config.meshSize - j)*config.px2mm, mean.x, mean.y, sd.x, sd.y, cov);
 		}
 	}
 	return mesh.normaliseMesh(gaussianMesh);
@@ -36,7 +36,8 @@ hm.generateDartboardMesh = function() {
 * symmetric directory
 */
 
-hm.generateHeatmap = function(mean, sd) {
+hm.generateHeatmap = function(mean, sd, cov) {
+	var cov = cov || 0;
 	//creates nice progress bar in terminal
 	priv.bar = new progressBar('sdX: '+sd.x.toFixed(1)+'mm, sdY: '+sd.y.toFixed(1)+'mm [:bar] :percent :etas', {
 	    complete: '='
@@ -44,7 +45,7 @@ hm.generateHeatmap = function(mean, sd) {
 	  , width: 80
 	  , total: config.meshSize
 	});
-	priv.gaussianMesh = hm.generateGaussian(mean, sd);
+	priv.gaussianMesh = hm.generateGaussian(mean, sd, cov);
 	priv.dartboardMesh = hm.generateDartboardMesh();
 	priv.resultMesh = mesh.make2DMesh(config.meshSize);
 	//start big loop
