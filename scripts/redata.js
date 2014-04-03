@@ -1,5 +1,7 @@
 /*
-*	 A little script to retrospective calculate statistics on data
+*	 A script to retrospective calculate statistics on throw data
+*  After discovering we'd divided by N and not N-1 when calculating
+*  standard deviations, this became neccessary
 */
 
 var fs = require('fs');
