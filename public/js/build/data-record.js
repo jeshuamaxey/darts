@@ -211,18 +211,30 @@ stats.gaussian1D = function(x, meanX, sdX) {
 * and standard deviations sdX & sdY, at (x,y). When only x & y are
 * provided as arguments it defaults to a normal distribution 
 */
-stats.gaussian2D = function(x, y, meanX, meanY, sdX, sdY) {
+
+// This gaussian2D function is being updated to be a bivariate Gaussian
+// If it receives no covariance number then it is defaulted to zero and
+// remains a normal uncorrelated Gaussian
+stats.gaussian2D = function(x, y, meanX, meanY, sdX, sdY, cov) {
 	var meanX = meanX || 0;
 	var meanY = meanY || 0;
 	var sdX = sdX || 1;
 	var sdY = sdY || 1;
+	var cov = cov || 0;
 	var varX = sdX*sdX;
 	var varY = sdY*sdY;
 	//check the normalisation constant
-  var e = Math.exp( - ( Math.pow(x - meanX, 2) / (2 * varX) + Math.pow(y - meanY, 2) / (2 * varY) ) );
-  var m = sdX * sdY * 2 * Math.PI;
-  return ( (e / m) < 0.00000001 ? 0 : e/m );
+	// The setting of these variables makes sense if you visit http://mathworld.wolfram.com/BivariateNormalDistribution.html
+	var expX = Math.pow( (x-meanX)/sdX , 2);
+	var expY = Math.pow( (y-meanY)/sdY , 2);
+	var expCov = 2*cov*(x-meanX)*(y-meanY)/(sdX*sdY);
+	var z = expX - expCov + expY;
+  	var e = Math.exp(-z/(2*(1-cov*cov)));
+  	var m = sdX * sdY * 2 * Math.PI * Math.sqrt(1-(cov*cov));
+  	return ( (e / m) < 0.00000001 ? 0 : e/m );
 }
+
+
 
 // Currently going to have accuracy as a fraction rather than a percentage
 stats.calcStandardDev = function(accuracy) {
@@ -260,7 +272,7 @@ stats.mean = function(arr) {
 	for (var i = arr.length - 1; i >= 0; i--) {
 		total += arr[i];
 	};
-	return total/(N-1);
+	return total/N;
 }
 
 /*
@@ -316,6 +328,60 @@ stats.maxXY = function(arr) {
 	}
 	return c;
 }
+
+stats.covariance = function(twoDData, meanX, meanY, sdX, sdY) {
+	//function takes an array called
+	var sum = 0;
+	for (var i=0; i < twoDData.length; i++) {
+		sum += (twoDData[i]["mmX"]*twoDData[i]["mmY"]);
+	}
+	sum = sum/twoDData.length;
+	return (sum - meanX*meanY)/(sdX*sdY);
+}
+
+// A little bit of a test for the covariance function
+// This data here is the data from this video: http://www.videojug.com/film/how-to-calculate-covariance
+// And was used for testing the covariance function
+/*
+someData = [
+	{
+		"mmX":1,
+		"mmY":5
+	},
+	{
+		"mmX":2,
+		"mmY":4
+	},
+	{
+		"mmX":3,
+		"mmY":5
+	},
+	{
+		"mmX":4,
+		"mmY":6
+	},
+	{
+		"mmX":5,
+		"mmY":8
+	},
+	{
+		"mmX":6,
+		"mmY":9
+	},
+	{
+		"mmX":7,
+		"mmY":10
+	},
+	{
+		"mmX":8,
+		"mmY":13
+	},
+	{
+		"mmX":9,
+		"mmY":12
+	},
+]
+*/
 
 module.exports = stats;
 },{}],4:[function(require,module,exports){

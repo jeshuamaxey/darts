@@ -114,7 +114,7 @@ app.refreshHeatMap = function() {
 		url = $('#filePath').val();
 	} else {
 		app.sd = app.getStdDev();
-		var url = 'symmetric/' + 'sdx-' + app.sd.x + '-sdy-' + app.sd.y + '.json';
+		var url = 'heatmaps/' + 'sdx-' + app.sd.x + '-sdy-' + app.sd.y + '.json';
 	}
 	//display standard deviation
 	$('.stdDevXDisp').html(app.sd.x);

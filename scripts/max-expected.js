@@ -29,7 +29,7 @@ var series = [];
 //heatmaps arr is filled with file pathes
 for (var i = 0; i < loopLim; i++) {
 	sd = {'x': sdMin + sdStep*i,'y': sdMin + sdStep*i};
-	heatmaps.push(__dirname + '/../public/data/symmetric/' + files.generateFileName(sd)) 
+	heatmaps.push(__dirname + '/../public/data/heatmaps/' + files.generateFileName(sd)) 
 };
 
 //each file is opened and the max value stored in series

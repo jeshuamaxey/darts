@@ -34,7 +34,7 @@ app.main = function() {
 		mean = app.setMean(9, -5);
 		//set file names
 		var fileName = files.generateFileName(sd, cov);
-		var dirName = __dirname + '/../public/data/symmetric';
+		var dirName = __dirname + '/../public/data/heatmaps';
 		//intelligently choose directory based on mesh size
 		if(config.meshSize == 400) dirName += '/res400';
 		//only bother to generate data if the file doesn't already exist
