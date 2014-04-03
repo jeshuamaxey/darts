@@ -143,4 +143,58 @@ stats.maxXY = function(arr) {
 	return c;
 }
 
+stats.covariance = function(twoDData, meanX, meanY, sdX, sdY) {
+	//function takes an array called
+	var sum = 0;
+	for (var i=0; i < twoDData.length; i++) {
+		sum += (twoDData[i]["mmX"]*twoDData[i]["mmY"]);
+	}
+	sum = sum/twoDData.length;
+	return (sum - meanX*meanY)/(sdX*sdY);
+}
+
+// A little bit of a test for the covariance function
+// This data here is the data from this video: http://www.videojug.com/film/how-to-calculate-covariance
+// And was used for testing the covariance function
+/*
+someData = [
+	{
+		"mmX":1,
+		"mmY":5
+	},
+	{
+		"mmX":2,
+		"mmY":4
+	},
+	{
+		"mmX":3,
+		"mmY":5
+	},
+	{
+		"mmX":4,
+		"mmY":6
+	},
+	{
+		"mmX":5,
+		"mmY":8
+	},
+	{
+		"mmX":6,
+		"mmY":9
+	},
+	{
+		"mmX":7,
+		"mmY":10
+	},
+	{
+		"mmX":8,
+		"mmY":13
+	},
+	{
+		"mmX":9,
+		"mmY":12
+	},
+]
+*/
+
 module.exports = stats;
