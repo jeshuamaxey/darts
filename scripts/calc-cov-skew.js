@@ -40,8 +40,10 @@ fs.readFile(dir+file+'.json', 'utf8', function (err, data) {
 	var sdY = app.data.preprocessed.mmY.stdDev;
 
 	var covariance = stats.covariance(arr, meanX, meanY, sdX, sdY);
-	//console.log(covariance);
+	//jack: uncomment this when you're done
+	//var skew = stats.skew(arr, meanX, meanY, sdX, sdY);
 	//write to file
 	app.data.preprocessed.covariance = ''+covariance;
+	//app.data.preprocessed.skew = ''+skew;
 	files.writeToFile(app.data, file+'new.json', dir);
 });
