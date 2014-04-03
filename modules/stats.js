@@ -86,7 +86,7 @@ stats.mean = function(arr) {
 	for (var i = arr.length - 1; i >= 0; i--) {
 		total += arr[i];
 	};
-	return total/(N-1);
+	return total/N;
 }
 
 /*
