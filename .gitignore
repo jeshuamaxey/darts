@@ -2,8 +2,6 @@ public/components/
 node_modules/*
 public/data
 
-bower.json
-
 .katon
 katon.log
 docs
