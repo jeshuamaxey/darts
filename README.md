@@ -7,13 +7,19 @@ A version of the app should be live on the web, hosted by Heroku. You can visit 
 
 ## Local Setup
 
-Run `npm install` after pulling. You'll need to symlink to a directory full of relevant data of the form:
+Run the following commands to get up and running and if ever things break after pulling:
+
+`$ npm install`
+`$bower install`
+
+
+You'll need to symlink to a directory full of relevant data of the form:
 
 ````
 data
 ├── dummy.json
 ├── output.json
-├── symmetric
+├── heatmaps
 │   ├── sd-000.5.json
 │   ├── sd-001.0.json
  ~ ~ ~
