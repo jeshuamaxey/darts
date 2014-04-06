@@ -59,7 +59,7 @@ api.makeHeatmap = function(req, res) {
 
 	//write data to file
 	var fileName = files.generateFileName(sd);
-	files.writeToFile(mesh, fileName, __dirname + '/../public/data/symmetric');
+	files.writeToFile(mesh, fileName, __dirname + '/../public/data/heatmaps');
 	
 	//send data to client
 	res.send(mesh)
