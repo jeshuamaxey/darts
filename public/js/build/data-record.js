@@ -213,24 +213,24 @@ stats.gaussian1D = function(x, meanX, sdX) {
 */
 
 // This gaussian2D function is being updated to be a bivariate Gaussian
-// If it receives no covariance number then it is defaulted to zero and
+// If it receives no correlation number then it is defaulted to zero and
 // remains a normal uncorrelated Gaussian
-stats.gaussian2D = function(x, y, meanX, meanY, sdX, sdY, cov) {
+stats.gaussian2D = function(x, y, meanX, meanY, sdX, sdY, corr) {
 	var meanX = meanX || 0;
 	var meanY = meanY || 0;
 	var sdX = sdX || 1;
 	var sdY = sdY || 1;
-	var cov = cov || 0;
+	var corr = corr || 0;
 	var varX = sdX*sdX;
 	var varY = sdY*sdY;
 	//check the normalisation constant
 	// The setting of these variables makes sense if you visit http://mathworld.wolfram.com/BivariateNormalDistribution.html
 	var expX = Math.pow( (x-meanX)/sdX , 2);
 	var expY = Math.pow( (y-meanY)/sdY , 2);
-	var expCov = 2*cov*(x-meanX)*(y-meanY)/(sdX*sdY);
-	var z = expX - expCov + expY;
-  	var e = Math.exp(-z/(2*(1-cov*cov)));
-  	var m = sdX * sdY * 2 * Math.PI * Math.sqrt(1-(cov*cov));
+	var expcorr = 2*corr*(x-meanX)*(y-meanY)/(sdX*sdY);
+	var z = expX - expcorr + expY;
+  	var e = Math.exp(-z/(2*(1-corr*corr)));
+  	var m = sdX * sdY * 2 * Math.PI * Math.sqrt(1-(corr*corr));
   	return ( (e / m) < 0.00000001 ? 0 : e/m );
 }
 
@@ -329,7 +329,7 @@ stats.maxXY = function(arr) {
 	return c;
 }
 
-stats.covariance = function(twoDData, meanX, meanY, sdX, sdY) {
+stats.correlation = function(twoDData, meanX, meanY, sdX, sdY) {
 	//function takes an array called
 	var sum = 0;
 	for (var i=0; i < twoDData.length; i++) {
@@ -339,9 +339,9 @@ stats.covariance = function(twoDData, meanX, meanY, sdX, sdY) {
 	return (sum - meanX*meanY)/(sdX*sdY);
 }
 
-// A little bit of a test for the covariance function
-// This data here is the data from this video: http://www.videojug.com/film/how-to-calculate-covariance
-// And was used for testing the covariance function
+// A little bit of a test for the correlation function
+// This data here is the data from this video: http://www.videojug.com/film/how-to-calculate-correlation
+// And was used for testing the correlation function
 /*
 someData = [
 	{

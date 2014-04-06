@@ -99,16 +99,16 @@ plots.main = function() {
 	$('#stdDev').on('change', plots.updateOverlay);
 
 	plots.db = {
-		"width" : $('#dartboard').width(),
-		"height" : $('#dartboard').height()
+		"width" : $('.dartboard').width(),
+		"height" : $('.dartboard').height()
 	};
 	
 	//200 was the mesh size used for the heatmaps which the max-expected data was taken from
 	plots.pixelSize = plots.db.width/200;
 
 	//initialise canvases
-	plots.dbCanvas = document.getElementById('dartboard');
-	plots.dbCtx = plots.dbCanvas.getContext('2d');
+	plots.sdDbCanvas = document.getElementById('sdDartboard');
+	plots.dbCtx = plots.sdDbCanvas.getContext('2d');
 	plots.ovCanvas = document.getElementById('overlay');
 	plots.ovCtx = plots.ovCanvas.getContext('2d');
 
@@ -130,7 +130,7 @@ plots.main = function() {
 //
 plots.plotDartboard = function() {
 	//draw a dartboard onto the canvas
-	draw.dartBoard(plots.dbCtx, plots.dbCanvas, plots.db, true, true);
+	draw.dartBoard(plots.dbCtx, plots.sdDbCanvas, plots.db, true, true);
 
 	//fetch the max expected data
 	url = plots.dataLocation + 'max-expected.json';
@@ -187,7 +187,7 @@ plots.updateOverlay = function() {
 	var y = plots.data[i].coords.y*plots.pixelSize;
 	var maxExp = plots.data[i].max;
 	//update displays
-	$('.stdDevDisp').html(sd.toFixed(1));
+	$('#stdDbDevDisp').html(sd.toFixed(1));
 	$('.maxExpDisp').html(maxExp.toFixed(2));
 	//update canvas
 	plots.ovCtx.strokeStyle = '#f00';
@@ -230,8 +230,6 @@ plots.plotLineGraph = function() {
 	    d.sd = +d.sd;
 	    d.max = +d.max;
 	  });
-
-	  console.log(data)
 
 	  x.domain(d3.extent(data, function(d) { return d.sd; }));
 	  y.domain(d3.extent(data, function(d) { return d.max; }));

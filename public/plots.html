@@ -41,8 +41,8 @@
     <!-- Where all the plots go-->
       <div class="col-md-9 no-padding">
         <!-- db plot -->
-        <div id="canvasWrapper" class="plot">
-          <canvas   id="dartboard" class="heatmap"
+        <div id="sdCanvasWrapper" class="plot dbPlot">
+          <canvas id="sdDartboard" class="heatmap dartboard"
                 height="800px"
                 width = "800px">
           </canvas>
@@ -53,6 +53,17 @@
         </div>
         <!-- line graph plot -->
         <div id="lineGraphWrapper" class="plot"></div>
+        <!-- cov db plot -->
+        <div id="covCanvasWrapper" class="plot dbPlot">
+          <canvas   id="dartboard" class="heatmap dartboard"
+                height="800px"
+                width = "800px">
+          </canvas>
+          <canvas   id="overlay" class="overlay"
+                height="800px"
+                width = "800px">
+          </canvas>        
+        </div>
       </div>
 
       <!-- Right hand column-->
@@ -66,13 +77,13 @@
                 </a>
               </h4>
             </div>
-            <div id="optimumAim" class="panel-collapse collapse in" data-plot-id="canvasWrapper">
+            <div id="optimumAim" class="panel-collapse collapse in" data-plot-id="sdCanvasWrapper">
               <div class="panel-body">
                 <p>
                   Move the slider to change the standard deviation and see how the position of the optimum position to aim changes with the player's level of skill.
                 </p>
                 <div class="form-group">
-                  <label for="stdDev">&sigma;: <span class="stdDevDisp">0.5</span> mm</label>
+                  <label for="stdDev">&sigma;: <span id="stdDbDevDisp">0.5</span> mm</label>
                   <input id="stdDev" class="" type="range" min=0.5 max=100.0 step=0.5 value=0.5>
                 </div>
                 <div class="form-group">
@@ -95,20 +106,23 @@
               </div>
             </div>
           </div>
-          <!-- <div class="panel panel-default">
+          <div class="panel panel-default">
             <div class="panel-heading">
               <h4 class="panel-title">
-                <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
-                  Collapsible Group Item #3
+                <a data-toggle="collapse" data-parent="#accordion" href="#covOptAim">
+                  The effect of covariance on optimum aiming point
                 </a>
               </h4>
             </div>
-            <div id="collapseThree" class="panel-collapse collapse">
+            <div id="covOptAim" class="panel-collapse collapse" data-plot-id="covCanvasWrapper">
               <div class="panel-body">
-                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                <div class="form-group">
+                  <label for="stdDev">&sigma;: <span id="stdDevDisp">0.5</span> mm</labe
+                  <input id="" type="range" min=0.5 max=100.0 step=0.5 value=0.5>
+                </div>
               </div>
             </div>
-          </div> -->
+          </div>
         </div>
 
     </div>
