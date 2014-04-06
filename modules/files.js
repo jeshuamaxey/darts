@@ -60,7 +60,7 @@ function outputToFile(err, list) {
 	return false;
 }
 
-files.generateFileName = function(sd, cov) {
+files.generateFileName = function(sd, cor) {
   var fileName = '';
   //x
   fileName += 'sdx-';
@@ -72,8 +72,8 @@ files.generateFileName = function(sd, cov) {
   if(sd.y<10) fileName += '0';
   if(sd.y<100) fileName += '0';
   fileName += sd.y.toFixed(1);
-  //covariance
-  if(cov && cov!=0) fileName += '-cov-' + cov.toFixed(2);
+  //correlation
+  if(cor && cor!=0) fileName += '-cov-' + cor.toFixed(2);
   //extension
   fileName += '.json';
 
