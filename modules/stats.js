@@ -165,11 +165,63 @@ stats.correlation = function(twoDData, meanX, meanY, sdX, sdY) {
 	return (sum - meanX*meanY)/(sdX*sdY);
 }
 
+
+stats.median = function(twoDData, xOrY) {
+	// Need to sort the data first
+	// Put the data in a new array
+	var arr = [];
+	for (var i = 0; i < twoDData.length; i++) {
+		arr.push(twoDData[i][xOrY]);
+	}
+	// Sort it
+	arr.sort(function(a,b){return a-b});
+	// Select out the median
+	// Different method for even and odd n
+	if (arr.length % 2 == 0) {
+		return (arr[arr.length/2] + arr[(arr.length/2)-1])/2;
+	}
+	else {
+		return arr[(arr.length/2)-0.5];
+	}
+}
+
+
+// This function calculates the skew as stated in the definition here:
+// http://en.wikipedia.org/wiki/Skewness
+// The fourth argument needs to take a string "mmX" or "mmY"
+stats.skew = function(twoDData, mean, sd, xOrY) {
+	var sum = 0;
+	for (var i = 0; i < twoDData.length; i++) {
+		sum += Math.pow((twoDData[i][xOrY]), 3);
+	}
+	sum = sum / twoDData.length;
+	var termTwo = 3*mean*sd*sd;
+	var termThree = mean*mean*mean;
+	var denominator = sd*sd*sd;
+	return (sum - termTwo - termThree)/denominator;
+}
+
+// This function calculates Pearson's Second Coeefficient of Skewness
+// A supposedly simpler measure of skew and talked about here:
+// http://en.wikipedia.org/wiki/Skewness
+stats.pearsonSecond = function(twoDData, mean, sd, xOrY) {
+	// First, calculate the median
+	var median = stats.median(twoDData, xOrY);
+	return 3*(mean - median)/sd;
+}
+
 // A little bit of a test for the correlation function
-// This data here is the data from this video: http://www.videojug.com/film/how-to-calculate-correlation
+// This data here is the data from this video: http://www.videojug.com/film/how-to-calculate-covariance
+
 // And was used for testing the correlation function
+
 /*
+
 someData = [
+
+// mean x = 5, sd x = Math.sqrt(20/3)
+// mean y = 8, sd y = Math.sqrt(28/3)
+// Pearson's coefficient of skewness is zero for both mmX and mmY as mean = median
 	{
 		"mmX":1,
 		"mmY":5
@@ -207,6 +259,19 @@ someData = [
 		"mmY":12
 	},
 ]
+
 */
+
+/*
+// Some outputs for testing
+
+console.log(stats.median(someData, "mmY"));
+console.log("Pearson's coefficient = " + stats.pearsonSecond(someData, 8, Math.sqrt(28/3), "mmY"));
+console.log("Definition Skew X = "+stats.skew(someData, 5, Math.sqrt(20/3), "mmX"))
+console.log("Definition Skew Y = "+stats.skew(someData, 8, Math.sqrt(28/3), "mmY"))
+console.log(stats.median(someData, "mmY"));
+
+*/
+
 
 module.exports = stats;
