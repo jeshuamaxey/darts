@@ -1,6 +1,6 @@
 /*
 *  A script which aggregates the data from many heatmaps
-*  of varying sd (sd.x = sd.y) and covariance to see how
+*  of varying sd (sd.x = sd.y) and correlation to see how
 *  the optimum aiming position changes with both
 */
 
@@ -17,17 +17,15 @@ var sdMin = 10, sdMax = 30,
 
 var sdLoopLim = (sdMax-sdMin)/sdStep;
 
-var covMin = -1, covMax = 1,
-		covStep = 0.1;
+var corMin = -0.9, corMax = 1,
+		corStep = 0.1;
 
-var covLoopLim = (covMax-covMin)/covStep;
+var corLoopLim = (corMax-corMin)/corStep;
 
 //to be filled with heatmap filenames
 var heatmaps = [];
 //to be filled with data series
 var series = [];
-
-//var sd = {'x': 100.0, 'y': 100.0};
 
 var count = 0;
 
@@ -37,18 +35,19 @@ for(var i=0; i<sdLoopLim; i++) {
 		'sd': sdMin + sdStep*i,
 		'data': []
 	});
-	createCovarianceArray(sd, i);
+	createCorrelationArray(sd, i);
 }
 
 /*
 *
 *
 */
-function createCovarianceArray(sd, sdIndex) {
+function createCorrelationArray(sd, sdIndex) {
 	//heatmaps arr is filled with file pathes
-	for (var i = 0; i < covLoopLim; i++) {
-		cov = covMin + covStep*i;
-		heatmaps.push(__dirname + '/../public/data/heatmaps/' + files.generateFileName(sd, cov)) 
+	heatmaps = [];
+	for (var i = 0; i < corLoopLim; i++) {
+		cor = corMin + corStep*i;
+		heatmaps.push(__dirname + '/../public/data/heatmaps/' + files.generateFileName(sd, cor)) 
 	};
 
 	//each file is opened and the max value stored in series
@@ -56,12 +55,12 @@ function createCovarianceArray(sd, sdIndex) {
 	heatmaps.forEach(function(fileName, i) {
 	  getMax(fileName, function(max, coords) {
 	  	series[sdIndex].data.push({
-	  		'cov': (covMin + covStep*c).toFixed(2),
+	  		'cor': parseFloat((corMin + corStep*c).toFixed(2)),
 	  		'max': max,//.toFixed(2),
 	  		'coords': coords || {'x': 0,'y': 0}
 	  	});
 	  	c++;
-	  	if(c == covLoopLim) c = 0;
+	  	if(c == corLoopLim) c = 0;
 	    count++;
 	    if(i == heatmaps.length-1 && sd.x == sdMax - sdStep) {
 	    	//once all the heatmaps have been reviewed, the data can be processed
@@ -105,18 +104,18 @@ function getMax(file, callback) {
 
 function processData(sd) {
 	
-	var fileName = 'max-vs-cov';
+	var fileName = 'max-vs-cor';
 	var dirName = __dirname + '/../public/data'
 	// //generate a csv string
-	var csv = 'cov';
+	var csv = 'cor';
 	for(var i=0; i<sdLoopLim; i++) {
 		sd = sdMin+sdStep*i;
 		csv += ','+ sd;
 	}
 	csv += os.EOL;
-	for(var i=0; i<covLoopLim; i++) {
-		cov = covMin + covStep*i;
-		csv += cov.toFixed(2) + ',';
+	for(var i=0; i<corLoopLim; i++) {
+		cor = corMin + corStep*i;
+		csv += cor.toFixed(2) + ',';
 		for(var j=0; j<sdLoopLim; j++) {
 			csv += series[j].data[i].max;
 			csv += (j!=sdLoopLim-1) ? ',' : os.EOL;
