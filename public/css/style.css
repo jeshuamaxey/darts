@@ -57,7 +57,7 @@ body:not(modal-open) .heatmap:hover {
 /*
 *
 */
-#lineGraphWrapper, #covCanvasWrapper {
+#lineGraphWrapper, #corCanvasWrapper {
 	display: none;
 }
 
