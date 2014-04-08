@@ -1,14 +1,14 @@
 /*
 *  A script to retrospective calculate the
-*	 covariance of throw data
+*	 correlation of throw data
 */
 
 var fs = require('fs');
 var files = require('../modules/files.js');
 var stats = require('../modules/stats.js')
 
-var dir = '../public/data/throw-data/'
-var file = '008'
+var dir = __dirname + '/../public/data/throw-data/'
+var file = 'all-jack'
 
 var app = {};
 
@@ -22,7 +22,7 @@ fs.readFile(dir+file+'.json', 'utf8', function (err, data) {
   app.data = JSON.parse(data);
 
   //create an array of just the mmX and mmY values
-  //which the covariance function can work with
+  //which the correlation function can work with
 	var arr = [];
 	for (var j = app.data.raw['throws'].length - 1; j >= 0; j--) {
 		//make sure to exclude bounce outs from the array
@@ -33,17 +33,17 @@ fs.readFile(dir+file+'.json', 'utf8', function (err, data) {
 			});
 		}
 	}
-	//calculate the covariance
+	//calculate the correlation
 	var meanX = app.data.preprocessed.mmX.mean;
 	var meanY = app.data.preprocessed.mmY.mean;
 	var sdX = app.data.preprocessed.mmX.stdDev;
 	var sdY = app.data.preprocessed.mmY.stdDev;
 
-	var covariance = stats.covariance(arr, meanX, meanY, sdX, sdY);
+	var correlation = stats.correlation(arr, meanX, meanY, sdX, sdY);
 	//jack: uncomment this when you're done
 	//var skew = stats.skew(arr, meanX, meanY, sdX, sdY);
 	//write to file
-	app.data.preprocessed.covariance = ''+covariance;
+	app.data.preprocessed.correlation = ''+correlation;
 	//app.data.preprocessed.skew = ''+skew;
-	files.writeToFile(app.data, file+'new.json', dir);
+	files.writeToFile(app.data, file+'.json', dir);
 });

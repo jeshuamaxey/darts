@@ -1,3 +1,7 @@
+/*
+* A script to produce multiple heatmaps in batches
+*/
+
 var app = app || {}; 
 
 /*
@@ -41,7 +45,7 @@ app.main = function() {
 		//sd = app.setStdDev(sdXMin + d*sdStep, sdYMin + d*sdStep);
 		cor = corMin + d*corStep
 
-		mean = app.setMean(9, -5);
+		mean = app.setMean(0, 0);
 		//set file names
 		var fileName = files.generateFileName(sd, cor);
 		var dirName = __dirname + '/../public/data/heatmaps';
@@ -75,13 +79,6 @@ app.setMean = function(x, y) {
 		'x' : x,
 		'y' : y
 	}
-}
-
-/*
-* Generates a random integer between 0 and randMax
-*/
-app.randomInt = function(randMax) {
-	return Math.floor(Math.random()*randMax);
 }
 
 //run

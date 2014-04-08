@@ -8,9 +8,9 @@ var fs = require('fs');
 var files = require('../modules/files.js');
 var stats = require('../modules/stats.js')
 
-var dir = '../public/data/throw-data/'
-var fileName = '006.json'
-var newFileName = '006.json'
+var dir = __dirname + '/../public/data/throw-data/'
+var fileName = 'all-jack.json'
+var newFileName = 'all-jack.json'
 
 var app = {};
 
