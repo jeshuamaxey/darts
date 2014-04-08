@@ -89,6 +89,14 @@
                 <div class="form-group">
                   <label for="maxExp">Max expected score per dart: <span class="maxExpDisp">60.00</span></label>
                 </div>
+                <hr>
+                <p>To see multiple max positions highlighted simultaneously, enter and interval and click reload.</p>
+                <div class="input-group">
+                  <input id="interval" type="number" class="form-control" step=1 min=1, max=40 value=20>
+                  <span class="input-group-btn">
+                    <button id="plotIntervals" class="btn btn-primary" type="button">Update</button>
+                  </span>
+                </div>
               </div>
             </div>
           </div>

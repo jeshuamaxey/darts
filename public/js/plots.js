@@ -14,6 +14,9 @@ if (document.location.hostname == "localhost") {
 //run on page load
 plots.main = function() {
 	$('#stdDev').on('change', plots.updateOverlay);
+	$('#plotIntervals').on('click', function() {
+		plots.showMultipleSds($('#interval').val())
+	});
 
 	plots.db = {
 		"width" : $('.dartboard').width(),
@@ -28,6 +31,7 @@ plots.main = function() {
 	plots.sdDbCtx = plots.sdDbCanvas.getContext('2d');
 	plots.sdOverlayCanvas = document.getElementById('sdOverlay');
 	plots.sdOverlayCtx = plots.sdOverlayCanvas.getContext('2d');
+	plots.sdOverlayCtx.strokeStyle = '#f00';
 
 	plots.corDbCanvas = document.getElementById('corDartboard');
 	plots.corDbCtx = plots.corDbCanvas.getContext('2d');
@@ -70,6 +74,8 @@ plots.plotAimVsSdDb = function() {
 		var x = plots.sdData[0].coords.x*plots.pixelSize;
 		var y = plots.sdData[0].coords.y*plots.pixelSize;
 		var old = {'x':0, 'y':0};
+
+		draw.circle(plots.sdOverlayCtx, x, y, 2);
 		
 		//draw points
 		plots.sdData.forEach(function(point) {
@@ -85,6 +91,7 @@ plots.plotAimVsSdDb = function() {
 		plots.sdData.forEach(function(point, i) {
 			old.x = x;
 			old.y = y;
+
 			x = point.coords.x*plots.pixelSize;
 			y = point.coords.y*plots.pixelSize;
 			//calc difference between points
@@ -96,7 +103,6 @@ plots.plotAimVsSdDb = function() {
 		});
 		
 		plots.sdDbCtx.strokeStyle = '#000';
-		plots.sdDbCtx.closePath();
 		plots.sdDbCtx.stroke();
 	});
 }
@@ -119,7 +125,25 @@ plots.updateOverlay = function() {
 	//update canvas
 	plots.sdOverlayCtx.strokeStyle = '#f00';
 	draw.circle(plots.sdOverlayCtx, x, y, 2);
-	plots.sdOverlayCtx.strokeStyle = '#fff'
+}
+
+/*
+*
+*/
+plots.showMultipleSds = function(interval) {
+	//clear canvas
+	draw.clear(plots.sdOverlayCtx, plots.sdOverlayCanvas);
+	//default to showing every 10 data points
+	var interval = interval || 10;
+	//plot the circles
+	plots.sdData.forEach(function(el, i){
+  if(i%interval == 0) {
+	    plots.sdOverlayCtx.strokeStyle = '#f00';
+			draw.circle(plots.sdOverlayCtx,
+									el.coords.x*plots.pixelSize,
+									el.coords.y*plots.pixelSize, 2);
+	  }
+	})
 }
 
 /*
@@ -202,9 +226,7 @@ plots.plotAimVsCorDb = function() {
 	//
 	.done(function(data) {
 		plots.corData = data;
-
-//		plotCovSeries(plots.corData[1])
-
+		//plotCovSeries(plots.corData[1])
 		plots.corData.forEach(plotCovSeries)
 	});
 }
@@ -215,7 +237,7 @@ plots.plotAimVsCorDb = function() {
 function plotCovSeries(series, i, arr) {
 
 	var index = (i+1)/(arr.length+1);
-	console.log(i+1 + '/'+ (arr.length+1) + '=' + index)
+	//console.log(i+1 + '/'+ (arr.length+1) + '=' + index)
 	var colour = plots.fullColor(index)
 
 	//console.log(series)
@@ -249,7 +271,6 @@ function plotCovSeries(series, i, arr) {
 	});
 
 	plots.corDbCtx.strokeStyle = colour;
-	plots.corDbCtx.closePath();
 	plots.corDbCtx.stroke();
 	
 }
