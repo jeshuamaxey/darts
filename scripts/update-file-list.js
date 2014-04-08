@@ -1,2 +1,2 @@
 var files = require('../modules/files.js');
-files.makeList('public/data');
+files.makeList(__dirname + '/../public/data');

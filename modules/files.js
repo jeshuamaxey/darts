@@ -42,7 +42,9 @@ function walk(dir, done) {
 */
 function outputToFile(err, list) {
 
-	var outputFile = 'public/data/data-files.json';
+	var outputFile = __dirname + '/../public/data/data-files.json';
+
+  console.log(outputFile)
   
   //strip off the public from the start of the strings
   list.forEach(function(filePath, i) {
