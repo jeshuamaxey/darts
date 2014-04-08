@@ -133,8 +133,9 @@ app.loadFileList = function() {
 }
 
 app.displayFileList = function(data) {
+	console.log(data)
 	data.list.forEach(function(filePath){
-		if(filePath.startsWith(app.dataSubDir)) {
+		if(filePath.startsWith(app.dataSubDir) && !filePath.startsWith(app.dataSubDir + 'csv')) {
 			fileName = filePath.substring(app.dataSubDir.length);
 			if(fileName != '.DS_Store') {
 				$('#fileList').append('<a href="#" class="list-group-item" url=' + fileName + '>'+ fileName +'</a>');
@@ -162,6 +163,7 @@ app.switchData = function() {
 		$('#meanY').html(parseFloat(data.preprocessed.mmY.mean).toFixed(3) + 'mm');
 		$('#stdDevR').html(parseFloat(data.preprocessed.mmR.stdDev).toFixed(3) + 'mm');
 		$('#meanR').html(parseFloat(data.preprocessed.mmR.mean).toFixed(3) + 'mm');
+		$('#correlation').html(parseFloat(data.preprocessed.correlation).toFixed(3));
 		//
 		$('#sampleSize').html(data.raw.throws.length);
 		//add appropriate url to button link
