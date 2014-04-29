@@ -22,14 +22,14 @@ var files = require('../modules/files.js');
 */
 app.main = function() {
 	//set standard deviation
-	var sd = app.setStdDev(35.0,34.5);
-	var cor = -0.544;
-	var mean = app.setMean(9.47, -4.61);
+	var sd = app.setStdDev(10, 10);
+	var cor = -0;
+	var mean = app.setMean(0, 0);
 	//set file names
-	var fileName = 'charlie.json';
-	var dirName = __dirname + '/../public/data/heatmaps/personalised';
+	var fileName = 'res400sdtenmm.json';
+	var dirName = __dirname + '/../public/data/heatmaps/JackReport';
 	//make personalised heatmaps higher res
-	config.meshSize = 200;
+	config.meshSize = 400;
 	//crunch da numberz
 	mesh = hm.generateHeatmap(mean, sd, cor);
 	//write data to file
