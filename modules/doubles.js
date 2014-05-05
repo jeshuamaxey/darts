@@ -119,10 +119,10 @@ fillSingleShapeMesh = function(number) {
 	}
 }
 
-fillGaussianMesh = function(meanX, meanY, stdDevX, stdDevY) {
+fillGaussianMesh = function(meanX, meanY, stdDevX, stdDevY, correl) {
 	for (var x = -meshSize/2; x < meshSize/2; x++) {
 		for (var y = -meshSize/2; y < meshSize/2; y++) {
-			gaussianMesh[x+meshSize/2][meshSize/2-y] = stats.gaussian2D(x*px2mm, y*px2mm, meanX, meanY, stdDevX, stdDevY);
+			gaussianMesh[x+meshSize/2][meshSize/2-y] = stats.gaussian2D(x*px2mm, y*px2mm, meanX, meanY, stdDevX, stdDevY, correl);
 		}
 	}
 }
@@ -143,12 +143,12 @@ fillResultMesh = function() {
 * Given a player's mean and sd, it returns the probability that
 * player will hit the double bed of the number argument
 */
-doubles.chance = function(number, sd, mean) {
+doubles.chance = function(number, sd, mean, correl) {
 	//set defaults when no gaussian params given
 	sd = sd || {'x':1, 'y':1};
 	mean = mean || {'x':0, 'y':0};
 	//create and normailse the gaussian mesh of this player
-	fillGaussianMesh(mean.x, mean.y, sd.y, sd.y);
+	fillGaussianMesh(mean.x, mean.y, sd.y, sd.y, correl);
 	mesh.normaliseMesh(gaussianMesh);
 	//do some mesh stuff that jack wrote to determine prob
 	fillDoubleShapeMesh(number);
